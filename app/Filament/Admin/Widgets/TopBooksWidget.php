@@ -29,7 +29,7 @@ class TopBooksWidget extends BaseWidget
                     )
                     ->leftJoin('pinjaman', 'buku.id', '=', 'pinjaman.buku_id')
                     ->leftJoin('categories', 'buku.category_id', '=', 'categories.id')
-                    ->groupBy('buku.id', 'buku.uuid')
+                    ->groupBy('buku.id', 'buku.uuid', 'buku.judul')
                     ->orderBy('total_pinjaman', 'desc')
                     ->limit(5)
             )
