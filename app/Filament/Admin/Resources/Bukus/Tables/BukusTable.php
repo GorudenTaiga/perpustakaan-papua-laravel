@@ -68,6 +68,11 @@ class BukusTable
                             $state = is_array($decoded) ? $decoded : [$state];
                         }
 
+                        // Kalau integer atau bukan array, jadikan array
+                        if (!is_array($state)) {
+                            $state = [$state];
+                        }
+
                         // Pastikan array of int
                         $ids = array_map('intval', $state);
 
