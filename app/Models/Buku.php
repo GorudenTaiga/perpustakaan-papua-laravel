@@ -44,7 +44,7 @@ class Buku extends Model
     public function bannerUrl(): Attribute
     {
         // return Attribute::get(fn () => $this->banner ? Storage::url($this->banner) : '');
-        return Attribute::get(fn () => $this->banner ? Storage::response($this->banner)  : '');
+        return Attribute::get(fn () => $this->banner ? Storage::url($this->banner)  : '');
     }
 
     public function category() {
