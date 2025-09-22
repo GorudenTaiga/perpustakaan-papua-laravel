@@ -15,12 +15,12 @@ class LoanChartWidget extends ChartWidget
 
     protected function getData(): array
     {
-        $data = Pinjaman::selectRaw('strftime(\'%m\', created_at) as month, COUNT(*) as count')
-            ->whereRaw('strftime(\'%Y\', created_at) = ?', [date('Y')])
-            ->groupByRaw('strftime(\'%m\', created_at)')
-            ->orderByRaw('strftime(\'%m\', created_at)')
-            ->pluck('count', 'month')
-            ->toArray();
+        $data = Pinjaman::selectRaw('MONTH(created_at) as month, COUNT(*) as count')
+    ->whereYear('created_at', date('Y'))
+    ->groupByRaw('MONTH(created_at)')
+    ->orderByRaw('MONTH(created_at)')
+    ->pluck('count', 'month')
+    ->toArray();
 
         $months = [];
         $counts = [];
