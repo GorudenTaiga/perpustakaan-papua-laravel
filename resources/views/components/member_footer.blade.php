@@ -176,7 +176,7 @@
     <div class="container-fluid">
         <div class="row">
             <div class="col-md-6 copyright">
-                <p>© 2025 GorudenTaiga x Greattt. All rights reserved.</p>
+                <p>© 2025 Perpustakaan Daerah Provinsi Papua. All rights reserved.</p>
             </div>
         </div>
     </div>
