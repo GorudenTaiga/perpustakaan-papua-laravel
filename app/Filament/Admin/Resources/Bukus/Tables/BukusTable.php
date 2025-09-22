@@ -26,7 +26,7 @@ class BukusTable
                     ->label('UUID')
                     ->searchable(),
                 ImageColumn::make('banner') 
-                    ->getStateUsing(fn ($record) => Storage::disk('public')->url($record->banner))
+                    // ->getStateUsing(fn ($record) => Storage::disk('public')->url($record->banner))
                     ->toggleable(false),
                 TextColumn::make('judul')
                     ->toggleable(isToggledHiddenByDefault: false)
