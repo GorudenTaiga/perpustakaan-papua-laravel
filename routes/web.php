@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\AdminController;
+use App\Http\Controllers\AssetController;
 use App\Http\Controllers\BukuController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\MemberController;
@@ -23,6 +24,8 @@ Route::middleware(['auth:member'])->group(function () {
     Route::post('/pinjam/store', [UserController::class, 'pinjam'])->name('pinjam.store');
     Route::get('/cetakKTA/{id}', [UserController::class, 'cetakKTA'])->name('cetakKTA');
 });
+
+Route::get('/getImage/{path}', [AssetController::class, 'index']);
 
 // Route::middleware(['auth:admin'])->group(function () {
 //     Route::prefix('/admin')->group(function () {

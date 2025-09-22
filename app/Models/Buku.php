@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Http\Controllers\AssetController;
 use Filament\Panel;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -42,7 +43,8 @@ class Buku extends Model
 
     public function bannerUrl(): Attribute
     {
-        return Attribute::get(fn () => $this->banner ? Storage::url($this->banner) : '');
+        // return Attribute::get(fn () => $this->banner ? Storage::url($this->banner) : '');
+        return Attribute::get(fn () => $this->banner ? Storage::response($this->banner)  : '');
     }
 
     public function category() {
