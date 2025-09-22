@@ -23,30 +23,13 @@ class TopBooksWidget extends BaseWidget
             ->query(
                 \App\Models\Buku::query()
                     ->select(
-                        'buku.*',
+                        'buku.id',
                         DB::raw('COUNT(pinjaman.quantity) as total_pinjaman'),
                         DB::raw('SUM(COALESCE(pinjaman.final_price, pinjaman.total_price)) as total_pendapatan')
                     )
                     ->leftJoin('pinjaman', 'buku.id', '=', 'pinjaman.buku_id')
                     ->leftJoin('categories', 'buku.category_id', '=', 'categories.id')
-                    ->groupBy(
-                        'buku.id',
-                    'buku.uuid',
-                        'buku.judul',
-                        'buku.author',
-                        'buku.publisher',
-                        'buku.year',
-                        'buku.stock',
-                        'buku.price_per_day',
-                        'buku.max_days',
-                        'buku.deskripsi',
-                        'buku.slug',
-                        'buku.category_id',
-                        'buku.rating',
-                        'buku.banner',
-                        'buku.created_at',
-                        'buku.updated_at'
-                    )
+                    ->groupBy('buku.id')
                     ->orderBy('total_pinjaman', 'desc')
                     ->limit(5)
             )
