@@ -2,6 +2,7 @@
 
 namespace App\Filament\Admin\Widgets;
 
+use App\Models\Buku;
 use App\Models\Category;
 use Filament\Tables;
 use Filament\Tables\Table;
@@ -21,17 +22,18 @@ class TopBooksWidget extends BaseWidget
     {
         return $table
             ->query(
-                \App\Models\Buku::query()
-                    ->select(
-                        'buku.id',
-                        DB::raw('COUNT(pinjaman.quantity) as total_pinjaman'),
-                        DB::raw('SUM(COALESCE(pinjaman.final_price, pinjaman.total_price)) as total_pendapatan')
-                    )
-                    ->leftJoin('pinjaman', 'buku.id', '=', 'pinjaman.buku_id')
-                    ->leftJoin('categories', 'buku.category_id', '=', 'categories.id')
-                    ->groupBy('buku.id')
-                    ->orderBy('total_pinjaman', 'desc')
-                    ->limit(5)
+                Buku::query()
+                ->select(
+                    'buku.id',
+                    'buku.title',
+                    'buku.category_id',
+                    DB::raw('COUNT(pinjaman.quantity) as total_pinjaman'),
+                    DB::raw('SUM(COALESCE(pinjaman.final_price, pinjaman.total_price)) as total_pendapatan')
+                )
+                ->leftJoin('pinjaman', 'buku.id', '=', 'pinjaman.buku_id')
+                ->groupBy('buku.id', 'buku.title', 'buku.category_id')
+                ->orderByDesc('total_pinjaman')
+                ->limit(5)
             )
             ->columns([
                 Tables\Columns\TextColumn::make('index')
