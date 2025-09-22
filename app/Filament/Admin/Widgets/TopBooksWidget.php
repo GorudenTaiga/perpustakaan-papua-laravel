@@ -47,6 +47,7 @@ class TopBooksWidget extends BaseWidget
 
                 Tables\Columns\TextColumn::make('author')
                     ->label('Penulis')
+                    ->getStateUsing(fn ($record) => $record->author ? $record->author : '')
                     ->searchable(),
 
                 Tables\Columns\TextColumn::make('category_id')
