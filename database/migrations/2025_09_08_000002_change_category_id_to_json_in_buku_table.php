@@ -12,7 +12,7 @@ return new class extends Migration
     public function up(): void
     {
         Schema::table('buku', function (Blueprint $table) {
-            $table->dropForeign(['category_id']);
+            // $table->dropForeign(['category_id']);
             $table->dropColumn('category_id');
         });
 
