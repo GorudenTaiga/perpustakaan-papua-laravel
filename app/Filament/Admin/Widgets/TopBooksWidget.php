@@ -43,7 +43,9 @@ class TopBooksWidget extends BaseWidget
                         'buku.slug',
                         'buku.category_id',
                         'buku.rating',
-                        'buku.banner'
+                        'buku.banner',
+                        'buku.created_at',
+                        'buku.updated_at'
                     )
                     ->orderBy('total_pinjaman', 'desc')
                     ->limit(5)
