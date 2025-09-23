@@ -6,6 +6,7 @@
 
 <head>
     <meta charset="UTF-8">
+    <title>KTA - {{ $member->user->name }}</title>
     <style>
         @page {
             margin: 0;
