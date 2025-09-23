@@ -26,14 +26,10 @@ class Pinjaman extends Model
     ];
 
     public function member() {
-        return $this->belongsTo(Member::class, 'member_id', 'id');
+        return $this->belongsTo(Member::class, 'member_id', 'membership_number');
     }
 
     public function buku() {
         return $this->belongsTo(Buku::class, 'buku_id', 'id');
-    }
-
-    public function user() {
-        return $this->belongsTo(User::class, 'member_id', 'id');
     }
 }

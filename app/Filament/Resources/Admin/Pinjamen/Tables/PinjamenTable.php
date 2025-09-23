@@ -14,7 +14,7 @@ class PinjamenTable
     {
         return $table
             ->columns([
-                TextColumn::make('user.name')
+                TextColumn::make('member.user.name')
                     ->label('Nama Peminjam')
                     ->sortable(),
                 TextColumn::make('loan_date')
