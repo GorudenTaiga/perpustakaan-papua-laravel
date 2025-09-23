@@ -68,10 +68,9 @@
         }
 
         .photo img {
-            width: 64px;
+            width: 50px;
             height: 70px;
             border: 1px solid #ccc;
-            object-fit: cover;
             margin-bottom: 5px;
         }
 
