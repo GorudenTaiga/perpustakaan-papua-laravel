@@ -17,7 +17,7 @@ class MemberForm
         return $schema
             ->components([
                 TextInput::make('name')
-                    ->model(User::class)
+                    ->default('user.name')
                     ->disabled(),
                 FileUpload::make('image')
                     ->disk('public')
