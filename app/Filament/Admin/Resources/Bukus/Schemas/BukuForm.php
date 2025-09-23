@@ -41,6 +41,8 @@ class BukuForm extends FormsComponent
                     ->numeric(),
                 TextInput::make('denda_per_hari')
                     ->required()
+                    ->minValue(0)
+                    ->maxValue(999999)
                     ->numeric(),
                 TextInput::make('max_days')
                     ->numeric(),
