@@ -132,14 +132,21 @@
                     <div class="modal-body">
                         <div class="mb-3">
                             <label for="tanggal_pinjam" class="form-label">Tanggal Pinjam</label>
-                            <input type="date" id="tanggal_pinjam" name="tanggal_pinjam" class="form-control" required>
+                            <input type="date" id="tanggal_pinjam" name="loan_date" class="form-control" required>
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="jumlah" class="form-label">Tanggal Dikembalikan</label>
+                            <input type="date" id="tanggal_dikembalikan" name="due_date" class="form-control"
+                                required>
                         </div>
 
                         <div class="mb-3">
                             <label for="jumlah" class="form-label">Jumlah Buku</label>
-                            <input type="number" id="jumlah" name="jumlah" class="form-control" min="1"
+                            <input type="number" id="jumlah" name="quantity" class="form-control" min="1"
                                 max="{{ $buku->stock ?? 1 }}" value="1" required>
                         </div>
+
                     </div>
 
                     <div class="modal-footer">
