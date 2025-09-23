@@ -16,8 +16,8 @@
                                 <div class="swiper-wrapper">
                                     <div class="swiper-slide">
                                         <div class="image-zoom" data-scale="2.5"
-                                            data-image="{{ $member->image ?? asset('users/images/profile-placeholder.png') }}">
-                                            <img src="{{ $member->image ?? asset('users/images/profile-placeholder.png') }}"
+                                            data-image="{{ Storage::disk('public')->url($member->image) ?? asset('users/images/profile-placeholder.png') }}">
+                                            <img src="{{ Storage::disk('public')->url($member->image) ?? asset('users/images/profile-placeholder.png') }}"
                                                 alt="{{ $member->user->name }}" class="img-fluid rounded-circle shadow-lg">
                                         </div>
                                     </div>
