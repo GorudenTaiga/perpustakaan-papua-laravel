@@ -33,8 +33,11 @@ class BukuController extends Controller
                 }
             })
             ->when($request->query('category', []), function ($q, $categories) {
+                dd('Categories: '.$categories);
                 foreach ($categories as $cat) {
                     $q->orWhereJsonContains('category_id', $cat);
+                    dd('Kategori: ' . $cat);
+                    dd('Data: ' . $q);
                 }
             })
             ->when($request->query('search'), function ($q, $search) {
