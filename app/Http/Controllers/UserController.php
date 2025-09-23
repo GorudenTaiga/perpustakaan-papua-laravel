@@ -21,7 +21,7 @@ class UserController extends Controller
         if ($member) {
             return view('pages.member.profile', [
                 'member' => $member,
-                'pinjaman' => Pinjaman::where('member_id', Auth::user()->member->membership_number)
+                'pinjaman' => Pinjaman::where('member_id', Auth::user()->member->membership_number)->with('buku')
             ]);
         }
     }
