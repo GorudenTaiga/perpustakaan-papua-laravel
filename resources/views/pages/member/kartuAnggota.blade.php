@@ -133,21 +133,21 @@
                         <!-- Bagian kanan (details) -->
                         <td width="60%" valign="middle" style="padding-left: 10px;">
                             <div class="details">
-                                <table style="width: 100%; font-size: 11px;">
+                                <table style="width: 100%; font-size: 11px; table-layout: fixed;">
                                     <tr>
-                                        <td style="width: 40%;">Nomor Anggota</td>
-                                        <td>: {{ $member->membership_number }}</td>
+                                        <td style="width: 45%; white-space: nowrap;">Nomor Anggota</td>
+                                        <td style="width: 55%;">: {{ $member->membership_number }}</td>
                                     </tr>
                                     <tr>
-                                        <td>Nama</td>
+                                        <td style="white-space: nowrap;">Nama</td>
                                         <td>: {{ $member->user->name }}</td>
                                     </tr>
                                     <tr>
-                                        <td>Jenis</td>
+                                        <td style="white-space: nowrap;">Jenis</td>
                                         <td>: {{ $member->jenis }}</td>
                                     </tr>
                                     <tr>
-                                        <td>Berlaku hingga</td>
+                                        <td style="white-space: nowrap;">Berlaku hingga</td>
                                         <td>: {{ $member->valid_date }}</td>
                                     </tr>
                                 </table>
