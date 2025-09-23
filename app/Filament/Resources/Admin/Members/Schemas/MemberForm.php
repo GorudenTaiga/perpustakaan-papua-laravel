@@ -2,6 +2,12 @@
 
 namespace App\Filament\Resources\Admin\Members\Schemas;
 
+use App\Models\User;
+use Carbon\Carbon;
+use Date;
+use Filament\Forms\Components\FileUpload;
+use Filament\Forms\Components\Select;
+use Filament\Forms\Components\TextInput;
 use Filament\Schemas\Schema;
 
 class MemberForm
@@ -10,7 +16,29 @@ class MemberForm
     {
         return $schema
             ->components([
-                
+                TextInput::make('name')
+                    ->model(User::class)
+                    ->required(),
+                TextInput::make('email')
+                    ->model(User::class)
+                    ->required(),
+                FileUpload::make('image')
+                    ->disk('public')
+                    ->directory('images/member/foto')
+                    ->nullable(),
+                TextInput::make('alamat')
+                    ->nullable(),
+                Select::make('jenis')
+                    ->options([
+                        'Siswa' => 'Siswa',
+                        'Mahasiswa' => 'Mahasiswa',
+                        'Guru' => 'Guru',
+                        'Dosen' => 'Dosen',
+                        'Umum' => 'Umum',
+                    ]),
+                TextInput::make('valid_date')
+                    ->default(Carbon::now()->addYears(2)->toDateString())
+                    ->disabled()
             ]);
     }
 }

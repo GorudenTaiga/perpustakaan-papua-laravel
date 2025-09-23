@@ -142,7 +142,8 @@
             {{-- Ini adalah wadah utama untuk foto dan detail --}}
             <div class="card-body">
                 <div class="photo">
-                    <img src="{{ $member->image }}" alt="Foto Member">
+                    <img src="{{ 'data:image/png;base64,' . base64_encode(file_get_contents($buku->image)) }}"
+                        alt="Foto Member">
                 </div>
                 <div class="details">
                     <table>
