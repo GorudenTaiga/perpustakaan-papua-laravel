@@ -5,6 +5,7 @@ namespace App\Filament\Resources\Admin\Pinjamen\Schemas;
 use App\Models\Member;
 use App\Models\User;
 use App\Models\Buku;
+use DB;
 use Filament\Forms\Components\DatePicker;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
@@ -22,7 +23,11 @@ class PinjamanForm
             ->components([
                 Select::make('member_id')
                     ->label('Member')
-                    ->options(User::query()->where('role', 'member')->pluck('name', 'id'))
+                    ->options(
+                        DB::table('users as u')
+                            ->leftJoin('member as mem', 'u.id', '=', 'mem.users_id')
+                            ->pluck('u.name', 'mem.membership_number')
+                    )
                     ->searchable()
                     ->required(),
 
