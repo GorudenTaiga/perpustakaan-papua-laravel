@@ -3,6 +3,7 @@
 namespace App\Filament\Resources\Admin\Members\Schemas;
 
 use App\Models\User;
+use Auth;
 use Carbon\Carbon;
 use Date;
 use Filament\Forms\Components\FileUpload;
@@ -16,9 +17,11 @@ class MemberForm
     {
         return $schema
             ->components([
-                TextInput::make('name')
-                    ->default('user.name')
-                    ->disabled(),
+                TextInput::make('user.name')
+                    ->label('User Name')
+                    ->formatStateUsing(fn ($record) => $record?->user?->name)
+                    ->disabled()
+                    ->dehydrated(false),
                 FileUpload::make('image')
                     ->disk('public')
                     ->image()
