@@ -19,14 +19,16 @@
                                             data-image="{{ Storage::disk('public')->url($member->image) ?? asset('users/images/profile-placeholder.png') }}">
                                             <img src="{{ Storage::disk('public')->url($member->image) ?? asset('users/images/profile-placeholder.png') }}"
                                                 alt="{{ $member->user->name }}" class="img-fluid rounded-circle shadow-lg"
-                                                data-bs-toggle="modal" data-bs-target="#photoOptionModal">
+                                                style="cursor:pointer;" data-bs-toggle="modal"
+                                                data-bs-target="#photoOptionModal">
+
                                         </div>
                                         <!-- Modal Pilihan Foto -->
                                         <div class="modal fade" id="photoOptionModal" tabindex="-1" aria-hidden="true">
                                             <div class="modal-dialog modal-dialog-centered">
                                                 <div class="modal-content text-center">
                                                     <div class="modal-body">
-                                                        <h5>Pilih Aksi</h5>
+                                                        <h5 class="mb-3">Pilih Aksi Foto</h5>
                                                         <button type="button" class="btn btn-primary w-100 my-2"
                                                             data-bs-target="#photoZoomModal" data-bs-toggle="modal"
                                                             data-bs-dismiss="modal">
@@ -42,6 +44,7 @@
                                             </div>
                                         </div>
 
+
                                         <!-- Modal Zoom Foto -->
                                         <div class="modal fade" id="photoZoomModal" tabindex="-1" aria-hidden="true">
                                             <div class="modal-dialog modal-dialog-centered modal-lg">
@@ -53,6 +56,7 @@
                                                 </div>
                                             </div>
                                         </div>
+
 
                                         <!-- Modal Edit Foto -->
                                         <div class="modal fade" id="photoEditModal" tabindex="-1" aria-hidden="true">
@@ -78,6 +82,7 @@
                                                 </form>
                                             </div>
                                         </div>
+
                                     </div>
                                 </div>
                             </div>
