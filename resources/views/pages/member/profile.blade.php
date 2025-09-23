@@ -109,7 +109,7 @@
                                     @empty($loan)
                                         <li class="list-group-item">Belum ada peminjaman.</li>
                                     @endempty
-                                @endforelse
+                                @endforeach
                             </ul>
                         </div>
                     </div>
