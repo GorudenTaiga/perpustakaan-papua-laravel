@@ -149,9 +149,7 @@ class PinjamanForm
                 $discount = 0;
                 $punishment = 0;
                 if ($returnDateCarbon && $returnDateCarbon->lessThan($dueDateCarbon)) {
-                    $earlyDays = $dueDateCarbon->diffInDays($returnDateCarbon);
-                    $discount = $earlyDays * $buku->price_per_day;
-                    $finalPrice = $totalPrice + $discount;
+                    $finalPrice = 0;
                 } else {
                     $lateDays = $dueDateCarbon->diffInDays($returnDateCarbon);
                     $punishment = $lateDays * $buku->price_per_day;
