@@ -171,7 +171,7 @@
         <div class="footer">
             <div class="barcode">
                 {!! $barcode->getBarcodeHTML($member->membership_number, 'C39', 1, 20) !!}
-                <div>{{ $member->membership_number }}</div>
+                {{ $member->membership_number }}
             </div>
             {{-- <div class="ttd">
                 <div>Jayapura, {{ $today->isoFormat('D MMMM Y') }}</div>
