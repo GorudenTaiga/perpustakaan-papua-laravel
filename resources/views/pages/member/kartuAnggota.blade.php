@@ -12,6 +12,13 @@
             margin: 0;
         }
 
+        body {
+            font-family: DejaVu Sans, sans-serif;
+            font-size: 11px;
+            margin: 0;
+            padding: 0;
+        }
+
         /* Ukuran kartu: 8.6cm x 5.4cm */
         .kartu {
             width: 8.6cm;
@@ -25,7 +32,26 @@
         }
 
         /* HEADER */
-        /* ... (bagian ini tidak berubah) ... */
+        .header {
+            background: #00923f;
+            color: white;
+            text-align: center;
+            padding: 4px;
+            font-size: 12px;
+            line-height: 1.3;
+            position: relative;
+        }
+
+        .header img {
+            position: absolute;
+            top: 6px;
+            left: 8px;
+            width: 40px;
+        }
+
+        .sub-header {
+            font-size: 9px;
+        }
 
         /* CONTENT */
         .content {
@@ -60,7 +86,7 @@
             vertical-align: top;
         }
 
-        /* FOOTER */
+        /* FOOTER pakai flex agar tidak error */
         .footer {
             position: absolute;
             /* Posisikan secara absolut di dalam .kartu */
@@ -83,51 +109,76 @@
             margin-top: 2px;
             font-size: 9px;
         }
+
+        .ttd {
+            text-align: right;
+            width: 40%;
+            font-size: 9px;
+        }
+
+        .ttd img {
+            width: 50px;
+            display: block;
+            margin-left: auto;
+            margin-bottom: 2px;
+        }
     </style>
 </head>
 
 <body>
-    {{-- CONTENT --}}
-    <div class="content">
-        {{-- Ini adalah wadah utama untuk foto dan detail --}}
-        <div class="card-body">
-            <div class="photo">
-                <img src="{{ $member->image }}" alt="Foto Member">
-            </div>
-            <div class="details">
-                <table>
-                    <tr>
-                        <td>Nomor Anggota</td>
-                        <td>: {{ $member->membership_number }}</td>
-                    </tr>
-                    <tr>
-                        <td>Nama</td>
-                        <td>: {{ $member->user->name }}</td>
-                    </tr>
-                    <tr>
-                        <td>Jenis</td>
-                        <td>: {{ $member->jenis }}</td>
-                    </tr>
-                    <tr>
-                        <td>Berlaku hingga</td>
-                        <td>: {{ $member->valid_date }}</td>
-                    </tr>
-                </table>
+    <div class="kartu">
+        {{-- HEADER --}}
+        <div class="header">
+            <img src="{{ asset('logo.png') }}" alt="Logo">
+            <div><b>KARTU ANGGOTA PERPUSTAKAAN</b></div>
+            <div><b>PERPUSTAKAAN PROVINSI PAPUA</b></div>
+            <div class="sub-header">
+                JL. Raya Kota Raja No.84, Mandala, Kec. Jayapura Utara, Kota Jayapura, Papua
             </div>
         </div>
-    </div>
 
-    {{-- FOOTER --}}
-    <div class="footer">
-        <div class="barcode">
-            {!! $barcode->getBarcodeHTML($member->membership_number, 'C39', 1, 20) !!}
-            <div>{{ $member->membership_number }}</div>
+        {{-- CONTENT --}}
+        <div class="content">
+            {{-- Ini adalah wadah utama untuk foto dan detail --}}
+            <div class="card-body">
+                <div class="photo">
+                    <img src="{{ $member->image }}" alt="Foto Member">
+                </div>
+                <div class="details">
+                    <table>
+                        <tr>
+                            <td>Nomor Anggota</td>
+                            <td>: {{ $member->membership_number }}</td>
+                        </tr>
+                        <tr>
+                            <td>Nama</td>
+                            <td>: {{ $member->user->name }}</td>
+                        </tr>
+                        <tr>
+                            <td>Jenis</td>
+                            <td>: {{ $member->jenis }}</td>
+                        </tr>
+                        <tr>
+                            <td>Berlaku hingga</td>
+                            <td>: {{ $member->valid_date }}</td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
         </div>
-        {{-- <div class="ttd">
-            <div>Jayapura, {{ \Carbon\Carbon::now() }}</div>
-            <img src="{{ asset('signature.png') }}" alt="Tanda Tangan">
-            <div>Kepala Perpustakaan</div>
-        </div> --}}
+
+        {{-- FOOTER --}}
+        <div class="footer">
+            <div class="barcode">
+                {!! $barcode->getBarcodeHTML($member->membership_number, 'C39', 1, 20) !!}
+                <div>{{ $member->membership_number }}</div>
+            </div>
+            {{-- <div class="ttd">
+                <div>Jayapura, {{ $today->isoFormat('D MMMM Y') }}</div>
+                <img src="{{ asset('signature.png') }}" alt="Tanda Tangan">
+                <div>Kepala Perpustakaan</div>
+            </div> --}}
+        </div>
     </div>
 </body>
 
