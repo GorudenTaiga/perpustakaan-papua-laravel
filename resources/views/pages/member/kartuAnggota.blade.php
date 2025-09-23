@@ -117,10 +117,10 @@
         {{-- CONTENT --}}
         <div class="content">
             <div class="card-body">
-                <table width="100%">
+                <table width="100%" cellspacing="0" cellpadding="0">
                     <tr>
                         <!-- Bagian kiri (foto + barcode) -->
-                        <td width="40%" align="center" valign="top">
+                        <td width="40%" align="left" valign="top" style="padding-left: 5px; text-align: center;">
                             <div class="photo">
                                 <img src="{{ 'data:image/png;base64,' . base64_encode(file_get_contents(Storage::disk('public')->path($member->image))) }}"
                                     alt="Foto Member">
@@ -132,11 +132,11 @@
                         </td>
 
                         <!-- Bagian kanan (details) -->
-                        <td width="60%" valign="top">
+                        <td width="60%" valign="middle" style="padding-left: 10px;">
                             <div class="details">
-                                <table>
+                                <table style="width: 100%; font-size: 11px;">
                                     <tr>
-                                        <td>Nomor Anggota</td>
+                                        <td style="width: 40%;">Nomor Anggota</td>
                                         <td>: {{ $member->membership_number }}</td>
                                     </tr>
                                     <tr>
@@ -157,7 +157,6 @@
                     </tr>
                 </table>
             </div>
-
         </div>
     </div>
 </body>
