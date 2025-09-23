@@ -101,12 +101,14 @@
                             tabindex="0">
                             <h5>Riwayat Peminjaman</h5>
                             <ul class="list-group">
-                                @foreach ($pinjaman as $loan)
-                                    <li class="list-group-item d-flex justify-content-between align-items-center">
-                                        {{ $loan->buku->judul }}
-                                        <span class="badge bg-secondary">{{ $loan->loan_date->format('d M Y') }}</span>
-                                    </li>
-                                    @empty
+                                @foreach ($pinjaman as $p)
+                                    @foreach ($p->buku as $b)
+                                        <li class="list-group-item d-flex justify-content-between align-items-center">
+                                            {{ $b->judul }}
+                                            <span class="badge bg-secondary">{{ $p->loan_date->format('d M Y') }}</span>
+                                        </li>
+                                    @endforeach
+                                    @empty($pinjaman)
                                         <li class="list-group-item">Belum ada peminjaman.</li>
                                     @endforelse
                                 </ul>
