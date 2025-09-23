@@ -13,14 +13,13 @@
                         <div class="col-md-12 col-lg-10">
                             <!-- profile picture -->
                             <div class="swiper profile-large-slider swiper-fade swiper-horizontal">
-                                <div class="swiper-wrapper">
+                                <div class="swiper-wrapper" data-bs-toggle="modal" data-bs-target="#photoOptionModal">
                                     <div class="swiper-slide">
                                         <div class="image-zoom" data-scale="2.5"
                                             data-image="{{ Storage::disk('public')->url($member->image) ?? asset('users/images/profile-placeholder.png') }}">
                                             <img src="{{ Storage::disk('public')->url($member->image) ?? asset('users/images/profile-placeholder.png') }}"
                                                 alt="{{ $member->user->name }}" class="img-fluid rounded-circle shadow-lg"
-                                                style="cursor:pointer;" data-bs-toggle="modal"
-                                                data-bs-target="#photoOptionModal">
+                                                style="cursor:pointer;">
 
                                         </div>
                                         <!-- Modal Pilihan Foto -->
