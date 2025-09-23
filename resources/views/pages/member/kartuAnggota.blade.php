@@ -43,7 +43,8 @@
             position: absolute;
             top: 6px;
             left: 8px;
-            width: 40px;
+            width: 20px;
+            height: 10px;
         }
 
         .sub-header {
