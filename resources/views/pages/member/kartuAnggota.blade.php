@@ -90,6 +90,7 @@
         }
 
         .ttd {
+            justify-content: end;
             text-align: right;
             width: 40%;
             font-size: 9px;
