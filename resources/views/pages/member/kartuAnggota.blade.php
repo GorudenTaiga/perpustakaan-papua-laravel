@@ -71,7 +71,7 @@
             /* Ukuran foto yang lebih jelas */
             height: 90px;
             border: 1px solid #ccc;
-            object-fit: cover;
+            object-fit: none;
             /* Pastikan foto tidak terdistorsi */
         }
 
