@@ -123,11 +123,11 @@
             {!! $barcode->getBarcodeHTML($member->membership_number, 'C39', 1, 20) !!}
             <div>{{ $member->membership_number }}</div>
         </div>
-        <div class="ttd">
-            <div>Jayapura, {{ $today->isoFormat('D MMMM Y') }}</div>
+        {{-- <div class="ttd">
+            <div>Jayapura, {{ \Carbon\Carbon::now() }}</div>
             <img src="{{ asset('signature.png') }}" alt="Tanda Tangan">
             <div>Kepala Perpustakaan</div>
-        </div>
+        </div> --}}
     </div>
 </body>
 
