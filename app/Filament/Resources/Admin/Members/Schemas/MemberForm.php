@@ -16,19 +16,9 @@ class MemberForm
     {
         return $schema
             ->components([
-                TextInput::make('users_id')
-                    ->default(0)
-                    ->hidden(),
                 TextInput::make('name')
                     ->model(User::class)
-                    ->required(),
-                TextInput::make('email')
-                    ->model(User::class)
-                    ->required(),
-                TextInput::make('password')
-                    ->model(User::class)
-                    ->required()
-                    ->password(),
+                    ->disabled(),
                 FileUpload::make('image')
                     ->disk('public')
                     ->directory('images/member/foto')
