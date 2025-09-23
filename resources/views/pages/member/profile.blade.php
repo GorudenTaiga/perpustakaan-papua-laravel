@@ -110,12 +110,13 @@
                                     @endforeach
                                     @empty($pinjaman)
                                         <li class="list-group-item">Belum ada peminjaman.</li>
-                                    @endforeach
-                                </ul>
-                            </div>
+                                    @endempty
+                                @endforeach
+                            </ul>
                         </div>
                     </div>
                 </div>
             </div>
-        </section>
-    @endsection
+        </div>
+    </section>
+@endsection
