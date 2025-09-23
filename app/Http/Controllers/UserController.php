@@ -21,7 +21,7 @@ class UserController extends Controller
     }
 
     public function peminjaman() {
-        $pinjaman = Pinjaman::where('member_id', Auth::user()->member->id)->with(['buku', 'member'])->get();
+        $pinjaman = Pinjaman::where('member_id', Auth::user()->member->membership_number)->with(['buku', 'member'])->get();
         return view('pages.member.peminjaman', [
             'pinjaman' => $pinjaman
         ]);
