@@ -4,6 +4,7 @@ namespace App\Filament\Admin\Resources\Bukus\Schemas;
 
 use App\Models\Category;
 use Filament\Forms\Components\FileUpload;
+use Filament\Forms\Components\RichEditor;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Components\Textarea;
@@ -46,7 +47,7 @@ class BukuForm extends FormsComponent
                 TextInput::make('slug')
                     ->readOnly()
                     ->required(),
-                Textarea::make('deskripsi')
+                RichEditor::make('deskripsi')
                     ->required()
                     ->columnSpanFull(),
                 Select::make('category_id')
