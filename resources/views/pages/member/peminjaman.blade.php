@@ -55,20 +55,17 @@
                                             {{-- Tanggal Pinjam --}}
                                             <td class="py-4">
                                                 <div class="total-price">
-                                                    <span
-                                                        class="money text-dark">{{ \Carbon\Carbon::make($p->loan_date)->toDateString() }}</span>
+                                                    <span class="money text-dark">{{ $p->loan_date }}</span>
                                                 </div>
                                             </td>
                                             <td class="py-4">
                                                 <div class="total-price">
-                                                    <span
-                                                        class="money text-dark">{{ \Carbon\Carbon::make($p->due_date)->toDateString() }}</span>
+                                                    <span class="money text-dark">{{ $p->due_date }}</span>
                                                 </div>
                                             </td>
                                             <td class="py-4">
                                                 <div class="total-price">
-                                                    <span
-                                                        class="money text-dark">{{ \Carbon\Carbon::make($p->return_date)->toDateString() }}</span>
+                                                    <span class="money text-dark">{{ $p->return_date }}</span>
                                                 </div>
                                             </td>
                                             <td class="py-4">
@@ -79,7 +76,7 @@
                                             <td class="py-4">
                                                 <div class="total-price">
                                                     <span
-                                                        class="money text-dark">{{ \Carbon\Carbon::now() == \Carbon\Carbon::make($p->return_date)->toDateString() ? '-' : $p->final_price }}</span>
+                                                        class="money text-dark">{{ \Carbon\Carbon::now() == $p->return_date ? '-' : $p->final_price }}</span>
                                                 </div>
                                             </td>
                                         </tr>
