@@ -24,7 +24,7 @@ class Buku extends Model
         'publisher',
         'year',
         'stock',
-        'price_per_day',
+        'denda_per_hari',
         'max_days',
         'deskripsi',
         'slug',

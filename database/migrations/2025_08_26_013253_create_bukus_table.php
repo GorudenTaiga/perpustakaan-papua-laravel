@@ -20,8 +20,7 @@ return new class extends Migration
             $table->string('publisher')->nullable();
             $table->integer('year');
             $table->integer('stock');
-            $table->decimal('price_per_day');
-            $table->integer('max_days')->nullable();
+            $table->decimal('denda_per_hari');
             $table->text('deskripsi');
             $table->string('slug');
             $table->foreignId('category_id')->nullable();

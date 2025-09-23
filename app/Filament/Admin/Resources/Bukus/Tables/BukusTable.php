@@ -44,7 +44,7 @@ class BukusTable
                     ->toggleable(isToggledHiddenByDefault: false)
                     ->numeric()
                     ->sortable(),
-                TextColumn::make('price_per_day')
+                TextColumn::make('denda_per_hari')
                     ->toggleable(isToggledHiddenByDefault: false)
                     ->numeric()
                     ->sortable(),

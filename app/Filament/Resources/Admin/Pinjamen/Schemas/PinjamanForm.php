@@ -143,7 +143,7 @@ class PinjamanForm
 
             $buku = Buku::find($bukuId);
             if ($buku) {
-                $totalPrice = ($days * $buku->price_per_day) * $quantity;
+                $totalPrice = ($days * $buku->denda_per_hari) * $quantity;
 
                 // Calculate discount if returned early
                 $discount = 0;
@@ -152,7 +152,7 @@ class PinjamanForm
                     $finalPrice = 0;
                 } else {
                     $lateDays = $dueDateCarbon->diffInDays($returnDateCarbon);
-                    $punishment = $lateDays * $buku->price_per_day;
+                    $punishment = $lateDays * $buku->denda_per_hari;
                     $finalPrice = $totalPrice + $punishment;
                 }
                 

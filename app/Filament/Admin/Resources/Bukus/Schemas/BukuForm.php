@@ -39,7 +39,7 @@ class BukuForm extends FormsComponent
                 TextInput::make('stock')
                     ->required()
                     ->numeric(),
-                TextInput::make('price_per_day')
+                TextInput::make('denda_per_hari')
                     ->required()
                     ->numeric(),
                 TextInput::make('max_days')

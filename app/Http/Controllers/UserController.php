@@ -28,7 +28,7 @@ class UserController extends Controller
     }
 
     public function pinjam(Request $request) {
-        $stock = Buku::where('id', $request->buku_id)->value('stock');
+        $stock = Buku::select('stock')->where('id', $request->buku_id)->value('stock');
         $valid = $request->validate([
             'buku_id' => 'required|exists:buku,id',
             'loan_date' => 'required|date',
