@@ -68,7 +68,7 @@ class UserController extends Controller
         $member = Member::findOrFail($id);
 
         $pdf = Pdf::loadView('pages.member.kartuAnggota', compact('member'))
-            ->setPaper([0, 0, 150, 300], 'landscape'); 
+            ->setPaper([0, 0, 154, 300], 'landscape'); 
             // 8.6cm x 5.4cm dalam point (1cm = 28.35pt)
 
         return $pdf->stream("kartu-anggota-{$member->id}.pdf");
