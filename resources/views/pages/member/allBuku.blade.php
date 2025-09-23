@@ -78,20 +78,23 @@
                     <div class="product-grid row row-cols-sm-1 row-cols-md-2 row-cols-lg-3 row-cols-xl-4">
                         @foreach ($buku->items() as $b)
                             <div class="col d-flex">
-                                <div class="product-item card h-100 w-100">
+                                <div class="product-item card h-100 w-100 d-flex flex-column">
                                     <a href="#" class="btn-wishlist">
                                         <svg width="24" height="24">
                                             <use xlink:href="#heart"></use>
                                         </svg>
                                     </a>
-                                    <figure class="text-center">
+
+                                    {{-- Figure untuk gambar --}}
+                                    <figure class="product-figure">
                                         <a href="{{ route('buku', $b->slug) }}" title="{{ $b->judul }}">
-                                            <img src="{{ $b->banner_url }}" alt="Product Thumbnail"
-                                                class="tab-image img-fluid">
+                                            <img src="{{ $b->banner_url }}" alt="Product Thumbnail" class="tab-image">
                                         </a>
                                     </figure>
+
+                                    {{-- Konten teks --}}
                                     <div class="card-body d-flex flex-column">
-                                        <h3 class="product-title text-truncate" title="{{ $b->judul }}">
+                                        <h3 class="product-title" title="{{ $b->judul }}">
                                             {{ $b->judul }}
                                         </h3>
                                         <span class="qty">1 Unit</span>
@@ -109,6 +112,7 @@
                             </div>
                         @endforeach
                     </div>
+
                     <!-- / product-grid -->
 
                     <nav class="text-center py-4" aria-label="Page navigation">
