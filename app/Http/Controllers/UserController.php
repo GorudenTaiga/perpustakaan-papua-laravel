@@ -102,8 +102,13 @@ class UserController extends Controller
                 'role' => ['required']
             ]);
             if ($validate) {
-                if (User::create($validate)) {
-                    return redirect()->back()->with('success', 'Register berhasil');
+                if ($user = User::create($validate)) {
+                    if(Member::create([
+                        'users_id' => $user->id,
+                        'membership_number' => strtotime($user->created_at)
+                    ])) {
+                        return redirect()->back()->with('success', 'Register berhasil');
+                    }
                 }
             }
         }
