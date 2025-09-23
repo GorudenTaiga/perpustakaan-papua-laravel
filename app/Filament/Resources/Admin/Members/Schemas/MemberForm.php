@@ -36,7 +36,7 @@ class MemberForm
                         'Umum' => 'Umum',
                     ]),
                 TextInput::make('valid_date')
-                    ->default(fn () => Carbon::now()->addYears(2)->toDateString())
+                    ->default(Carbon::now()->addYears(2)->toDateString())
                     ->readOnly()
             ]);
     }
