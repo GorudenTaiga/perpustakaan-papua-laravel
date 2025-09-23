@@ -76,7 +76,7 @@
                                             <td class="py-4">
                                                 <div class="total-price">
                                                     <span
-                                                        class="money text-dark">{{ \Carbon\Carbon::now() == $p->return_date ? '-' : $p->final_price }}</span>
+                                                        class="money text-dark">{{ $p->final_price == 0 ? 'Gratis (Tidak ada Denda)' : $p->final_price }}</span>
                                                 </div>
                                             </td>
                                         </tr>
