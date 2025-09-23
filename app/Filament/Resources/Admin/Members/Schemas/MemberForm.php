@@ -22,6 +22,10 @@ class MemberForm
                 TextInput::make('email')
                     ->model(User::class)
                     ->required(),
+                TextInput::make('password')
+                    ->model(User::class)
+                    ->required()
+                    ->password(),
                 FileUpload::make('image')
                     ->disk('public')
                     ->directory('images/member/foto')
