@@ -118,38 +118,47 @@
         {{-- CONTENT --}}
         <div class="content">
             <div class="card-body">
-                <div class="left-section">
-                    <div class="photo">
-                        <img src="{{ 'data:image/png;base64,' . base64_encode(file_get_contents(Storage::disk('public')->url($member->image))) }}"
-                            alt="Foto Member">
-                    </div>
-                    <div class="barcode">
-                        {!! $barcode->getBarcodeHTML($member->membership_number, 'C39', 1, 20) !!}
-                        <div>{{ $member->membership_number }}</div>
-                    </div>
-                </div>
+                <table width="100%">
+                    <tr>
+                        <!-- Bagian kiri (foto + barcode) -->
+                        <td width="40%" align="center" valign="top">
+                            <div class="photo">
+                                <img src="{{ 'data:image/png;base64,' . base64_encode(file_get_contents(Storage::disk('public')->path($member->image))) }}"
+                                    alt="Foto Member">
+                            </div>
+                            <div class="barcode">
+                                {!! $barcode->getBarcodeHTML($member->membership_number, 'C39', 1, 20) !!}
+                                <div>{{ $member->membership_number }}</div>
+                            </div>
+                        </td>
 
-                <div class="details">
-                    <table>
-                        <tr>
-                            <td>Nomor Anggota</td>
-                            <td>: {{ $member->membership_number }}</td>
-                        </tr>
-                        <tr>
-                            <td>Nama</td>
-                            <td>: {{ $member->user->name }}</td>
-                        </tr>
-                        <tr>
-                            <td>Jenis</td>
-                            <td>: {{ $member->jenis }}</td>
-                        </tr>
-                        <tr>
-                            <td>Berlaku hingga</td>
-                            <td>: {{ $member->valid_date }}</td>
-                        </tr>
-                    </table>
-                </div>
+                        <!-- Bagian kanan (details) -->
+                        <td width="60%" valign="top">
+                            <div class="details">
+                                <table>
+                                    <tr>
+                                        <td>Nomor Anggota</td>
+                                        <td>: {{ $member->membership_number }}</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Nama</td>
+                                        <td>: {{ $member->user->name }}</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Jenis</td>
+                                        <td>: {{ $member->jenis }}</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Berlaku hingga</td>
+                                        <td>: {{ $member->valid_date }}</td>
+                                    </tr>
+                                </table>
+                            </div>
+                        </td>
+                    </tr>
+                </table>
             </div>
+
         </div>
     </div>
 </body>
