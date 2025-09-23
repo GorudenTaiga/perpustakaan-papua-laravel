@@ -20,7 +20,6 @@
 
         /* Ukuran kartu: 8.6cm x 5.4cm */
         .kartu {
-            width: 8.6cm;
             height: 5.4cm;
             border: 1px solid #000;
             border-radius: 8px;
