@@ -44,7 +44,7 @@
             top: 6px;
             left: 8px;
             width: 30px;
-            height: 50px;
+            height: 40px;
         }
 
         .sub-header {
