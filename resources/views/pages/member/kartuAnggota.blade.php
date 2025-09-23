@@ -120,7 +120,7 @@
                 <table width="100%" cellspacing="0" cellpadding="0">
                     <tr>
                         <!-- Bagian kiri (foto + barcode) -->
-                        <td width="38%" align="left" valign="top" style="padding-left: 5px; text-align: center;">
+                        <td width="10%" align="left" valign="top" style="padding-left: 5px; text-align: center;">
                             <div class="photo">
                                 <img src="{{ 'data:image/png;base64,' . base64_encode(file_get_contents(Storage::disk('public')->path($member->image))) }}"
                                     alt="Foto Member">
@@ -132,12 +132,12 @@
                         </td>
 
                         <!-- Bagian kanan (details) -->
-                        <td width="62%" valign="middle" style="padding-left: 4px;">
+                        <td width="90%" valign="middle" style="padding-left: 4px;">
                             <div class="details">
                                 <table style="width: 100%; font-size: 11px; table-layout: fixed;">
                                     <tr>
-                                        <td style="width: 45%; white-space: nowrap;">Nomor Anggota</td>
-                                        <td style="width: 55%;">: {{ $member->membership_number }}</td>
+                                        <td style="width: 65%;">Nomor Anggota</td>
+                                        <td style="width: 35%;">: {{ $member->membership_number }}</td>
                                     </tr>
                                     <tr>
                                         <td style="white-space: nowrap;">Nama</td>
