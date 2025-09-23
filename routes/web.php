@@ -19,7 +19,7 @@ Route::get('/buku', [BukuController::class, 'index'])->name('allBuku');
 Route::get('/buku/{slug}', [BukuController::class, 'view'])->name('buku');
 
 Route::middleware(['auth:member'])->group(function () {
-    Route::get('/profile')->name('userProfile');
+    Route::get('/profile', [UserController::class, 'index'])->name('userProfile');
     Route::get('/pinjam', [UserController::class, 'peminjaman'])->name('pinjam');
     Route::post('/pinjam/store', [UserController::class, 'pinjam'])->name('pinjam.store');
     Route::get('/cetakKTA/{id}', [UserController::class, 'cetakKTA'])->name('cetakKTA');

@@ -17,7 +17,13 @@ class UserController extends Controller
      */
     public function index()
     {
-        //
+        $member = Member::where('membership_number', Auth::user()->member->membership_number)->with('user');
+        if ($member) {
+            return view('pages.member.profile', [
+                'member' => $member,
+                'pinjaman' => Pinjaman::where('member_id', Auth::user()->member->membership_number)
+            ]);
+        }
     }
 
     public function peminjaman() {
