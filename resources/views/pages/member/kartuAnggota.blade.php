@@ -68,8 +68,8 @@
         }
 
         .photo img {
-            width: 50px;
-            height: 70px;
+            width: 70px;
+            height: 90px;
             border: 1px solid #ccc;
             margin-bottom: 5px;
         }
