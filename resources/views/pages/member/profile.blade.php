@@ -34,7 +34,7 @@
                         <div class="element-header">
                             <h2 itemprop="name" class="display-6">{{ $member->user->name }}</h2>
                             <div class="rating-container d-flex gap-0 align-items-center">
-                                <span class="badge bg-primary text-uppercase">{{ $user->role }}</span>
+                                <span class="badge bg-primary text-uppercase">{{ $member->user->role }}</span>
                             </div>
                         </div>
 
