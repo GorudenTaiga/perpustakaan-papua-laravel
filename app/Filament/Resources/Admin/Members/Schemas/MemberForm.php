@@ -36,8 +36,10 @@ class MemberForm
                         'Umum' => 'Umum',
                     ]),
                 TextInput::make('valid_date')
-                    ->default(fn () => Carbon::now()->addYears(2)->toDateString())
+                    ->default(fn () => Carbon::now()->addYears(2)->toDateString()) // buat create
+                    ->formatStateUsing(fn ($state) => $state ?? Carbon::now()->addYears(2)->toDateString()) // fallback kalau null
                     ->disabled()
+                    ->dehydrated(true)
             ]);
     }
 }
