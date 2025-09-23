@@ -28,12 +28,12 @@ class MembersTable
                 TextColumn::make('membership_number')
                     ->label('Nomor Keanggotaan')
                     ->searchable(),
-                TextColumn::make('alamat')
-                    ->label('Alamat')
+                TextColumn::make('jenis')
+                    ->label('Jenis')
                     ->default('-')
                     ->limit(50),
-                TextColumn::make('no_telp')
-                    ->label('No Telepon')
+                TextColumn::make('valid_date')
+                    ->label('Berlaku Hingga')
                     ->searchable()
                     ->default('-'),
                 ImageColumn::make('image')

@@ -16,8 +16,8 @@ return new class extends Migration
             $table->id();
             $table->foreignId('users_id');
             $table->string('membership_number')->unique();
-            $table->text('alamat')->nullable();
-            $table->string('no_telp')->nullable();
+            $table->date('valid_date')->nullable();
+            $table->string('jenis')->nullable();
             $table->string('image')->nullable();
             $table->timestamps();
         });

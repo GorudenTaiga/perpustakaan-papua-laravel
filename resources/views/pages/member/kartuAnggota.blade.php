@@ -1,7 +1,7 @@
 @php
     $barcode = new Milon\Barcode\DNS1D(); // untuk barcode 1D (C39)
 @endphp
-{{-- <!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="id">
 
 <head>
@@ -108,39 +108,39 @@
 <body>
     <div class="kartu">
         {{-- HEADER --}}
-{{-- <div class="header"> --}}
-{{-- <img src="{{ public_path('logo.png') }}" alt="Logo"> --}}
-{{-- <div><b>KARTU ANGGOTA PERPUSTAKAAN</b></div>
+        <div class="header">
+            <img src="{{ public_path('logo.png') }}" alt="Logo">
+            <div><b>KARTU ANGGOTA PERPUSTAKAAN</b></div>
             <div><b>PERPUSTAKAAN PROVINSI PAPUA</b></div>
             <div class="sub-header">
                 JL. Raya Kota Raja No.84, Mandala, Kec. Jayapura Utara, Kota Jayapura, Papua
             </div>
-        </div> --}}
+        </div>
 
-{{-- CONTENT --}}
-{{-- <div class="content">
+        {{-- CONTENT --}}
+        <div class="content">
             <table>
+                <tr>
+                    <td>Nomor Anggota</td>
+                    <td>: {{ $member->membership_number }}</td>
+                </tr>
                 <tr>
                     <td>Nama</td>
                     <td>: {{ $member->user->name }}</td>
                 </tr>
                 <tr>
-                    <td>No Anggota</td>
-                    <td>: {{ $member->membership_number }}</td>
+                    <td>Jenis</td>
+                    <td>: {{ $member->jenis }}</td>
                 </tr>
                 <tr>
-                    <td>Alamat</td>
-                    <td>: {{ $member->alamat }}</td>
-                </tr>
-                <tr>
-                    <td>Telp</td>
-                    <td>: {{ $member->no_telp }}</td>
+                    <td>Berlaku hingga</td>
+                    <td>: {{ $member->valid_date }}</td>
                 </tr>
             </table>
         </div>
 
         {{-- FOOTER --}}
-{{-- <div class="footer">
+        <div class="footer">
             <div class="barcode">
                 {!! $barcode->getBarcodeHTML($member->membership_number, 'C39', 1, 20) !!}
                 <div>{{ $member->membership_number }}</div>
@@ -155,9 +155,9 @@
     </div>
 </body>
 
-</html> --}}
+</html>
 
-<!DOCTYPE html>
+{{-- <!DOCTYPE html>
 <html lang="en">
 
 <head>
@@ -234,4 +234,4 @@
     </div>
 </body>
 
-</html>
+</html> --}}
