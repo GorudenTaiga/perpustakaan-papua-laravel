@@ -17,7 +17,7 @@ class UserController extends Controller
      */
     public function index()
     {
-        $member = Member::where('membership_number', Auth::user()->member->membership_number)->with('user');
+        $member = Member::where('membership_number', Auth::user()->member->membership_number)->with('user')->first();
         if ($member) {
             return view('pages.member.profile', [
                 'member' => $member,
