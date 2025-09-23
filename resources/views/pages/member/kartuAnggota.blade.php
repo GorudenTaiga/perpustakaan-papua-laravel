@@ -50,6 +50,11 @@
             font-size: 9px;
         }
 
+        /* CONTENT */
+        .content {
+            padding: 5px 10px;
+        }
+
         .card-body {
             display: flex;
             gap: 5px;
@@ -89,7 +94,6 @@
         }
 
         .details td {
-            padding: 1px 3px;
             vertical-align: top;
         }
     </style>
