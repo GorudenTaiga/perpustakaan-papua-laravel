@@ -21,9 +21,65 @@
                                                 alt="{{ $member->user->name }}" class="img-fluid rounded-circle shadow-lg"
                                                 data-bs-toggle="modal" data-bs-target="#photoOptionModal">
                                         </div>
+                                        <!-- Modal Pilihan Foto -->
+                                        <div class="modal fade" id="photoOptionModal" tabindex="-1" aria-hidden="true">
+                                            <div class="modal-dialog modal-dialog-centered">
+                                                <div class="modal-content text-center">
+                                                    <div class="modal-body">
+                                                        <h5>Pilih Aksi</h5>
+                                                        <button type="button" class="btn btn-primary w-100 my-2"
+                                                            data-bs-target="#photoZoomModal" data-bs-toggle="modal"
+                                                            data-bs-dismiss="modal">
+                                                            <i class="fas fa-search-plus me-2"></i> Zoom Foto
+                                                        </button>
+                                                        <button type="button" class="btn btn-secondary w-100 my-2"
+                                                            data-bs-target="#photoEditModal" data-bs-toggle="modal"
+                                                            data-bs-dismiss="modal">
+                                                            <i class="fas fa-edit me-2"></i> Edit Foto
+                                                        </button>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <!-- Modal Zoom Foto -->
+                                        <div class="modal fade" id="photoZoomModal" tabindex="-1" aria-hidden="true">
+                                            <div class="modal-dialog modal-dialog-centered modal-lg">
+                                                <div class="modal-content">
+                                                    <div class="modal-body text-center">
+                                                        <img src="{{ Storage::disk('public')->url($member->image) ?? asset('users/images/profile-placeholder.png') }}"
+                                                            alt="Zoom Foto" class="img-fluid rounded shadow">
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <!-- Modal Edit Foto -->
+                                        <div class="modal fade" id="photoEditModal" tabindex="-1" aria-hidden="true">
+                                            <div class="modal-dialog modal-dialog-centered">
+                                                <form action="{{ route('member.updatePhoto') }}" method="POST"
+                                                    enctype="multipart/form-data" class="modal-content">
+                                                    @csrf
+                                                    @method('PUT')
+                                                    <div class="modal-header">
+                                                        <h5 class="modal-title">Upload Foto Baru</h5>
+                                                        <button type="button" class="btn-close"
+                                                            data-bs-dismiss="modal"></button>
+                                                    </div>
+                                                    <div class="modal-body">
+                                                        <input type="file" name="image" class="form-control"
+                                                            accept="image/*" required>
+                                                    </div>
+                                                    <div class="modal-footer">
+                                                        <button type="button" class="btn btn-secondary"
+                                                            data-bs-dismiss="modal">Batal</button>
+                                                        <button type="submit" class="btn btn-primary">Simpan</button>
+                                                    </div>
+                                                </form>
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
-                                <div class="swiper-pagination"></div>
                             </div>
                             <!-- / profile picture -->
                         </div>
@@ -55,7 +111,8 @@
                             <div class="meta-item d-flex align-items-baseline">
                                 <h6 class="item-title no-margin pe-2">Terakhir Login:</h6>
                                 <ul class="select-list list-unstyled d-flex">
-                                    <li class="select-item">{{ $member->user->last_login_at?->diffForHumans() ?? '-' }}</li>
+                                    <li class="select-item">{{ $member->user->last_login_at?->diffForHumans() ?? '-' }}
+                                    </li>
                                 </ul>
                             </div>
                         </div>
@@ -98,8 +155,8 @@
                         </div> --}}
 
                         <!-- Riwayat Peminjaman Tab -->
-                        <div class="tab-pane fade" id="v-pills-loans" role="tabpanel" aria-labelledby="v-pills-loans-tab"
-                            tabindex="0">
+                        <div class="tab-pane fade" id="v-pills-loans" role="tabpanel"
+                            aria-labelledby="v-pills-loans-tab" tabindex="0">
                             <h5>Riwayat Peminjaman</h5>
                             <ul class="list-group">
                                 @foreach ($pinjaman as $loan)
@@ -118,56 +175,4 @@
             </div>
         </div>
     </section>
-    <!-- Modal Pilihan Foto -->
-    <div class="modal fade" id="photoOptionModal" tabindex="-1" aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered">
-            <div class="modal-content text-center">
-                <div class="modal-body">
-                    <h5>Pilih Aksi</h5>
-                    <button type="button" class="btn btn-primary w-100 my-2" data-bs-target="#photoZoomModal"
-                        data-bs-toggle="modal" data-bs-dismiss="modal">
-                        <i class="fas fa-search-plus me-2"></i> Zoom Foto
-                    </button>
-                    <button type="button" class="btn btn-secondary w-100 my-2" data-bs-target="#photoEditModal"
-                        data-bs-toggle="modal" data-bs-dismiss="modal">
-                        <i class="fas fa-edit me-2"></i> Edit Foto
-                    </button>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- Modal Zoom Foto -->
-    <div class="modal fade" id="photoZoomModal" tabindex="-1" aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered modal-lg">
-            <div class="modal-content">
-                <div class="modal-body text-center">
-                    <img src="{{ Storage::disk('public')->url($member->image) ?? asset('users/images/profile-placeholder.png') }}"
-                        alt="Zoom Foto" class="img-fluid rounded shadow">
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- Modal Edit Foto -->
-    <div class="modal fade" id="photoEditModal" tabindex="-1" aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered">
-            <form action="{{ route('member.updatePhoto') }}" method="POST" enctype="multipart/form-data"
-                class="modal-content">
-                @csrf
-                @method('PUT')
-                <div class="modal-header">
-                    <h5 class="modal-title">Upload Foto Baru</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
-                </div>
-                <div class="modal-body">
-                    <input type="file" name="image" class="form-control" accept="image/*" required>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
-                    <button type="submit" class="btn btn-primary">Simpan</button>
-                </div>
-            </form>
-        </div>
-    </div>
 @endsection
