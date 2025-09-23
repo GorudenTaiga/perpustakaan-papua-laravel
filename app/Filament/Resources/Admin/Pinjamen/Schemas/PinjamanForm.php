@@ -26,6 +26,7 @@ class PinjamanForm
                     ->options(
                         DB::table('users as u')
                             ->leftJoin('member as mem', 'u.id', '=', 'mem.users_id')
+                            ->where('u.role', '=', 'member')
                             ->pluck('u.name', 'mem.membership_number')
                     )
                     ->searchable()
