@@ -104,7 +104,7 @@
                                 @foreach ($pinjaman as $loan)
                                     <li class="list-group-item d-flex justify-content-between align-items-center">
                                         {{ $loan->buku->judul }}
-                                        <span class="badge bg-secondary">{{ $loan->loan_date->format('d M Y') }}</span>
+                                        <span class="badge bg-secondary">{{ $loan->loan_date }}</span>
                                     </li>
                                     @empty($loan)
                                         <li class="list-group-item">Belum ada peminjaman.</li>
