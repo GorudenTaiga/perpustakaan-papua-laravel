@@ -147,7 +147,7 @@
                                     </tr>
                                     <tr>
                                         <td style="white-space: nowrap;">Berlaku hingga</td>
-                                        <td>: {{ $member->valid_date }}</td>
+                                        <td>: {{ $member->valid_date ?: '-' }}</td>
                                     </tr>
                                 </table>
                             </div>
