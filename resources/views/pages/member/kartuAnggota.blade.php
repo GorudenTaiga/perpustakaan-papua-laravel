@@ -26,7 +26,6 @@
             border: 1px solid #000;
             border-radius: 8px;
             overflow: hidden;
-            position: relative;
             box-sizing: border-box;
         }
 
@@ -100,24 +99,6 @@
             padding: 1px 3px;
             vertical-align: top;
         }
-
-        /* FOOTER pakai flex agar tidak error */
-        .footer {
-            position: absolute;
-            bottom: 5px;
-            left: 10px;
-            right: 10px;
-            display: flex;
-            justify-content: flex-start;
-            align-items: flex-end;
-            font-size: 9px;
-        }
-
-        .ttd {
-            text-align: right;
-            width: 40%;
-            font-size: 9px;
-        }
     </style>
 </head>
 
@@ -169,11 +150,6 @@
                     </table>
                 </div>
             </div>
-        </div>
-
-        {{-- FOOTER --}}
-        <div class="footer">
-            {{-- Bagian ini dikosongkan karena barcode sudah dipindah --}}
         </div>
     </div>
 </body>
