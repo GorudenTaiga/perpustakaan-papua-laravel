@@ -44,6 +44,7 @@ class UserController extends Controller
                 'total_price' => 0
             ]);
         }
+        return redirect()->back()->with('success', 'Buku telah berhasil di pinjam');
     }
 
     public function cetakKTA($id)
