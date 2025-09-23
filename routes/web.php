@@ -23,7 +23,7 @@ Route::middleware(['auth:member'])->group(function () {
     Route::get('/pinjam', [UserController::class, 'peminjaman'])->name('pinjam');
     Route::post('/pinjam/store', [UserController::class, 'pinjam'])->name('pinjam.store');
     Route::get('/cetakKTA/{id}', [UserController::class, 'cetakKTA'])->name('cetakKTA');
-    Route::put('/member/update-photo', [MemberController::class, 'updatePhoto'])->name('member.updatePhoto');
+    Route::put('/member/update-photo', [UserController::class, 'updatePhoto'])->name('member.updatePhoto');
 });
 
 Route::get('/getImage/{path}', [AssetController::class, 'index']);
