@@ -6,6 +6,7 @@ use App\Models\User;
 use Auth;
 use Carbon\Carbon;
 use Date;
+use Filament\Forms\Components\DatePicker;
 use Filament\Forms\Components\FileUpload;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
@@ -30,7 +31,7 @@ class MemberForm
                         'Dosen' => 'Dosen',
                         'Umum' => 'Umum',
                     ]),
-                TextInput::make('valid_date')
+                DatePicker::make('valid_date')
                     ->default(fn () => Carbon::now()->addYears(2)->toDateString()) // buat create
                     ->formatStateUsing(fn ($state) => $state ?? Carbon::now()->addYears(2)->toDateString()) // fallback kalau null
                     ->disabled(Auth::user()->role == 'member')
