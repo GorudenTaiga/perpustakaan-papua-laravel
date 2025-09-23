@@ -76,27 +76,34 @@
                     </div>
 
                     <div class="product-grid row row-cols-sm-1 row-cols-md-2 row-cols-lg-3 row-cols-xl-4">
-
                         @foreach ($buku->items() as $b)
-                            <div class="col">
-                                <div class="product-item">
-                                    <a href="#" class="btn-wishlist"><svg width="24" height="24">
+                            <div class="col d-flex">
+                                <div class="product-item card h-100 w-100">
+                                    <a href="#" class="btn-wishlist">
+                                        <svg width="24" height="24">
                                             <use xlink:href="#heart"></use>
-                                        </svg></a>
-                                    <figure>
-                                        <a href="{{ route('buku', $b->slug) }}" title="Product Title">
-                                            <img src="{{ $b->banner_url }}" alt="Product Thumbnail" class="tab-image">
+                                        </svg>
+                                    </a>
+                                    <figure class="text-center">
+                                        <a href="{{ route('buku', $b->slug) }}" title="{{ $b->judul }}">
+                                            <img src="{{ $b->banner_url }}" alt="Product Thumbnail"
+                                                class="tab-image img-fluid">
                                         </a>
                                     </figure>
-                                    <h3>{{ $b->judul }}</h3>
-                                    <span class="qty">1 Unit</span><span class="rating"><svg width="24"
-                                            height="24" class="text-primary">
-                                            <use xlink:href="#star-solid"></use>
-                                        </svg>{{ $b->rating }}</span>
-                                    <div class="d-flex align-items-center justify-content-between">
-                                        <a href="{{ route('buku', $b->slug) }}" class="nav-link">Detail <svg width="18"
-                                                height="18">
-                                            </svg></a>
+                                    <div class="card-body d-flex flex-column">
+                                        <h3 class="product-title text-truncate" title="{{ $b->judul }}">
+                                            {{ $b->judul }}
+                                        </h3>
+                                        <span class="qty">1 Unit</span>
+                                        <span class="rating">
+                                            <svg width="24" height="24" class="text-primary">
+                                                <use xlink:href="#star-solid"></use>
+                                            </svg>{{ $b->rating }}
+                                        </span>
+                                        <div class="mt-auto d-flex align-items-center justify-content-between">
+                                            <a href="{{ route('buku', $b->slug) }}" class="nav-link">Detail <svg
+                                                    width="18" height="18"></svg></a>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
