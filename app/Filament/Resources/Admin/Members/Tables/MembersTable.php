@@ -39,6 +39,7 @@ class MembersTable
                     ->default('-'),
                 ImageColumn::make('image')
                     ->label('Foto')
+                    ->emptyTooltip('Belum ada Foto')
                     ->getStateUsing(fn ($record) => Storage::disk('public')->url($record->image))
                     ->rounded(),
                 BadgeColumn::make('created_at')
