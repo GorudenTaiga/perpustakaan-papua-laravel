@@ -5,7 +5,7 @@
             <nav class="breadcrumb">
                 <a class="breadcrumb-item" href="{{ route('dashboard') }}">Home</a>
                 <a class="breadcrumb-item" href="{{ route('allBuku') }}">List Buku</a>
-                <span class="breadcrumb-item active" aria-current="page">{{ $buku->title }}</span>
+                <span class="breadcrumb-item active" aria-current="page">{{ $buku->judul }}</span>
             </nav>
             <div class="row g-5">
                 <div class="col-lg-7">
