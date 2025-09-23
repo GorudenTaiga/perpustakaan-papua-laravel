@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Buku;
 use App\Models\Member;
 use App\Models\Pinjaman;
 use App\Models\User;
@@ -24,6 +25,25 @@ class UserController extends Controller
         return view('pages.member.peminjaman', [
             'pinjaman' => $pinjaman
         ]);
+    }
+
+    public function pinjam(Request $request) {
+        $stock = Buku::where('id', $request->buku_id)->value('stock');
+        $valid = $request->validate([
+            'buku_id' => 'required|exists:buku,id',
+            'loan_date' => 'required|date',
+            'due_date' => 'required|date',
+            'quantity' => 'required|min:1|max:'.$stock
+        ]);
+
+        if ($valid) {
+            Pinjaman::create([
+                'member_id' => Auth::user()->member->membership_number,
+                $valid,
+                'status' => 'dipinjam',
+                'total_price' => 0
+            ]);
+        }
     }
 
     public function cetakKTA($id)
