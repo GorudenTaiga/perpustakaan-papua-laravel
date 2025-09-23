@@ -153,7 +153,8 @@
                                             <a href="{{ route('pinjam') }}" class="nav-link">Peminjaman</a>
                                         </li>
                                         <li class="nav-item">
-                                            <a href="{{ route('cetakKTA', base64_encode(Auth::user()->member->id)) }}"
+                                            <a target="_blank"
+                                                href="{{ route('cetakKTA', base64_encode(Auth::user()->member->id)) }}"
                                                 class="nav-link">Cetak KTA</a>
                                         </li>
                                     @else
