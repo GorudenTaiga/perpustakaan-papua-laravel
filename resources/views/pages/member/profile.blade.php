@@ -110,7 +110,7 @@
                                     @endforeach
                                     @empty($pinjaman)
                                         <li class="list-group-item">Belum ada peminjaman.</li>
-                                    @endforelse
+                                    @endforeach
                                 </ul>
                             </div>
                         </div>
