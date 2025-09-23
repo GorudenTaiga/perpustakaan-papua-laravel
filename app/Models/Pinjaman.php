@@ -22,7 +22,8 @@ class Pinjaman extends Model
         'status',
         'total_price',
         'discount',
-        'final_price'
+        'final_price',
+        'uuid'
     ];
 
     public function member() {
