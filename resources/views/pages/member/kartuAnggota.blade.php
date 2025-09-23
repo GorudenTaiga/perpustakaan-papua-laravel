@@ -86,7 +86,6 @@
 
         .details {
             flex-grow: 1;
-            padding-top: 5px;
         }
 
         .details table {
@@ -132,7 +131,7 @@
                         </td>
 
                         <!-- Bagian kanan (details) -->
-                        <td width="62%" valign="middle" style="padding-left: 4px;">
+                        <td width="62%" align="middle" style="padding-left: 4px;">
                             <div class="details">
                                 <table style="width: 100%; font-size: 11px; table-layout: fixed;">
                                     <tr>
