@@ -8,6 +8,7 @@ use App\Models\Pinjaman;
 use App\Models\User;
 use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Http\Request;
+use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Auth;
 
 class UserController extends Controller
@@ -45,6 +46,7 @@ class UserController extends Controller
         if ($valid) {
             $create = Pinjaman::create([
                 'member_id' => Auth::user()->member->membership_number,
+                'uuid' => strtotime(Carbon::now()),
                 'buku_id' => $request->buku_id,
                 'loan_date' => $request->loan_date,
                 'due_date' => $request->due_date,
