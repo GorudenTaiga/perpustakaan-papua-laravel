@@ -50,14 +50,9 @@
             font-size: 9px;
         }
 
-        /* CONTENT */
-        .content {
-            padding: 5px 10px;
-        }
-
         .card-body {
             display: flex;
-            gap: 15px;
+            gap: 5px;
             align-items: flex-start;
         }
 
