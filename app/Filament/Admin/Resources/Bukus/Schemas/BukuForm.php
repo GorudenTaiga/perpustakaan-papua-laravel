@@ -63,6 +63,7 @@ class BukuForm extends FormsComponent
                             ->required()
                     ]),
                 FileUpload::make('banner')
+                    ->acceptedFileTypes(['image/jpeg', 'image/png', 'image/jpg'])
                     ->visibility('public')
                     ->disk('public')
                     ->directory('buku/images/banner'),
