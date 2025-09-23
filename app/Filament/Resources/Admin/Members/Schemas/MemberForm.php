@@ -33,7 +33,7 @@ class MemberForm
                 TextInput::make('valid_date')
                     ->default(fn () => Carbon::now()->addYears(2)->toDateString()) // buat create
                     ->formatStateUsing(fn ($state) => $state ?? Carbon::now()->addYears(2)->toDateString()) // fallback kalau null
-                    ->disabled()
+                    ->disabled(Auth::user()->role == 'member')
                     ->dehydrated(true),
 
                 FileUpload::make('image')
