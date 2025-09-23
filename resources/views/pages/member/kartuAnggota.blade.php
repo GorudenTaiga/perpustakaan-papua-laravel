@@ -129,7 +129,7 @@
     <div class="kartu">
         {{-- HEADER --}}
         <div class="header">
-            <img src="{{ asset('logo.png') }}" alt="Logo">
+            <img src="{{'data:image/png;base64,'.base64_encode(file_get_contents(asset('icon.png'))))}}" alt="Logo">
             <div><b>KARTU ANGGOTA PERPUSTAKAAN</b></div>
             <div><b>PERPUSTAKAAN PROVINSI PAPUA</b></div>
             <div class="sub-header">
