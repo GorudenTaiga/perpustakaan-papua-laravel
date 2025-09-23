@@ -16,6 +16,9 @@ class MemberForm
     {
         return $schema
             ->components([
+                TextInput::make('users_id')
+                    ->default(0)
+                    ->hidden(),
                 TextInput::make('name')
                     ->model(User::class)
                     ->required(),
