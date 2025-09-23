@@ -22,14 +22,6 @@ class MemberForm
                     ->formatStateUsing(fn ($record) => $record?->user?->name)
                     ->disabled()
                     ->dehydrated(false),
-                FileUpload::make('image')
-                    ->disk('public')
-                    ->image()
-                    ->visibility('public')
-                    ->directory('images/member/foto')
-                    ->nullable(),
-                TextInput::make('alamat')
-                    ->nullable(),
                 Select::make('jenis')
                     ->options([
                         'Siswa' => 'Siswa',
@@ -42,7 +34,14 @@ class MemberForm
                     ->default(fn () => Carbon::now()->addYears(2)->toDateString()) // buat create
                     ->formatStateUsing(fn ($state) => $state ?? Carbon::now()->addYears(2)->toDateString()) // fallback kalau null
                     ->disabled()
-                    ->dehydrated(true)
+                    ->dehydrated(true),
+
+                FileUpload::make('image')
+                    ->disk('public')
+                    ->image()
+                    ->visibility('public')
+                    ->directory('images/member/foto')
+                    ->nullable(),
             ]);
     }
 }
