@@ -120,6 +120,12 @@
         <div class="content">
             <table>
                 <tr>
+                    <td>Foto</td>
+                    <td>
+                        <img src="{{ $member->image }}" alt="Foto Member">
+                    </td>
+                </tr>
+                <tr>
                     <td>Nomor Anggota</td>
                     <td>: {{ $member->membership_number }}</td>
                 </tr>
@@ -144,93 +150,8 @@
                 {!! $barcode->getBarcodeHTML($member->membership_number, 'C39', 1, 20) !!}
                 <div>{{ $member->membership_number }}</div>
             </div>
-            <div class="ttd">
-                <div>Jayapura, {{ now()->format('d F Y') }}</div>
-                <div>Kepala Perpustakaan</div>
-                <img src="{{ public_path('ttd.png') }}" alt="Tanda Tangan">
-                <div><b>ACHMAD DJALALI, SH</b></div>
-            </div>
         </div>
     </div>
 </body>
 
 </html>
-
-{{-- <!DOCTYPE html>
-<html lang="en">
-
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>KTA - {{ $member->user->name }}</title>
-    <style>
-        .card {
-            width: 300px;
-            border: 1px solid #ccc;
-            border-radius: 5px;
-            overflow: hidden;
-        }
-
-        .header {
-            background-color: #f0f0f0;
-            padding: 10px;
-            text-align: center;
-        }
-
-        .logo {
-            width: 50px;
-            height: 50px;
-        }
-
-        .body {
-            display: flex;
-            padding: 10px;
-        }
-
-        .photo {
-            width: 100px;
-            height: 120px;
-            margin-right: 10px;
-        }
-
-        .details p {
-            margin: 5px 0;
-        }
-
-        .details span {
-            font-weight: bold;
-        }
-
-        .footer {
-            background-color: #f0f0f0;
-            padding: 10px;
-            text-align: center;
-        }
-    </style>
-</head>
-
-<body>
-    <div class="card">
-        <div class="header">
-            <img src="path/to/logo.png" alt="Logo" class="logo">
-            <h1>PEMERINTAH PROVINSI PAPUA</h1>
-            <h2>DINAS ARSIP DAN PERPUSTAKAAN DAERAH</h2>
-            <p>JL. Raya Abepura - Kotaraja No. 84 Jayapura - Papua</p>
-        </div>
-        <div class="body">
-            <img src="path/to/photo.png" alt="Photo" class="photo">
-            <div class="details">
-                <p><span>Nomor:</span> {{ $member->membership_number }}</p>
-                <p><span>Nama:</span> {{ $member->user->name }}</p>
-                <p><span>Jenis:</span> Mahasiswa</p>
-                <p><span>Berlaku Hingga:</span> 25-03-2027</p>
-            </div>
-        </div>
-        <div class="footer">
-            {!! $barcode->getBarcodeHTML($member->membership_number, 'C39', 1, 20) !!}
-        </div>
-    </div>
-</body>
-
-</html> --}}
