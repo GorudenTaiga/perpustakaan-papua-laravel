@@ -120,18 +120,19 @@
                 <table width="100%" cellspacing="0" cellpadding="0">
                     <tr>
                         <!-- Bagian kiri (foto + barcode) -->
-                        <td width="40%" align="left" valign="top" style="padding-left: 5px; text-align: center;">
+                        <td width="38%" align="left" valign="top" style="padding-left: 5px; text-align: center;">
                             <div class="photo">
                                 <img src="{{ 'data:image/png;base64,' . base64_encode(file_get_contents(Storage::disk('public')->path($member->image))) }}"
                                     alt="Foto Member">
                             </div>
                             <div class="barcode">
                                 {!! $barcode->getBarcodeHTML($member->membership_number, 'C39', 1, 20) !!}
+                                <div>{{ $member->membership_number }}</div>
                             </div>
                         </td>
 
                         <!-- Bagian kanan (details) -->
-                        <td width="60%" valign="middle" style="padding-left: 10px;">
+                        <td width="62%" valign="middle" style="padding-left: 4px;">
                             <div class="details">
                                 <table style="width: 100%; font-size: 11px; table-layout: fixed;">
                                     <tr>
