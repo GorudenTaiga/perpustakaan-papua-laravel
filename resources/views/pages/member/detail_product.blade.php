@@ -51,7 +51,7 @@
                             <div class="product-quantity">
                                 <div class="stock-button-wrap">
                                     <div class="qty-button d-flex flex-wrap pt-3">
-                                        @if (Auth::user()->role == 'member')
+                                        @if (Auth::check() && Auth::user()->role == 'member')
                                             <button type="button"
                                                 class="btn btn-primary py-3 px-4 text-uppercase me-3 mt-3"
                                                 data-bs-toggle="modal" data-bs-target="#pinjamModal">
@@ -116,38 +116,40 @@
         </div>
     </section>
 
-    <!-- Modal Pinjam Buku -->
-    <div class="modal fade" id="pinjamModal" tabindex="-1" aria-labelledby="pinjamModalLabel" aria-hidden="true">
-        <div class="modal-dialog">
-            <form action="{{ route('pinjam.store') }}" method="POST" class="modal-content">
-                @csrf
-                <input type="hidden" name="buku_id" value="{{ $buku->id }}">
+    @if (Auth::check() && Auth::user()->role == 'member')
+        <!-- Modal Pinjam Buku -->
+        <div class="modal fade" id="pinjamModal" tabindex="-1" aria-labelledby="pinjamModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <form action="{{ route('pinjam.store') }}" method="POST" class="modal-content">
+                    @csrf
+                    <input type="hidden" name="buku_id" value="{{ $buku->id }}">
 
-                <div class="modal-header">
-                    <h5 class="modal-title" id="pinjamModalLabel">Pinjam Buku</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Tutup"></button>
-                </div>
-
-                <div class="modal-body">
-                    <div class="mb-3">
-                        <label for="tanggal_pinjam" class="form-label">Tanggal Pinjam</label>
-                        <input type="date" id="tanggal_pinjam" name="tanggal_pinjam" class="form-control" required>
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="pinjamModalLabel">Pinjam Buku</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Tutup"></button>
                     </div>
 
-                    <div class="mb-3">
-                        <label for="jumlah" class="form-label">Jumlah Buku</label>
-                        <input type="number" id="jumlah" name="jumlah" class="form-control" min="1"
-                            max="{{ $buku->stock ?? 1 }}" value="1" required>
-                    </div>
-                </div>
+                    <div class="modal-body">
+                        <div class="mb-3">
+                            <label for="tanggal_pinjam" class="form-label">Tanggal Pinjam</label>
+                            <input type="date" id="tanggal_pinjam" name="tanggal_pinjam" class="form-control" required>
+                        </div>
 
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
-                    <button type="submit" class="btn btn-primary">Pinjam</button>
-                </div>
-            </form>
+                        <div class="mb-3">
+                            <label for="jumlah" class="form-label">Jumlah Buku</label>
+                            <input type="number" id="jumlah" name="jumlah" class="form-control" min="1"
+                                max="{{ $buku->stock ?? 1 }}" value="1" required>
+                        </div>
+                    </div>
+
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
+                        <button type="submit" class="btn btn-primary">Pinjam</button>
+                    </div>
+                </form>
+            </div>
         </div>
-    </div>
+    @endif
 
 
 
