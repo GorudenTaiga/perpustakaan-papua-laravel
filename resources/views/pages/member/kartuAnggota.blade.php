@@ -105,7 +105,7 @@
     <div class="kartu">
         {{-- HEADER --}}
         <div class="header">
-            <img style="max-width: 128px; max-height: 128px;"
+            <img style="max-width: 64px; max-height: 64px;"
                 src="{{ 'data:image/png;base64,' . base64_encode(file_get_contents(asset('icon.png'))) }}" alt="Logo">
             <div><b>KARTU ANGGOTA PERPUSTAKAAN</b></div>
             <div><b>PERPUSTAKAAN PROVINSI PAPUA</b></div>
