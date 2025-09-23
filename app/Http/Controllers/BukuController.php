@@ -33,9 +33,6 @@ class BukuController extends Controller
                 }
             })
             ->when($request->query('category', []), function ($q, $categories) {
-                if (in_array('all', $categories)) {
-                    Arr::forget($categories, 'all');
-                }
                 foreach ($categories as $cat) {
                     $q->orWhereJsonContains('category_id', $cat);
                 }
