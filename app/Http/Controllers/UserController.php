@@ -37,14 +37,17 @@ class UserController extends Controller
         ]);
 
         if ($valid) {
-            Pinjaman::create([
+            $create = Pinjaman::create([
                 'member_id' => Auth::user()->member->membership_number,
                 $valid,
                 'status' => 'dipinjam',
                 'total_price' => 0
             ]);
+            if ($create) {
+                return redirect()->back()->with('success', 'Buku telah berhasil di pinjam');
+            }
         }
-        return redirect()->back()->with('success', 'Buku telah berhasil di pinjam');
+        return redirect()->back()->with('error', 'Buku gagal dipinjam');
     }
 
     public function cetakKTA($id)
