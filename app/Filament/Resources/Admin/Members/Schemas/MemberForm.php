@@ -21,6 +21,8 @@ class MemberForm
                     ->disabled(),
                 FileUpload::make('image')
                     ->disk('public')
+                    ->image()
+                    ->visibility('public')
                     ->directory('images/member/foto')
                     ->nullable(),
                 TextInput::make('alamat')

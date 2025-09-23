@@ -11,6 +11,7 @@ use Filament\Tables\Columns\ImageColumn;
 use Filament\Tables\Columns\BadgeColumn;
 use Filament\Tables\Columns\IconColumn;
 use Filament\Tables\Table;
+use Storage;
 
 class MembersTable
 {
@@ -38,8 +39,7 @@ class MembersTable
                     ->default('-'),
                 ImageColumn::make('image')
                     ->label('Foto')
-                    ->emptyTooltip('Belum ada Foto')
-                    ->default(asset('blank_person.png'))
+                    ->getStateUsing(fn ($record) => Storage::disk('public')->url($record->image))
                     ->rounded(),
                 BadgeColumn::make('created_at')
                     ->label('Tanggal Bergabung')
