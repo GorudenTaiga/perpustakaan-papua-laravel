@@ -7,6 +7,7 @@ use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\MemberController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\Auth\LoginController;
+use App\Http\Controllers\WishlistController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', [DashboardController::class, 'index'])->name('dashboard');
@@ -24,6 +25,7 @@ Route::middleware(['auth:member'])->group(function () {
     Route::post('/pinjam/store', [UserController::class, 'pinjam'])->name('pinjam.store');
     Route::get('/cetakKTA/{id}', [UserController::class, 'cetakKTA'])->name('cetakKTA');
     Route::put('/member/update-photo', [UserController::class, 'updatePhoto'])->name('member.updatePhoto');
+    Route::post('/wishlist', [WishlistController::class, 'store'])->name('wishlist.store');
 });
 
 Route::get('/getImage/{path}', [AssetController::class, 'index']);

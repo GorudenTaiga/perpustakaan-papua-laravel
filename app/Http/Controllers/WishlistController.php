@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Wishlist;
 use App\Http\Requests\StoreWishlistRequest;
 use App\Http\Requests\UpdateWishlistRequest;
+use Illuminate\Http\Request;
 
 class WishlistController extends Controller
 {
@@ -27,10 +28,32 @@ class WishlistController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(StoreWishlistRequest $request)
+    public function store(Request $request)
     {
-        //
+        $request->validate([
+            'buku_id' => 'required|exists:buku,uuid',
+        ]);
+
+        // Cek kalau user sudah login
+        if (!auth()->check()) {
+            return response()->json(['error' => 'Unauthorized'], 401);
+        }
+
+        $user = auth()->user();
+
+        // Cek kalau sudah ada di wishlist
+        $exists = $user->wishlist()->where('buku_id', $request->buku_id)->exists();
+        if ($exists) {
+            return response()->json(['message' => 'Sudah ada di wishlist']);
+        }
+
+        $user->wishlist()->create([
+            'buku_id' => $request->buku_id,
+        ]);
+
+        return response()->json(['success' => true]);
     }
+
 
     /**
      * Display the specified resource.

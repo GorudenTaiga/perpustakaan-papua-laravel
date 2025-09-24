@@ -79,8 +79,9 @@
                         @foreach ($buku->items() as $b)
                             <div class="col d-flex">
                                 <div class="product-item card h-100 w-100 d-flex flex-column">
-                                    <a href="#" class="btn-wishlist">
-                                        <svg width="24" height="24">
+                                    <a href="javascript:void(0)" class="rounded-circle bg-light p-2 mx-1 add-to-wishlist"
+                                        data-id="{{ $buku->id }}">
+                                        <svg width="24" height="24" viewBox="0 0 24 24">
                                             <use xlink:href="#heart"></use>
                                         </svg>
                                     </a>
@@ -148,7 +149,8 @@
 
                             {{-- Next --}}
                             <li class="page-item {{ !$buku->hasMorePages() ? 'disabled' : '' }}">
-                                <a class="page-link border-0" href="{{ $buku->nextPageUrl() ?? '#' }}" aria-label="Next">
+                                <a class="page-link border-0" href="{{ $buku->nextPageUrl() ?? '#' }}"
+                                    aria-label="Next">
                                     <span aria-hidden="true">»</span>
                                 </a>
                             </li>
@@ -161,4 +163,39 @@
             </div>
         </div>
     </div>
+@endsection
+@section('js')
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            document.querySelectorAll('.add-to-wishlist').forEach(btn => {
+                btn.addEventListener('click', () => {
+                    const bukuId = btn.dataset.id;
+
+                    fetch("{{ route('wishlist.store') }}", {
+                            method: "POST",
+                            headers: {
+                                "X-CSRF-TOKEN": "{{ csrf_token() }}",
+                                "Content-Type": "application/json"
+                            },
+                            body: JSON.stringify({
+                                buku_id: bukuId
+                            })
+                        })
+                        .then(res => res.json())
+                        .then(data => {
+                            if (data.success) {
+                                // buka offcanvas wishlist
+                                const wishlistOffcanvas = new bootstrap.Offcanvas(
+                                    document.getElementById('offcanvasWishlist')
+                                );
+                                wishlistOffcanvas.show();
+                            } else {
+                                alert(data.message || 'Gagal menambah ke wishlist');
+                            }
+                        })
+                        .catch(err => console.error(err));
+                });
+            });
+        });
+    </script>
 @endsection
