@@ -81,7 +81,7 @@
                                 <div class="product-item card h-100 w-100 d-flex flex-column">
                                     <a href="javascript:void(0)"
                                         class="rounded-circle bg-light p-2 mx-1 add-to-wishlist {{ \App\Models\Wishlist::where('member_id', Auth::user()->member->membership_number)->where('buku_id', $b->uuid)->exists()? 'active': '' }}"
-                                        data-id="{{ $b->uuid }}">
+                                        data-id="{{ $b->id }}">
                                         <svg width="24" height="24" viewBox="0 0 24 24">
                                             <use xlink:href="#heart"></use>
                                         </svg>
