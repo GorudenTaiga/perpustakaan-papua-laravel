@@ -90,7 +90,7 @@
 
         .details table {
             width: 100%;
-            font-size: 11px;
+            font-size: 5px;
         }
 
         .details td {
