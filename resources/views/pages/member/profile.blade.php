@@ -224,8 +224,8 @@
             }
 
             cropper.getCroppedCanvas({
-                width: 400,
-                height: 400,
+                width: 478,
+                height: 770,
             }).toBlob((blob) => {
                 const file = new File([blob], 'cropped.png', {
                     type: 'image/png'
