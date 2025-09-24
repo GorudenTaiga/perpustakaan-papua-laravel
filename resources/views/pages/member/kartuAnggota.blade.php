@@ -59,7 +59,6 @@
         .card-body {
             display: flex;
             gap: 5px;
-            align-items: flex-start;
         }
 
         .left-section {
@@ -134,7 +133,8 @@
                         </td>
 
                         <!-- Bagian kanan (details) -->
-                        <td width="62%" style="padding-left: 4px; top: 0; background: red;">
+                        <!-- Bagian kanan (details) -->
+                        <td width="62%" style="padding-left: 4px; background: red; vertical-align: top;">
                             <div class="details">
                                 <table style="width: 100%; font-size: 7px; table-layout: fixed;">
                                     <tr>
