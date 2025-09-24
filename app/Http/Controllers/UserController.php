@@ -80,13 +80,9 @@ class UserController extends Controller
         if ($request->all()) {
             if (Auth::attempt(['email' => $request->email, 'password' => $request->password])) {
                 if (Auth::user()->role == 'admin') {
-                    return redirect()->route('adminDashboard')->with([
-                        'user' => Auth::user()
-                    ]);
+                    return redirect()->route('adminDashboard');
                 }
-                return redirect()->route('dashboard')->with([
-                    'user' => Auth::user()
-                ]);
+                return redirect()->route('dashboard');
             } else {
                 return redirect()->back()->with('error', 'Wrong Email or Password. Please Try Again');
             }
