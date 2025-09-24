@@ -134,7 +134,7 @@
 
                         <!-- Bagian kanan (details) -->
                         <!-- Bagian kanan (details) -->
-                        <td width="62%" style="padding-left: 4px; background: red; vertical-align: top;">
+                        <td width="62%" style="padding-left: 4px; vertical-align: top;">
                             <div class="details">
                                 <table style="width: 100%; font-size: 7px; table-layout: fixed;">
                                     <tr>
