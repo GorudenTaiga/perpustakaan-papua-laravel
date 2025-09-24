@@ -138,8 +138,8 @@
                             <div class="details">
                                 <table style="width: 100%; font-size: 7px; table-layout: fixed;">
                                     <tr>
-                                        <td style="width: 50%; white-space: nowrap;">Nomor Anggota</td>
-                                        <td style="width: auto;">: {{ $member->membership_number }}</td>
+                                        <td style="width: 10%; white-space: nowrap;">Nomor Anggota</td>
+                                        <td style="width: 80%;">: {{ $member->membership_number }}</td>
                                     </tr>
                                     <tr>
                                         <td style="white-space: nowrap;">Nama</td>
