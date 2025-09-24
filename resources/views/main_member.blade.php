@@ -154,9 +154,9 @@
                                             alt="{{ $item->buku?->judul }}" class="img-thumbnail me-3"
                                             style="width: 60px; height: 80px; object-fit: cover;">
                                         <span>{{ $item->buku?->judul }}</span>
-                                        {{-- <a href="{{ route('buku', $item->buku?->slug) }}">
+                                        <a href="{{ route('buku', $item->buku?->slug) }}">
                                             Detail
-                                        </a> --}}
+                                        </a>
                                     </li>
                                 @endif
                             @endforeach
