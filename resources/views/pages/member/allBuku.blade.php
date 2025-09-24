@@ -86,7 +86,7 @@
                                     </a>
 
                                     {{-- Figure untuk gambar --}}
-                                    <figure class="product-figure">
+                                    <figure class="product-figure align-center justify-content-center">
                                         <a href="{{ route('buku', $b->slug) }}" title="{{ $b->judul }}">
                                             <img src="{{ $b->banner_url }}" alt="Product Thumbnail" class="tab-image">
                                         </a>
