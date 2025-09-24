@@ -171,7 +171,7 @@
                 btn.addEventListener('click', () => {
                     const bukuId = btn.dataset.id;
 
-                    fetch({{ route('wishlist.store') }}, {
+                    fetch("{{ route('wishlist.store') }}", {
                             method: "POST",
                             headers: {
                                 "X-CSRF-TOKEN": "{{ csrf_token() }}",
