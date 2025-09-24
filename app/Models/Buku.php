@@ -41,6 +41,25 @@ class Buku extends Model
         'banner_url'
     ];
 
+    protected static function booted()
+    {
+        static::deleting(function ($buku) {
+            // Hapus relasi pivot
+            $buku->categories()->detach();
+
+            // Hapus wishlist yang terkait
+            $buku->wishlist()->delete();
+
+            // Hapus peminjaman terkait
+            $buku->peminjaman()->delete();
+
+            // Kalau ada file banner di storage
+            if ($buku->banner) {
+                Storage::disk('public')->delete($buku->banner);
+            }
+        });
+    }
+
     public function bannerUrl(): Attribute
     {
         // return Attribute::get(fn () => $this->banner ? Storage::url($this->banner) : '');
