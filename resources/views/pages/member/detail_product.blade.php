@@ -174,7 +174,7 @@
                         <div class="tab-pane fade show active" id="v-pills-description" role="tabpanel"
                             aria-labelledby="v-pills-description-tab" tabindex="0">
                             <h5>Deskripsi Buku</h5>
-                            {{ $buku->deskripsi }}
+                            {!! $buku->deskripsi !!}
                         </div>
                     </div>
                 </div>
