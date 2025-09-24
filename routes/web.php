@@ -15,7 +15,6 @@ Route::get('/', [DashboardController::class, 'index'])->name('dashboard');
 Route::get('/contact')->name('contact');
 Route::get('/subscribe')->name('subscribe');
 Route::get('/categories', [BukuController::class, 'allCategory'])->name('allCategories');
-Route::get('/category/{nama}')->name('category');
 Route::get('/buku', [BukuController::class, 'index'])->name('allBuku');
 Route::get('/buku/{slug}', [BukuController::class, 'view'])->name('buku');
 
