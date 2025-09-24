@@ -31,7 +31,7 @@ class WishlistController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'buku_id' => 'required|exists:buku,uuid',
+            'buku_id' => 'required|exists:buku,id',
         ]);
 
         // Cek kalau user sudah login
