@@ -67,7 +67,7 @@ class Buku extends Model
     }
 
     public function category() {
-        return $this->belongsTo(Category::class, 'category_id', 'id');
+        return $this->belongsToMany(Category::class, 'category_id', 'id');
         // return Category::whereIn('id', $this->category_id ?? [])->get();
         // return $this->belongsToMany(Category::class, Buku::class);
     }
