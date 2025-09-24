@@ -40,25 +40,7 @@ class Buku extends Model
     protected $appends = [
         'banner_url'
     ];
-
-    protected static function booted()
-    {
-        static::deleting(function ($buku) {
-            // Hapus relasi pivot
-            $buku->categories()->detach();
-
-            // Hapus wishlist yang terkait
-            $buku->wishlist()->delete();
-
-            // Hapus peminjaman terkait
-            $buku->peminjaman()->delete();
-
-            // Kalau ada file banner di storage
-            if ($buku->banner) {
-                Storage::disk('public')->delete($buku->banner);
-            }
-        });
-    }
+    
 
     public function bannerUrl(): Attribute
     {
@@ -67,7 +49,7 @@ class Buku extends Model
     }
 
     public function category() {
-        return $this->belongsToMany(Category::class, 'category_id', 'id');
+        return $this->belongsTo(Category::class, 'category_id', 'id');
         // return Category::whereIn('id', $this->category_id ?? [])->get();
         // return $this->belongsToMany(Category::class, Buku::class);
     }
