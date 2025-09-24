@@ -120,8 +120,12 @@
                         <!-- Bagian kiri (foto + barcode) -->
                         <td width="38%" align="left" style="padding-left: 5px; text-align: center;">
                             <div class="photo">
-                                <img src="{{ 'data:image/png;base64,' . base64_encode(file_get_contents(Storage::disk('public')->path($member->image))) }}"
-                                    alt="Foto Member">
+                                @if (isset($member->image))
+                                    <img src="{{ 'data:image/png;base64,' . base64_encode(file_get_contents(Storage::disk('public')->path($member->image))) }}"
+                                        alt="Foto Member">
+                                @else
+                                    <img src="{{ asset('blank_person.png') }}" alt="">
+                                @endif
                             </div>
                             <div class="barcode">
                                 {!! $barcode->getBarcodeHTML($member->membership_number, 'C39', 1, 20) !!}
