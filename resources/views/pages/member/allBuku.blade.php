@@ -80,7 +80,7 @@
                             <div class="col d-flex">
                                 <div class="product-item card h-100 w-100 d-flex flex-column">
                                     <a href="javascript:void(0)"
-                                        class="rounded-circle bg-light p-2 mx-1 add-to-wishlist {{ Auth::check() && Auth::user()->member->wishlist()->contains('buku_id', $b->uuid) ? 'active' : '' }}"
+                                        class="rounded-circle bg-light p-2 mx-1 add-to-wishlist {{ Auth::check() && Auth::user()->member->wishlist()->find($b->uuid, 'buku_id') ? 'active' : '' }}"
                                         data-id="{{ $b->uuid }}">
                                         <svg width="24" height="24" viewBox="0 0 24 24">
                                             <use xlink:href="#heart"></use>
