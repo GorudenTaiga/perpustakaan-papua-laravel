@@ -227,35 +227,33 @@
                 width: 400,
                 height: 400,
             }).toBlob((blob) => {
-                const fileInput = document.createElement('input');
-                fileInput.type = 'file';
-                fileInput.name = 'image';
-
-                // bikin object File dari Blob
+                // bikin File dari Blob
                 const file = new File([blob], 'cropped.png', {
                     type: 'image/png'
                 });
 
-                // bikin FormData manual
+                // bikin FormData baru
                 const formData = new FormData(cropForm);
-                formData.append('image', file);
+                formData.set('image', file); // 👈 pastikan key sama dengan nama field di form
 
-                // bikin form hidden lalu submit
-                const tempForm = document.createElement('form');
-                tempForm.action = cropForm.action;
-                tempForm.method = cropForm.method;
-                tempForm.enctype = 'multipart/form-data';
-
-                for (const [key, value] of formData.entries()) {
-                    const input = document.createElement('input');
-                    input.type = 'hidden';
-                    input.name = key;
-                    input.value = value;
-                    tempForm.appendChild(input);
-                }
-
-                document.body.appendChild(tempForm);
-                tempForm.submit();
+                fetch(cropForm.action, {
+                        method: 'POST',
+                        body: formData,
+                    })
+                    .then(res => {
+                        if (res.redirected) {
+                            // kalau Laravel balikin redirect (default)
+                            window.location.href = res.url;
+                        } else {
+                            return res.json();
+                        }
+                    })
+                    .then(data => {
+                        if (data?.success) {
+                            location.reload();
+                        }
+                    })
+                    .catch(err => console.error(err));
             });
         });
     </script>
