@@ -95,6 +95,10 @@ class UserController extends Controller
     {
         $valid = $request->validate([
             'image' => 'required|image|mimes:jpg,jpeg,png|max:2048',
+        ], [
+            'image.required' => 'Harap upload gambar terlebih dahulu',
+            'image.mimes' => 'Harap upload hanya berformat jpg, jpeg, dan png',
+            'image.max' => 'Ukuran gambar maksimal 2MB / 2048KB'
         ]);
 
         if ($valid) {
