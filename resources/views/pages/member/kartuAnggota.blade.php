@@ -124,7 +124,6 @@
                                         alt="Foto Member">
                                 @else
                                     <img src="{{ asset('blank_person.png') }}" alt="">
-                                    <span>Tidak ada gambar</span>
                                 @endif
                             </div>
                             <div class="barcode">
