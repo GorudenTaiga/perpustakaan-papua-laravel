@@ -93,26 +93,27 @@ class UserController extends Controller
 
     public function updatePhoto(Request $request)
     {
-        $request->validate([
+        $valid = $request->validate([
             'image' => 'required|image|mimes:jpg,jpeg,png|max:2048',
         ]);
 
-        $member = auth()->user()->member;
+        if ($valid) {
+            $member = auth()->user()->member;
 
-        // simpan file ke storage/app/public/images/member/foto/
-        $path = $request->file('image')->store('images/member/foto', 'public');
+            // simpan file ke storage/app/public/images/member/foto/
+            $path = $request->file('image')->store('images/member/foto', 'public');
 
-        // hapus foto lama kalau ada
-        if ($member->image && Storage::disk('public')->exists($member->image)) {
-            Storage::disk('public')->delete($member->image);
+            // hapus foto lama kalau ada
+            if ($member->image && Storage::disk('public')->exists($member->image)) {
+                Storage::disk('public')->delete($member->image);
+            }
+
+            // update kolom image
+            if ($member->update(['image' => $path])) {
+                return back()->with('success', 'Foto profil berhasil diperbarui!');
+            }
         }
-
-        // update kolom image
-        $member->update([
-            'image' => $path,
-        ]);
-
-        return back()->with('success', 'Foto profil berhasil diperbarui!');
+        return back();
     }
 
     public function register(Request $request) 

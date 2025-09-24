@@ -20,6 +20,15 @@
                                             <img src="{{ Storage::disk('public')->url($member->image) ?? asset('users/images/profile-placeholder.png') }}"
                                                 alt="{{ $member->user->name }}" class="img-fluid rounded-circle shadow-lg"
                                                 style="cursor:pointer;">
+                                            @if ($errors->any())
+                                                <div class="alert alert-danger">
+                                                    <ul>
+                                                        @foreach ($errors->all() as $e)
+                                                            <li>{{ $e }}</li>
+                                                        @endforeach
+                                                    </ul>
+                                                </div>
+                                            @endif
                                         </div>
                                     </div>
                                 </div>
