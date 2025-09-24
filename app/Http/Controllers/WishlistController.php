@@ -47,7 +47,7 @@ class WishlistController extends Controller
             return response()->json(['message' => 'Sudah ada di wishlist']);
         }
 
-        $user->wishlist()->create([
+        $user->member->wishlist->create([
             'buku_id' => $request->buku_id,
             'member_id' => $request->member_id
         ]);
