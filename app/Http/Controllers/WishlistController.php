@@ -42,7 +42,7 @@ class WishlistController extends Controller
         $user = auth()->user();
 
         // Cek kalau sudah ada di wishlist
-        $exists = $user->wishlist()->where('buku_id', $request->buku_id)->exists();
+        $exists = $user->member->wishlist->where('buku_id', $request->buku_id)->exists();
         if ($exists) {
             return response()->json(['message' => 'Sudah ada di wishlist']);
         }
