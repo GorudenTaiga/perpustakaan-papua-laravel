@@ -46,10 +46,6 @@
                     </div>
                     <div class="login-form-body">
                         <div class="form-gp">
-                            <label>Role</label>
-                            <input type="text" name="role">
-                        </div>
-                        <div class="form-gp">
                             <label for="exampleInputName1">Full Name</label>
                             <input type="text" name="name" id="exampleInputName1">
                             <i class="ti-user"></i>

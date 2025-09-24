@@ -122,8 +122,8 @@ class UserController extends Controller
                 'email' => ['required', 'email', 'unique:users'],
                 'password' => ['required', 'min:6'],
                 'name' => ['required'],
-                'role' => ['required']
             ]);
+            $validate['role'] = 'member';
             if ($validate) {
                 if ($user = User::create($validate)) {
                     if(Member::create([
