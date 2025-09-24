@@ -207,8 +207,10 @@
 
                     if (cropper) cropper.destroy();
                     cropper = new Cropper(imagePreview, {
-                        aspectRatio: 1,
+                        // aspectRatio: 1,
                         viewMode: 1,
+                        width: 478,
+                        height: 770
                     });
                 };
                 reader.readAsDataURL(file);
