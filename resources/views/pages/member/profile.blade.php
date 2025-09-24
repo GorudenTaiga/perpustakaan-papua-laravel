@@ -69,19 +69,29 @@
 
 
                             <!-- Modal Edit Foto -->
+                            <!-- Modal Edit Foto -->
                             <div class="modal fade" id="photoEditModal" tabindex="-1" aria-hidden="true">
-                                <div class="modal-dialog modal-dialog-centered">
-                                    <form action="{{ route('member.updatePhoto') }}" method="POST"
+                                <div class="modal-dialog modal-dialog-centered modal-lg">
+                                    <form id="cropForm" action="{{ route('member.updatePhoto') }}" method="POST"
                                         enctype="multipart/form-data" class="modal-content">
                                         @csrf
                                         @method('PUT')
                                         <div class="modal-header">
-                                            <h5 class="modal-title">Upload Foto Baru</h5>
+                                            <h5 class="modal-title">Upload & Crop Foto</h5>
                                             <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
                                         </div>
-                                        <div class="modal-body">
-                                            <input type="file" name="image" class="form-control" accept="image/*"
-                                                required>
+                                        <div class="modal-body text-center">
+                                            <!-- Input File -->
+                                            <input type="file" id="uploadImage" class="form-control mb-3"
+                                                accept="image/*">
+
+                                            <!-- Area Crop -->
+                                            <div>
+                                                <img id="imagePreview" style="max-width:100%; display:none;">
+                                            </div>
+
+                                            <!-- Hidden input hasil crop -->
+                                            <input type="hidden" name="image" id="croppedImage">
                                         </div>
                                         <div class="modal-footer">
                                             <button type="button" class="btn btn-secondary"
@@ -185,4 +195,62 @@
             </div>
         </div>
     </section>
+@endsection
+@section('js')
+    <script>
+        let cropper;
+        const uploadImage = document.getElementById('uploadImage');
+        const imagePreview = document.getElementById('imagePreview');
+        const croppedImage = document.getElementById('croppedImage');
+        const cropForm = document.getElementById('cropForm');
+
+        // Ketika pilih file
+        uploadImage.addEventListener('change', (e) => {
+            const file = e.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function(event) {
+                    imagePreview.src = event.target.result;
+                    imagePreview.style.display = 'block';
+
+                    // Reset cropper lama
+                    if (cropper) {
+                        cropper.destroy();
+                    }
+
+                    // Inisialisasi cropper baru
+                    cropper = new Cropper(imagePreview, {
+                        aspectRatio: 1, // 1:1 (circle style)
+                        viewMode: 1,
+                        movable: true,
+                        zoomable: true,
+                        rotatable: true,
+                        scalable: true,
+                    });
+                };
+                reader.readAsDataURL(file);
+            }
+        });
+
+        // Saat submit form → ambil hasil crop
+        cropForm.addEventListener('submit', function(e) {
+            e.preventDefault();
+
+            if (cropper) {
+                cropper.getCroppedCanvas({
+                    width: 400,
+                    height: 400
+                }).toBlob((blob) => {
+                    const reader = new FileReader();
+                    reader.onloadend = () => {
+                        croppedImage.value = reader.result; // base64 hasil crop
+                        cropForm.submit(); // submit form dengan base64
+                    };
+                    reader.readAsDataURL(blob);
+                });
+            } else {
+                cropForm.submit();
+            }
+        });
+    </script>
 @endsection
