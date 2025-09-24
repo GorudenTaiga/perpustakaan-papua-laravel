@@ -227,19 +227,35 @@
                 width: 400,
                 height: 400,
             }).toBlob((blob) => {
-                const formData = new FormData(cropForm);
-                formData.append('image', blob, 'cropped.png'); // 👈 kirim file hasil crop
+                const fileInput = document.createElement('input');
+                fileInput.type = 'file';
+                fileInput.name = 'image';
 
-                fetch(cropForm.action, {
-                        method: 'POST',
-                        body: formData,
-                    })
-                    .then(res => res.json())
-                    .then(data => {
-                        console.log(data);
-                        location.reload();
-                    })
-                    .catch(err => console.error(err));
+                // bikin object File dari Blob
+                const file = new File([blob], 'cropped.png', {
+                    type: 'image/png'
+                });
+
+                // bikin FormData manual
+                const formData = new FormData(cropForm);
+                formData.append('image', file);
+
+                // bikin form hidden lalu submit
+                const tempForm = document.createElement('form');
+                tempForm.action = cropForm.action;
+                tempForm.method = cropForm.method;
+                tempForm.enctype = 'multipart/form-data';
+
+                for (const [key, value] of formData.entries()) {
+                    const input = document.createElement('input');
+                    input.type = 'hidden';
+                    input.name = key;
+                    input.value = value;
+                    tempForm.appendChild(input);
+                }
+
+                document.body.appendChild(tempForm);
+                tempForm.submit();
             });
         });
     </script>
