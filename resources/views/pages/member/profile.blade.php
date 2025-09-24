@@ -81,7 +81,7 @@
                                             <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
                                         </div>
                                         <div class="modal-body text-center">
-                                            <input type="file" id="uploadImage" class="form-control mb-3"
+                                            <input type="file" id="uploadImage" name="image" class="form-control mb-3"
                                                 accept="image/*">
                                             <div>
                                                 <img id="imagePreview" style="max-width:100%; display:none;">
@@ -227,22 +227,21 @@
                 width: 400,
                 height: 400,
             }).toBlob((blob) => {
-                // bikin File dari Blob
                 const file = new File([blob], 'cropped.png', {
                     type: 'image/png'
                 });
 
                 // bikin FormData baru
                 const formData = new FormData(cropForm);
-                formData.set('image', file); // 👈 pastikan key sama dengan nama field di form
+                formData.set('image', file); // overwrite image dengan hasil crop
+                formData.set('_method', 'PUT'); // 👈 biar Laravel kenal PUT
 
                 fetch(cropForm.action, {
-                        method: 'POST',
+                        method: 'POST', // tetap POST, tapi ada _method=PUT
                         body: formData,
                     })
                     .then(res => {
                         if (res.redirected) {
-                            // kalau Laravel balikin redirect (default)
                             window.location.href = res.url;
                         } else {
                             return res.json();
