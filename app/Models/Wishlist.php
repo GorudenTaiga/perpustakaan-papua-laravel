@@ -20,6 +20,6 @@ class Wishlist extends Model
     }
 
     public function buku() {
-        return $this->belongsTo(Buku::class, 'buku_id', 'uuid');
+        return $this->belongsTo(Buku::class, 'buku_id', 'id');
     }
 }
