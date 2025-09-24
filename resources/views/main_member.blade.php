@@ -2,7 +2,7 @@
     $wishlist = [];
 
     if (Auth::check()) {
-        $wishlist = Auth::user()->member->wishlist()->with('buku')->get();
+        $wishlist = Auth::user()->member->wishlist->with('buku')->get();
     }
 @endphp
 
