@@ -168,33 +168,49 @@
     <script>
         document.addEventListener('DOMContentLoaded', () => {
             document.querySelectorAll('.add-to-wishlist').forEach(btn => {
-                btn.addEventListener('click', () => {
+                btn.addEventListener('click', async () => {
                     const bukuId = btn.dataset.id;
 
-                    fetch("{{ route('wishlist.store') }}", {
+                    try {
+                        const res = await fetch("{{ route('wishlist.store') }}", {
                             method: "POST",
                             headers: {
                                 "X-CSRF-TOKEN": "{{ csrf_token() }}",
+                                "Accept": "application/json",
                                 "Content-Type": "application/json"
                             },
                             body: JSON.stringify({
                                 buku_id: bukuId,
                                 member_id: {{ Auth::user()->member->membership_number }}
                             })
-                        })
-                        .then(res => res.json())
-                        .then(data => {
-                            if (data.success) {
-                                // buka offcanvas wishlist
-                                const wishlistOffcanvas = new bootstrap.Offcanvas(
-                                    document.getElementById('offcanvasWishlist')
-                                );
-                                wishlistOffcanvas.show();
-                            } else {
-                                alert(data.message || 'Gagal menambah ke wishlist');
-                            }
-                        })
-                        .catch(err => console.error(err));
+                        });
+
+                        const data = await res.json();
+
+                        if (data.success) {
+                            // 1) bikin heart jadi merah
+                            btn.classList.add("active");
+
+                            // 2) reload isi sidebar wishlist
+                            fetch("{{ route('wishlist.partial') }}")
+                                .then(r => r.text())
+                                .then(html => {
+                                    document.querySelector(
+                                            "#offcanvasWishlist .offcanvas-body")
+                                        .innerHTML = html;
+                                });
+
+                            // 3) buka sidebar
+                            const wishlistOffcanvas = new bootstrap.Offcanvas(document
+                                .getElementById('offcanvasWishlist'));
+                            wishlistOffcanvas.show();
+                        } else {
+                            alert(data.message || 'Gagal menambah ke wishlist');
+                        }
+                    } catch (err) {
+                        console.error(err);
+                        alert('Terjadi kesalahan');
+                    }
                 });
             });
         });

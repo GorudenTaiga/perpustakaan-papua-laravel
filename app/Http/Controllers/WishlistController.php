@@ -55,6 +55,18 @@ class WishlistController extends Controller
         return response()->json(['success' => true]);
     }
 
+    public function partial()
+    {
+        if (!auth()->check()) {
+            return response('<p>Silakan login untuk melihat wishlist.</p>');
+        }
+
+        $wishlist = auth()->user()->member->wishlist()->with('buku')->get();
+
+        return view('partials.wishlist', compact('wishlist'));
+    }
+
+
 
     /**
      * Display the specified resource.

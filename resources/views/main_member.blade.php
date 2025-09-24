@@ -36,6 +36,13 @@
         href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;700&family=Open+Sans:ital,wght@0,400;0,700;1,400;1,700&display=swap"
         rel="stylesheet">
 
+    <style>
+        .add-to-wishlist.active svg {
+            fill: red;
+            stroke: red;
+        }
+    </style>
+
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 </head>
 
