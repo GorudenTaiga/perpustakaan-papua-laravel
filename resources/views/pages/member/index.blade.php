@@ -141,7 +141,7 @@
                         <div class="swiper-wrapper">
                             @if (isset($categories))
                                 @foreach ($categories as $c)
-                                    <a href="{{ route('category', $c->id) }}" class="nav-link category-item swiper-slide">
+                                    <a href="{{ route('category', $c->nama) }}" class="nav-link category-item swiper-slide">
                                         @if ($c->image)
                                             <img src="{{ asset($c->image) }}" alt="Category Thumbnail">
                                         @endif
