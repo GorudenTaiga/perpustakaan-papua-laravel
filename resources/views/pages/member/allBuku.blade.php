@@ -178,7 +178,7 @@
                                 "Content-Type": "application/json"
                             },
                             body: JSON.stringify({
-                                buku_id: bukuId
+                                buku_id: bukuId,
                                 member_id: {{ Auth::user()->member->membership_number }}
                             })
                         })
