@@ -1,3 +1,11 @@
+@php
+    $wishlist = [];
+
+    if (Auth::check()) {
+        $wishlist = Auth::user()->wishlist()->with('buku')->get();
+    }
+@endphp
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -122,6 +130,36 @@
     </div>
 
     <header>
+        <!-- Wishlist Sidebar -->
+        <div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasWishlist" aria-labelledby="wishlistLabel">
+            <div class="offcanvas-header">
+                <h5 id="wishlistLabel">Wishlist Saya</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+            </div>
+            <div class="offcanvas-body">
+                @if (Auth::check())
+                    @if (isset($wishlist) && count($wishlist) > 0)
+                        <ul class="list-group">
+                            @foreach ($wishlist as $item)
+                                <li class="list-group-item d-flex align-items-center">
+                                    <img src="{{ Storage::disk('public')->url($item->banner) }}"
+                                        alt="{{ $item->judul }}" class="img-thumbnail me-3"
+                                        style="width: 60px; height: 80px; object-fit: cover;">
+                                    <span>{{ $item->judul }}</span>
+                                    <a href="{{ route('buku', $item->slug) }}">
+                                        Detail
+                                    </a>
+                                </li>
+                            @endforeach
+                        </ul>
+                    @else
+                        <p>Belum ada buku di wishlist.</p>
+                    @endif
+                @else
+                    <p>Silakan login untuk melihat wishlist.</p>
+                @endif
+            </div>
+        </div>
         <div class="container-fluid">
             <div class="row py-3 border-bottom">
 
@@ -199,17 +237,10 @@
                         </li>
                         @if (Auth::user())
                             <li>
-                                <a href="#" class="rounded-circle bg-light p-2 mx-1">
+                                <a href="#" class="rounded-circle bg-light p-2 mx-1" data-bs-toggle="offcanvas"
+                                    data-bs-target="#offcanvasWishlist" aria-controls="offcanvasWishlist">
                                     <svg width="24" height="24" viewBox="0 0 24 24">
                                         <use xlink:href="#heart"></use>
-                                    </svg>
-                                </a>
-                            </li>
-                            <li class="d-lg-none">
-                                <a href="#" class="rounded-circle bg-light p-2 mx-1" data-bs-toggle="offcanvas"
-                                    data-bs-target="#offcanvasCart" aria-controls="offcanvasCart">
-                                    <svg width="24" height="24" viewBox="0 0 24 24">
-                                        <use xlink:href="#cart"></use>
                                     </svg>
                                 </a>
                             </li>

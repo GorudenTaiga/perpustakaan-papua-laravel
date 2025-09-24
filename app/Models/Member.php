@@ -23,4 +23,8 @@ class Member extends Model
     public function user() {
         return $this->belongsTo(User::class, 'users_id', 'id');
     }
+
+    public function wishlist() {
+        return $this->belongsTo(Wishlist::class, 'membership_number', 'member_id');
+    }
 }
