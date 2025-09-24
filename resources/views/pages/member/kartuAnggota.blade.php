@@ -117,6 +117,22 @@
             <div class="card-body">
                 <table width="100%" cellspacing="0" cellpadding="0">
                     <tr>
+                        <!-- Bagian kiri (foto + barcode) -->
+                        <td width="38%" align="left" style="padding-left: 5px; text-align: center;">
+                            <div class="photo">
+                                @if (isset($member->image))
+                                    <img src="{{ 'data:image/png;base64,' . base64_encode(file_get_contents(Storage::disk('public')->path($member->image))) }}"
+                                        alt="Foto Member">
+                                @else
+                                    <img src="{{ asset('blank_person.png') }}" alt="">
+                                @endif
+                            </div>
+                            <div class="barcode">
+                                {!! $barcode->getBarcodeHTML($member->membership_number, 'C39', 1, 20) !!}
+                                <div>{{ $member->membership_number }}</div>
+                            </div>
+                        </td>
+
                         <!-- Bagian kanan (details) -->
                         <td width="62%" style="padding-left: 4px; top: 0; background: red;">
                             <div class="details">
@@ -138,21 +154,6 @@
                                         <td>: {{ $member->valid_date ?: '-' }}</td>
                                     </tr>
                                 </table>
-                            </div>
-                        </td>
-                        <!-- Bagian kiri (foto + barcode) -->
-                        <td width="38%" align="left" style="padding-left: 5px; text-align: center;">
-                            <div class="photo">
-                                @if (isset($member->image))
-                                    <img src="{{ 'data:image/png;base64,' . base64_encode(file_get_contents(Storage::disk('public')->path($member->image))) }}"
-                                        alt="Foto Member">
-                                @else
-                                    <img src="{{ asset('blank_person.png') }}" alt="">
-                                @endif
-                            </div>
-                            <div class="barcode">
-                                {!! $barcode->getBarcodeHTML($member->membership_number, 'C39', 1, 20) !!}
-                                <div>{{ $member->membership_number }}</div>
                             </div>
                         </td>
                     </tr>
