@@ -199,7 +199,7 @@
                                                         <use xlink:href="#star-solid"></use>
                                                     </svg> {{ $b->rating }}</span>
                                                 <div class="d-flex align-items-center justify-content-between">
-                                                    <a href="#" class="nav-link">Pinjam</a>
+                                                    <a href="{{ route('buku', $b->slug) }}" class="nav-link">Pinjam</a>
                                                 </div>
                                             </div>
                                         </div>
