@@ -14,13 +14,20 @@ class AuthMiddleware
      *
      * @param  \Closure(\Illuminate\Http\Request): (\Symfony\Component\HttpFoundation\Response)  $next
      */
-    public function handle(Request $request, Closure $next, $role): Response
+    public function handle(Request $request, Closure $next, ...$role): Response
     {
-        if (Auth::check() && Auth::user()->role !== $role) {
-            return redirect()->route('login')->with('error', 'Akses ditolak');
-        } else if (!Auth::check()) {
-            return redirect()->route('login')->with('error', 'Silakan login terlebih dahulu');
+        if (!Auth::check()) {
+            return redirect('/login'); // Redirect unauthenticated users
         }
-        return $next($request);
+
+        $user = Auth::user();
+
+        foreach ($role as $roles) {
+            if ($user->role === $roles) { // Assuming a hasRole method on your User model
+                return $next($request);
+            }
+        }
+
+        abort(403, 'Unauthorized action.');
     }
 }
