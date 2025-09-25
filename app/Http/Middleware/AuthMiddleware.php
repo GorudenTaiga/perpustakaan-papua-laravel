@@ -17,7 +17,7 @@ class AuthMiddleware
     public function handle(Request $request, Closure $next, ...$role): Response
     {
         if (!Auth::check()) {
-            return redirect('/login'); // Redirect unauthenticated users
+            return redirect()->route('dashboard'); // Redirect unauthenticated users
         }
 
         $user = Auth::user();
