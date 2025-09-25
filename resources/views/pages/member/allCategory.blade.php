@@ -14,20 +14,31 @@
             <div class="row">
                 <div class="col-md-12">
 
-                    <div class="category-carousel swiper">
-                        <div class="swiper-wrapper">
-                            @if (isset($categories))
-                                @foreach ($categories as $c)
-                                    <a href="{{ route('allBuku', ['category[]' => $c->id]) }}"
-                                        class="nav-link category-item swiper-slide">
-                                        @if ($c->image)
-                                            <img src="{{ asset($c->image) }}" alt="Category Thumbnail">
-                                        @endif
-                                        <h3 class="category-title">{{ $c->nama }}</h3>
-                                    </a>
-                                @endforeach
-                            @endif
-                        </div>
+                    <div class="product-grid row row-cols-sm-1 row-cols-md-2 row-cols-lg-3 row-cols-xl-4">
+                        @if (isset($categories))
+                            @foreach ($categories as $c)
+                                <div class="col d-flex">
+                                    <div class="product-item card h-100 w-100 d-flex flex-column">
+                                        <div class="card-body d-flex flex-column">
+                                            {{-- Figure untuk gambar --}}
+                                            <figure class="product-figure align-center justify-content-center">
+                                                <a href="{{ route('allBuku', ['category[]' => $c->id]) }}"
+                                                    class="nav-link category-item swiper-slide">
+                                                    @if ($c->image)
+                                                        <img src="{{ asset($c->image) }}" alt="Category Thumbnail">
+                                                    @endif
+                                                </a>
+                                            </figure>
+
+                                            {{-- Konten teks --}}
+                                            <h3 class="product-title" title="{{ $c->nama }}">
+                                                {{ $c->nama }}
+                                            </h3>
+                                        </div>
+                                    </div>
+                                </div>
+                            @endforeach
+                        @endif
                     </div>
                 </div>
             </div>
