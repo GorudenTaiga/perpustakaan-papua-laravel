@@ -16,7 +16,7 @@ class AuthMiddleware
      */
     public function handle(Request $request, Closure $next, $role): Response
     {
-        if (Auth::user()->role !== $role) {
+        if (Auth::check && Auth::user()->role !== $role) {
             return redirect()->route('login')->with('error', 'Akses ditolak');
         }
         return $next($request);
