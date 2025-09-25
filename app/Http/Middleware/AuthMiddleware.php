@@ -18,6 +18,8 @@ class AuthMiddleware
     {
         if (Auth::check() && Auth::user()->role !== $role) {
             return redirect()->route('login')->with('error', 'Akses ditolak');
+        } else if (!Auth::check()) {
+            return redirect()->route('login')->with('error', 'Silakan login terlebih dahulu');
         }
         return $next($request);
     }
