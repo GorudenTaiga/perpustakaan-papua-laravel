@@ -31,7 +31,7 @@
                                             </figure>
 
                                             {{-- Konten teks --}}
-                                            <h3 class="product-title" title="{{ $c->nama }}">
+                                            <h3 class="product-title text-center" title="{{ $c->nama }}">
                                                 {{ $c->nama }}
                                             </h3>
                                         </div>
