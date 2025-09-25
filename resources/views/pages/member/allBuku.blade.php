@@ -182,7 +182,7 @@
                             },
                             body: JSON.stringify({
                                 buku_id: bukuId,
-                                member_id: {{ Auth::user()->member->membership_number }}
+                                member_id: {{ Auth::check() && Auth::user()->member->membership_number }}
                             })
                         });
 
