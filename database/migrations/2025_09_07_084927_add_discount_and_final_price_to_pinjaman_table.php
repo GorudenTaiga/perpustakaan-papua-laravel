@@ -23,7 +23,8 @@ return new class extends Migration
     public function down(): void
     {
         Schema::table('pinjaman', function (Blueprint $table) {
-            $table->dropColumn(['discount', 'final_price']);
+            $table->integer('discount')->default(0)->after('total_price');
+            $table->integer('final_price')->nullable()->after('discount');
         });
     }
 };

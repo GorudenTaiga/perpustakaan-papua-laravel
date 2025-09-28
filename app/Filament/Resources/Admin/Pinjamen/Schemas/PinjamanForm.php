@@ -103,6 +103,13 @@ class PinjamanForm
                             ->prefix('Rp')
                             ->required(),
         
+                        TextInput::make('discount')
+                            ->label('Diskon')
+                            ->live()
+                            ->readonly()
+                            ->prefix('Rp')
+                            ->default(0),
+        
                         TextInput::make('punishment')
                             ->label('Denda')
                             ->live()
@@ -139,6 +146,7 @@ class PinjamanForm
                 $totalPrice = ($days * $buku->denda_per_hari) * $quantity;
 
                 // Calculate discount if returned early
+                $discount = 0;
                 $punishment = 0;
                 if ($returnDateCarbon && $returnDateCarbon->lessThan($dueDateCarbon)) {
                     $finalPrice = 0;
@@ -149,6 +157,7 @@ class PinjamanForm
                 }
                 
                 $set('total_price', $totalPrice);
+                $set('discount', $discount);
                 $set('final_price', $finalPrice);
                 $set('punishment', $punishment);
             }
