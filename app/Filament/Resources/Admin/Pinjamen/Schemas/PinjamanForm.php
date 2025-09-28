@@ -76,7 +76,7 @@ class PinjamanForm
                             }),
 
                         DatePicker::make('due_date')
-                            ->label('Tanggal Kembali')
+                            ->label('Batas Tanggal Kembali')
                             ->required()
                             ->reactive()
                             ->afterStateUpdated(function (callable $set, $state, callable $get) {
