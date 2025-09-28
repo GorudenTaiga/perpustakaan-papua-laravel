@@ -6,6 +6,7 @@ use Filament\Actions\BulkActionGroup;
 use Filament\Actions\DeleteAction;
 use Filament\Actions\DeleteBulkAction;
 use Filament\Actions\EditAction;
+use Filament\Support\Icons\Heroicon;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Columns\ImageColumn;
 use Filament\Tables\Columns\BadgeColumn;
@@ -54,8 +55,8 @@ class MembersTable
                 ToggleColumn::make('verif')
                     ->label('Terverifikasi')
                     ->default(false)
-                    ->onIcon('heroicon-o-badge-check')
-                    ->offIcon('heroicon-o-x-circle')
+                    ->onIcon(Heroicon::CheckBadge::class)
+                    ->offIcon(Heroicon::XCircle::class)
                     ->onColor('success')
                     ->offColor('danger')
                     ->sortable(),
