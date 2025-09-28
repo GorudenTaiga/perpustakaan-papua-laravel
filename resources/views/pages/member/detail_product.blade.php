@@ -123,7 +123,7 @@
         </div>
     </section>
 
-    @if (Auth::check() && Auth::user()->role == 'member')
+    @if (Auth::check() && Auth::user()->role == 'member' && Auth::user()->member->verif)
         <!-- Modal Pinjam Buku -->
         <div class="modal fade" id="pinjamModal" tabindex="-1" aria-labelledby="pinjamModalLabel" aria-hidden="true">
             <div class="modal-dialog">
@@ -137,16 +137,6 @@
                     </div>
 
                     <div class="modal-body">
-                        <div class="mb-3">
-                            <label for="tanggal_pinjam" class="form-label">Tanggal Pinjam</label>
-                            <input type="date" id="tanggal_pinjam" name="loan_date" class="form-control" required>
-                        </div>
-
-                        <div class="mb-3">
-                            <label for="jumlah" class="form-label">Tanggal Dikembalikan</label>
-                            <input type="date" id="tanggal_dikembalikan" name="due_date" class="form-control"
-                                required>
-                        </div>
 
                         <div class="mb-3">
                             <label for="jumlah" class="form-label">Jumlah Buku</label>

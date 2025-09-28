@@ -39,8 +39,6 @@ class UserController extends Controller
         $stock = Buku::select('stock')->where('id', $request->buku_id)->value('stock');
         $valid = $request->validate([
             'buku_id' => 'required|exists:buku,id',
-            'loan_date' => 'required|date',
-            'due_date' => 'required|date',
             'quantity' => 'required|min:1|max:'.$stock
         ]);
 
@@ -49,8 +47,8 @@ class UserController extends Controller
                 'member_id' => Auth::user()->member->membership_number,
                 'uuid' => strtotime(Carbon::now()),
                 'buku_id' => $request->buku_id,
-                'loan_date' => $request->loan_date,
-                'due_date' => $request->due_date,
+                'loan_date' => Carbon::now()->toDateString(),
+                'due_date' => Carbon::now()->addDays(7)->toDateString(),
                 'quantity' => $request->quantity,
                 'status' => 'dipinjam',
                 'total_price' => 0
