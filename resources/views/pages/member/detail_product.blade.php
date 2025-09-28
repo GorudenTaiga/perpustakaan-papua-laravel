@@ -51,12 +51,19 @@
                             <div class="product-quantity">
                                 <div class="stock-button-wrap">
                                     <div class="qty-button d-flex flex-wrap pt-3">
-                                        @if (Auth::check() && Auth::user()->role == 'member')
+                                        @if (Auth::check() && Auth::user()->role == 'member' && Auth::user()->member->verif)
                                             <button type="button"
                                                 class="btn btn-primary py-3 px-4 text-uppercase me-3 mt-3"
                                                 data-bs-toggle="modal" data-bs-target="#pinjamModal">
                                                 <i class="fas fa-book me-2"></i>Borrow Book
                                             </button>
+                                        @elseif (Auth::check() && Auth::user()->role == 'member' && !Auth::user()->member->verif)
+                                            <a href="{{ route('dashboard') }}">
+                                                <button type="submit"
+                                                    class="btn btn-primary py-3 px-4 text-uppercase me-3 mt-3">
+                                                    <i class="fas fa-book me-2"></i>Account not verified
+                                                </button>
+                                            </a>
                                         @else
                                             <a href="{{ route('login') }}">
                                                 <button type="submit"

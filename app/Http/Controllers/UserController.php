@@ -44,7 +44,7 @@ class UserController extends Controller
             'quantity' => 'required|min:1|max:'.$stock
         ]);
 
-        if ($valid) {
+        if ($valid && Auth::check() && Auth::user()->role == 'member' && Auth::user()->member->verif) {
             $create = Pinjaman::create([
                 'member_id' => Auth::user()->member->membership_number,
                 'uuid' => strtotime(Carbon::now()),
