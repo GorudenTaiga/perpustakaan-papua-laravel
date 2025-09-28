@@ -65,7 +65,8 @@
                                             </td>
                                             <td class="py-4">
                                                 <div class="total-price">
-                                                    <span class="money text-dark">{{ $p->return_date }}</span>
+                                                    <span
+                                                        class="money text-dark">{{ $p->return_date ?? 'Belum dikembalikan' }}</span>
                                                 </div>
                                             </td>
                                             <td class="py-4">
