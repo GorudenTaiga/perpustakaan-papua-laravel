@@ -10,6 +10,7 @@ use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Columns\ImageColumn;
 use Filament\Tables\Columns\BadgeColumn;
 use Filament\Tables\Columns\IconColumn;
+use Filament\Tables\Columns\ToggleColumn;
 use Filament\Tables\Table;
 use Storage;
 
@@ -50,6 +51,14 @@ class MembersTable
                     ->label('Email Verified')
                     ->default(false)
                     ->boolean(),
+                ToggleColumn::make('verif')
+                    ->label('Terverifikasi')
+                    ->default(false)
+                    ->onIcon('heroicon-o-badge-check')
+                    ->offIcon('heroicon-o-x-circle')
+                    ->onColor('success')
+                    ->offColor('danger')
+                    ->sortable(),
             ])
             ->filters([
                 //
