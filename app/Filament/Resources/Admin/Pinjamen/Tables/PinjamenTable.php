@@ -18,6 +18,9 @@ class PinjamenTable
                 TextColumn::make('member.user.name')
                     ->label('Nama Peminjam')
                     ->sortable(),
+                TextColumn::make('buku.judul')
+                    ->label('Judul Buku')
+                    ->sortable(),
                 TextColumn::make('loan_date')
                     ->label('Tanggal Pinjam')
                     ->sortable(),
