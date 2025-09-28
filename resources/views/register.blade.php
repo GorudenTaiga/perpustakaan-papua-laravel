@@ -71,7 +71,7 @@
                         <div class="form-gp">
                             <label for="exampleInputPassword1">Password</label>
                             <input type="password" name="password" id="exampleInputPassword1">
-                            <i class="ti-unlock" onclick="handleShowPassword()"></i>
+                            <i class="ti-lock" onclick="handleShowPassword()"></i>
                             <div class="text-danger"></div>
                         </div>
                         <div class="submit-btn-area">
@@ -105,8 +105,17 @@
     <script>
         function handleShowPassword() {
             const passwordInput = document.getElementById('exampleInputPassword1');
+            const icon = document.querySelector('#exampleInputPassword1 + i');
             const type = passwordInput.getAttribute('type') === 'password' ? 'text' : 'password';
             passwordInput.setAttribute('type', type);
+            if (icon.classList.contains('ti-lock')) {
+                icon.classList.remove('ti-lock');
+                icon.classList.add('ti-unlock');
+            } else {
+                icon.classList.remove('ti-unlock');
+                icon.classList.add('ti-lock');
+            }
+
         }
     </script>
     <script src="js/vendor/jquery-2.2.4.min.js"></script>
