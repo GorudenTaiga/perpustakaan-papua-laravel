@@ -52,7 +52,7 @@
                             <div class="text-danger"></div>
                         </div>
                         <div class="form-gp">
-                            <label for="exampleInputName1">Posisi</label>
+                            <label for="exampleInputJenis">Posisi</label>
                             {{-- <input type="text" name="name" id="exampleInputName1"> --}}
                             <select name="jenis" id="exampleInputJenis">
                                 <option value="Mahasiswa">Mahasiswa</option>
