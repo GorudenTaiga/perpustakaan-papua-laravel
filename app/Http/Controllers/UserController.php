@@ -50,7 +50,8 @@ class UserController extends Controller
                 'loan_date' => Carbon::now()->toDateString(),
                 'due_date' => Carbon::now()->addDays(7)->toDateString(),
                 'quantity' => $request->quantity,
-                'status' => 'dipinjam',
+                'status' => 'menunggu_verif',
+                'verif' => false,
                 'total_price' => 0
             ]);
             if ($create) {

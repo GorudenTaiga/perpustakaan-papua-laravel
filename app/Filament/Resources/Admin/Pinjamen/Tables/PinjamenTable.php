@@ -6,6 +6,7 @@ use Filament\Actions\BulkActionGroup;
 use Filament\Actions\DeleteBulkAction;
 use Filament\Actions\EditAction;
 use Filament\Tables\Columns\TextColumn;
+use Filament\Tables\Columns\ToggleColumn;
 use Filament\Tables\Table;
 
 class PinjamenTable
@@ -30,12 +31,23 @@ class PinjamenTable
                 TextColumn::make('status')
                     ->badge()
                     ->color(fn($state) => match ($state) {
+                        'menunggu_verif' => 'primary',
                         'dipinjam' => 'warning',
                         'dikembalikan' => 'success',
                         'jatuh_tempo' => 'danger',
                         default => '',
                     })
                     ->searchable(),
+                ToggleColumn::make('verif')
+                    ->label('Terverifikasi')
+                    ->afterStateUpdated(function (bool $state, $record) {
+                        $record->update(['verif' => $state]);
+                        $record->update(['status' => $state ? 'dipinjam' : 'menunggu_verif']);
+                    })
+                    ->sortable(),
+                TextColumn::make('quantity')
+                    ->numeric()
+                    ->sortable(),
                 TextColumn::make('final_price')
                     ->numeric()
                     ->sortable(),

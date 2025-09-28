@@ -70,7 +70,8 @@
                                             </td>
                                             <td class="py-4">
                                                 <div class="total-price">
-                                                    <span class="money text-dark">{{ $p->status }}</span>
+                                                    <span
+                                                        class="money text-dark">{{ Str::of($p->status)->replace('_', ' ')->title() }}</span>
                                                 </div>
                                             </td>
                                             <td class="py-4">

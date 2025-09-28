@@ -20,7 +20,7 @@ return new class extends Migration
             $table->date('loan_date');
             $table->date('due_date');
             $table->date('return_date')->nullable();
-            $table->enum('status', ['dipinjam', 'dikembalikan', 'jatuh_tempo']);
+            $table->enum('status', ['menunggu_verif', 'dipinjam', 'dikembalikan', 'jatuh_tempo']);
             $table->integer('total_price');
             $table->timestamps();
         });
