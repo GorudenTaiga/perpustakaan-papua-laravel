@@ -71,7 +71,7 @@
                         <div class="form-gp">
                             <label for="exampleInputPassword1">Password</label>
                             <input type="password" name="password" id="exampleInputPassword1">
-                            <i class="ti-lock" onclick="handleShowPassword()"></i>
+                            <i class="ti-unlock" onclick="handleShowPassword()"></i>
                             <div class="text-danger"></div>
                         </div>
                         <div class="submit-btn-area">
