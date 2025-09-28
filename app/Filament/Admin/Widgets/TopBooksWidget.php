@@ -12,7 +12,7 @@ use Illuminate\Support\Facades\DB;
 
 class TopBooksWidget extends BaseWidget
 {
-    protected static ?string $heading = '5 Buku Teratas';
+    protected static ?string $heading = 'Leaderboard Buku';
 
     protected static ?int $sort = 3;
 
