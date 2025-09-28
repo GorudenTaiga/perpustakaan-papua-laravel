@@ -45,7 +45,6 @@ class UserController extends Controller
         if ($valid && Auth::check() && Auth::user()->role == 'member' && Auth::user()->member->verif) {
             $create = Pinjaman::create([
                 'member_id' => Auth::user()->member->membership_number,
-                'uuid' => strtotime(Carbon::now()),
                 'buku_id' => $request->buku_id,
                 'loan_date' => Carbon::now()->toDateString(),
                 'due_date' => Carbon::now()->addDays(7)->toDateString(),
