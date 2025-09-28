@@ -132,6 +132,7 @@ class UserController extends Controller
             if ($validate) {
                 if ($user = User::create($validate)) {
                     if(Member::create([
+                        'jenis' => $request->jenis,
                         'users_id' => $user->id,
                         'membership_number' => strtotime($user->created_at)
                     ])) {

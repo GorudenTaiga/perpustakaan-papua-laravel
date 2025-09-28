@@ -52,6 +52,18 @@
                             <div class="text-danger"></div>
                         </div>
                         <div class="form-gp">
+                            <label for="exampleInputName1">Posisi</label>
+                            {{-- <input type="text" name="name" id="exampleInputName1"> --}}
+                            <select name="jenis" id="exampleInputJenis">
+                                <option value="Mahasiswa">Mahasiswa</option>
+                                <option value="Dosen">Dosen</option>
+                                <option value="Pelajar">Pelajar</option>
+                                <option value="Umum">Umum</option>
+                            </select>
+                            <i class="ti-user"></i>
+                            <div class="text-danger"></div>
+                        </div>
+                        <div class="form-gp">
                             <label for="exampleInputEmail1">Email address</label>
                             <input type="email" name="email" id="exampleInputEmail1">
                             <i class="ti-email"></i>
@@ -64,8 +76,9 @@
                             <div class="text-danger"></div>
                         </div>
                         <div class="form-gp">
-                            <label for="exampleInputPassword2">Confirm Password</label>
-                            <input type="password" id="exampleInputPassword2" onblur="handlePassword(event)">
+                            <label for="exampleInputPassword2">Konfirmasi Password</label>
+                            <input type="password" placeholder="Ketikkan password yang sama" id="exampleInputPassword2"
+                                onblur="handlePassword(event)">
                             <i class="ti-lock"></i>
                             <div class="text-danger" id="confirmPassword"></div>
                         </div>
@@ -83,10 +96,11 @@
                         @session('success')
                             <div class="form-gp">
                                 <div class="text-success">{{ session('success') }}</div>
+                                <div class="text-success">Silahkan klik tombol Login untuk menuju ke menu Login</div>
                             </div>
                         @endsession
                         <div class="form-footer text-center mt-5">
-                            <p class="text-muted">Don't have an account? <a href="{{ route('login') }}">Sign in</a></p>
+                            <p class="text-muted"><a href="{{ route('login') }}">Login</a></p>
                         </div>
                     </div>
                 </form>

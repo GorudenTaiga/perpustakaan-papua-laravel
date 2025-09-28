@@ -91,7 +91,7 @@
                             </div> --}}
                         </div>
                         <div class="form-footer text-center mt-5">
-                            <p class="text-muted">Don't have an account? <a href="{{ route('register') }}">Sign up</a>
+                            <p class="text-muted">Tidak memiliki akun? <a href="{{ route('register') }}">Daftar</a>
                             </p>
                         </div>
                     </div>
