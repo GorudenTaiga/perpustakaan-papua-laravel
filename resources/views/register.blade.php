@@ -77,7 +77,7 @@
                         <div class="form-gp">
                             <label for="exampleInputPassword2">Konfirmasi Password</label>
                             <input type="password" placeholder="Ketikkan password yang sama" id="exampleInputPassword2"
-                                onblur="handlePassword(event)">
+                                onblur="handlePassword(this.target.value)">
                             <i class="ti-lock"></i>
                             <div class="text-danger" id="confirmPassword"></div>
                         </div>
@@ -113,7 +113,7 @@
         const password = document.getElementById('exampleInputPassword1').value;
 
         const handlePassword = (e) => {
-            if (e.target.value === password) {
+            if (e === password) {
                 document.getElementById('confirmPassword').innerHTML = ' ';
             } else {
                 document.getElementById('confirmPassword').innerHTML = 'Confirm Password not Same with Password';
