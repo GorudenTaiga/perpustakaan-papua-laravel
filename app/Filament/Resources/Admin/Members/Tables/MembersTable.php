@@ -55,8 +55,6 @@ class MembersTable
                 ToggleColumn::make('verif')
                     ->label('Terverifikasi')
                     ->default(false)
-                    ->onIcon(Heroicon::CheckBadge::class)
-                    ->offIcon(Heroicon::XCircle::class)
                     ->onColor('success')
                     ->offColor('danger')
                     ->sortable(),
