@@ -71,15 +71,8 @@
                         <div class="form-gp">
                             <label for="exampleInputPassword1">Password</label>
                             <input type="password" name="password" id="exampleInputPassword1">
-                            <i class="ti-lock"></i>
+                            <i class="ti-lock" onclick="handleShowPassword()"></i>
                             <div class="text-danger"></div>
-                        </div>
-                        <div class="form-gp">
-                            <label for="exampleInputPassword2">Konfirmasi Password</label>
-                            <input type="password" placeholder="Ketikkan password yang sama" id="exampleInputPassword2"
-                                onblur="handlePassword(this.target.value)">
-                            <i class="ti-lock"></i>
-                            <div class="text-danger" id="confirmPassword"></div>
                         </div>
                         <div class="submit-btn-area">
                             <button id="form_submit" type="submit">Daftar <i class="ti-arrow-right"></i></button>
@@ -110,14 +103,10 @@
 
     <!-- jquery latest version -->
     <script>
-        const password = document.getElementById('exampleInputPassword1').value;
-
-        const handlePassword = (e) => {
-            if (e === password) {
-                document.getElementById('confirmPassword').innerHTML = ' ';
-            } else {
-                document.getElementById('confirmPassword').innerHTML = 'Confirm Password not Same with Password';
-            }
+        function handleShowPassword() {
+            const passwordInput = document.getElementById('exampleInputPassword1');
+            const type = passwordInput.getAttribute('type') === 'password' ? 'text' : 'password';
+            passwordInput.setAttribute('type', type);
         }
     </script>
     <script src="js/vendor/jquery-2.2.4.min.js"></script>
