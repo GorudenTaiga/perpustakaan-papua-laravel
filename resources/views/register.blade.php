@@ -4,7 +4,7 @@
 <head>
     <meta charset="utf-8">
     <meta http-equiv="x-ua-compatible" content="ie=edge">
-    <title>Sign up - srtdash</title>
+    <title>Daftar Member - Perpustakaan Provinsi Papua</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="shortcut icon" type="image/png" href="images/icon/favicon.ico">
     <link rel="stylesheet" href="css/bootstrap.min.css">
@@ -41,12 +41,12 @@
                 <form method="post" action="{{ route('postRegister') }}">
                     @csrf
                     <div class="login-form-head">
-                        <h4>Sign up</h4>
-                        <p>Hello there, Sign up and Join with Us</p>
+                        <h4>Daftar Member</h4>
+                        <p>Selamat datang di Perpustakaan Provinsi Papua</p>
                     </div>
                     <div class="login-form-body">
                         <div class="form-gp">
-                            <label for="exampleInputName1">Full Name</label>
+                            <label for="exampleInputName1">Nama Lengkap</label>
                             <input type="text" name="name" id="exampleInputName1">
                             <i class="ti-user"></i>
                             <div class="text-danger"></div>
@@ -64,7 +64,7 @@
                             <div class="text-danger"></div>
                         </div>
                         <div class="form-gp">
-                            <label for="exampleInputEmail1">Email address</label>
+                            <label for="exampleInputEmail1">Email</label>
                             <input type="email" name="email" id="exampleInputEmail1">
                             <i class="ti-email"></i>
                             <div class="text-danger"></div>
@@ -83,7 +83,7 @@
                             <div class="text-danger" id="confirmPassword"></div>
                         </div>
                         <div class="submit-btn-area">
-                            <button id="form_submit" type="submit">Submit <i class="ti-arrow-right"></i></button>
+                            <button id="form_submit" type="submit">Daftar <i class="ti-arrow-right"></i></button>
                             {{-- <div class="login-other row mt-4">
                                 <div class="col-6">
                                     <a class="fb-login" href="#">Sign up with <i class="fa fa-facebook"></i></a>
@@ -100,7 +100,7 @@
                             </div>
                         @endsession
                         <div class="form-footer text-center mt-5">
-                            <p class="text-muted"><a href="{{ route('login') }}">Login</a></p>
+                            <p class="text-muted">Sudah memiliki akun? <a href="{{ route('login') }}">Login</a></p>
                         </div>
                     </div>
                 </form>
