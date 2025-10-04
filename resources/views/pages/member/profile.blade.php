@@ -13,7 +13,7 @@
                         <div class="col-md-12 col-lg-10">
                             <!-- profile picture -->
                             <div class="swiper profile-large-slider swiper-fade swiper-horizontal">
-                                <div class="swiper-wrapper" data-bs-toggle="modal" data-bs-target="#modalOpsiFoto">
+                                <div class="swiper-wrapper">
                                     <div class="swiper-slide">
                                         <div class="image-zoom" data-scale="2.5"
                                             data-image="{{ Storage::disk('public')->url($member->image) ?? asset('users/images/profile-placeholder.png') }}">
@@ -32,9 +32,17 @@
                                         </div>
                                     </div>
                                 </div>
+                                <button type="button" class="btn btn-primary w-100 my-2" data-bs-target="#photoZoomModal"
+                                    data-bs-toggle="modal">
+                                    <i class="fas fa-search-plus me-2"></i> Zoom Foto
+                                </button>
+                                <button type="button" class="btn btn-secondary w-100 my-2" data-bs-target="#photoEditModal"
+                                    data-bs-toggle="modal">
+                                    <i class="fas fa-edit me-2"></i> Edit Foto
+                                </button>
                             </div>
                             <!-- Modal Pilihan Foto -->
-                            <div class="modal fade" id="modalOpsiFoto" tabindex="-1" aria-hidden="true">
+                            {{-- <div class="modal fade" id="modalOpsiFoto" tabindex="-1" aria-hidden="true">
                                 <div class="modal-dialog modal-dialog-centered">
                                     <div class="modal-content text-center">
                                         <div class="modal-body">
@@ -52,7 +60,7 @@
                                         </div>
                                     </div>
                                 </div>
-                            </div>
+                            </div> --}}
 
 
                             <!-- Modal Zoom Foto -->
