@@ -46,10 +46,32 @@ RUN chmod -R 775 /app/storage /app/bootstrap/cache /app/database
 # Expose port
 EXPOSE 8080
 
+# Create startup script
+RUN echo '#!/bin/bash\n\
+set -e\n\
+\n\
+echo "Starting Laravel application..."\n\
+\n\
+# Generate APP_KEY if not set\n\
+if [ -z "$APP_KEY" ] || [ "$APP_KEY" = "" ]; then\n\
+    echo "Generating APP_KEY..."\n\
+    php artisan key:generate --force\n\
+fi\n\
+\n\
+# Run migrations\n\
+echo "Running migrations..."\n\
+php artisan migrate --force\n\
+\n\
+# Cache config\n\
+echo "Caching configuration..."\n\
+php artisan config:cache\n\
+php artisan route:cache\n\
+php artisan view:cache\n\
+\n\
+# Start server\n\
+echo "Starting web server on port ${PORT:-8080}..."\n\
+exec php artisan serve --host=0.0.0.0 --port=${PORT:-8080}\n\
+' > /app/start.sh && chmod +x /app/start.sh
+
 # Start application
-CMD php artisan key:generate && \
-    php artisan config:cache && \
-    php artisan route:cache && \
-    php artisan view:cache && \
-    php artisan migrate --force && \
-    php artisan serve --host=0.0.0.0 --port=8080
+CMD ["/app/start.sh"]
