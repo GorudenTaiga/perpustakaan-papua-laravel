@@ -31,6 +31,9 @@ WORKDIR /app
 # Copy application files
 COPY . /app
 
+# Create .env from .env.example
+RUN cp .env.example .env
+
 # Install dependencies
 RUN composer install --no-dev --optimize-autoloader --no-interaction --prefer-dist
 
@@ -55,7 +58,9 @@ echo "Starting Laravel application..."\n\
 # Generate APP_KEY if not set\n\
 if [ -z "$APP_KEY" ] || [ "$APP_KEY" = "" ]; then\n\
     echo "Generating APP_KEY..."\n\
-    php artisan key:generate --force\n\
+    php artisan key:generate --force --no-interaction\n\
+else\n\
+    echo "APP_KEY already set from environment"\n\
 fi\n\
 \n\
 # Run migrations\n\
