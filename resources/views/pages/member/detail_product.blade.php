@@ -76,6 +76,7 @@
                                 {{-- Tailwind Modal --}}
                                 <div x-show="showModal" 
                                      x-cloak
+                                     style="display: none;"
                                      @keydown.escape.window="showModal = false"
                                      class="fixed inset-0 z-50 overflow-y-auto" 
                                      aria-labelledby="modal-title" 

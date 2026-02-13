@@ -1,106 +1,303 @@
 @extends('main_member')
 @section('content')
-    <section class="py-5">
-        <div class="container-fluid">
-            <div class="row">
-                <div class="col">
+    {{-- Modern Hero Section --}}
+    <section class="relative overflow-hidden bg-gradient-to-br from-indigo-600 via-purple-600 to-pink-500 py-20 lg:py-28 pb-32">
+        <!-- Gradient Fade to White at Bottom -->
+        <div class="absolute bottom-0 left-0 right-0 h-48 bg-gradient-to-b from-transparent to-white pointer-events-none z-10"></div>
 
-                    <div class="table-responsive cart">
-                        <table class="table">
-                            <thead>
-                                <tr>
-                                    <th scope="col" class="card-title text-uppercase text-muted">Buku</th>
-                                    <th scope="col" class="card-title text-uppercase text-muted">Jumlah Pinjam</th>
-                                    <th scope="col" class="card-title text-uppercase text-muted">Tanggal Pinjam</th>
-                                    <th scope="col" class="card-title text-uppercase text-muted">Tanggal Kadaluwarsa</th>
-                                    <th scope="col" class="card-title text-uppercase text-muted">Tanggal Pengembalian
-                                    </th>
-                                    <th scope="col" class="card-title text-uppercase text-muted">Status</th>
-                                    <th scope="col" class="card-title text-uppercase text-muted">Biaya</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                @if ($pinjaman->count() > 0)
-                                    @foreach ($pinjaman as $p)
-                                        <tr>
-                                            {{-- Buku --}}
-                                            <td scope="row" class="py-4">
-                                                <div class="cart-info d-flex flex-wrap align-items-center mb-4">
-                                                    <div class="col-lg-3">
-                                                        <div class="card-image">
-                                                            <img src="{{ $p->buku->banner_url }}" alt="cloth"
-                                                                class="img-fluid">
-                                                        </div>
-                                                    </div>
-                                                    <div class="col-lg-9">
-                                                        <div class="card-detail ps-3">
-                                                            <h5 class="card-title">
-                                                                <a href="{{ route('buku', $p->buku->slug) }}"
-                                                                    class="text-decoration-none">{{ $p->buku->judul }}</a>
-                                                            </h5>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </td>
+        <!-- Decorative Elements -->
+        <div class="absolute inset-0 overflow-hidden">
+            <div class="absolute -top-40 -right-40 w-80 h-80 bg-white/10 rounded-full blur-3xl"></div>
+            <div class="absolute -bottom-40 -left-40 w-80 h-80 bg-white/10 rounded-full blur-3xl"></div>
+        </div>
 
-                                            {{-- Jumlah Pinjaman --}}
-                                            <td class="py-4">
-                                                <div class="input-group product-qty w-50">
-                                                    <input type="text" readonly id="quantity"
-                                                        value="{{ $p->quantity }}"
-                                                        class="form-control input-number text-center">
-                                                </div>
-                                            </td>
+        <div class="container relative mx-auto px-4">
+            <div class="text-white space-y-6">
+                <div class="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/20 backdrop-blur-sm border border-white/30">
+                    <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
+                        <path d="M9 4.804A7.968 7.968 0 005.5 4c-1.255 0-2.443.29-3.5.804v10A7.969 7.969 0 015.5 14c1.669 0 3.218.51 4.5 1.385A7.962 7.962 0 0114.5 14c1.255 0 2.443.29 3.5.804v-10A7.968 7.968 0 0014.5 4c-1.255 0-2.443.29-3.5.804V12a1 1 0 11-2 0V4.804z"></path>
+                    </svg>
+                    <span class="text-sm font-semibold">My Library</span>
+                </div>
+                <h1 class="text-5xl lg:text-7xl font-bold leading-tight">
+                    My <span class="text-yellow-300">Loans</span>
+                </h1>
+                <p class="text-lg lg:text-xl text-white/90 max-w-2xl leading-relaxed">
+                    View and manage all your borrowed books in one place.
+                </p>
+            </div>
+        </div>
+    </section>
 
-                                            {{-- Tanggal Pinjam --}}
-                                            <td class="py-4">
-                                                <div class="total-price">
-                                                    <span class="money text-dark">{{ $p->loan_date }}</span>
-                                                </div>
-                                            </td>
-                                            <td class="py-4">
-                                                <div class="total-price">
-                                                    <span class="money text-dark">{{ $p->due_date }}</span>
-                                                </div>
-                                            </td>
-                                            <td class="py-4">
-                                                <div class="total-price">
-                                                    <span
-                                                        class="money text-dark">{{ $p->return_date ?? 'Belum dikembalikan' }}</span>
-                                                </div>
-                                            </td>
-                                            <td class="py-4">
-                                                <div class="total-price">
-                                                    <span
-                                                        class="money text-dark">{{ Str::of($p->status)->replace('_', ' ')->title() }}</span>
-                                                </div>
-                                            </td>
-                                            <td class="py-4">
-                                                <div class="total-price">
-                                                    <span
-                                                        class="money text-dark">{{ $p->final_price == 0 ? 'Gratis (Tidak ada Denda)' : $p->final_price }}</span>
-                                                </div>
-                                            </td>
-                                        </tr>
-                                    @endforeach
-                                @else
-                                    <tr>
-                                        <td class="py-4 text-center" colspan="7">
-                                            <div>
-                                                <span>
-                                                    Data Pinjaman Tidak Tersedia
-                                                </span>
-                                            </div>
-                                        </td>
-                                    </tr>
-                                @endif
-                            </tbody>
-                        </table>
+    {{-- Main Content --}}
+    <section class="py-12 bg-white -mt-20 relative z-20">
+        <div class="container mx-auto px-4">
+            {{-- Stats Cards --}}
+            <div class="grid md:grid-cols-3 gap-6 mb-8">
+                <div class="bg-gradient-to-br from-blue-50 to-indigo-50 rounded-3xl p-6 border border-blue-100">
+                    <div class="flex items-center justify-between">
+                        <div>
+                            <p class="text-sm font-medium text-gray-600 mb-1">Total Loans</p>
+                            <p class="text-3xl font-bold text-indigo-600">{{ $pinjaman->count() }}</p>
+                        </div>
+                        <div class="w-12 h-12 rounded-full bg-indigo-100 flex items-center justify-center">
+                            <svg class="w-6 h-6 text-indigo-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"></path>
+                            </svg>
+                        </div>
                     </div>
-
                 </div>
 
+                <div class="bg-gradient-to-br from-green-50 to-emerald-50 rounded-3xl p-6 border border-green-100">
+                    <div class="flex items-center justify-between">
+                        <div>
+                            <p class="text-sm font-medium text-gray-600 mb-1">Active Loans</p>
+                            <p class="text-3xl font-bold text-green-600">{{ $pinjaman->whereIn('status', ['dipinjam', 'pending'])->count() }}</p>
+                        </div>
+                        <div class="w-12 h-12 rounded-full bg-green-100 flex items-center justify-center">
+                            <svg class="w-6 h-6 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                            </svg>
+                        </div>
+                    </div>
+                </div>
 
+                <div class="bg-gradient-to-br from-purple-50 to-pink-50 rounded-3xl p-6 border border-purple-100">
+                    <div class="flex items-center justify-between">
+                        <div>
+                            <p class="text-sm font-medium text-gray-600 mb-1">Returned</p>
+                            <p class="text-3xl font-bold text-purple-600">{{ $pinjaman->where('status', 'dikembalikan')->count() }}</p>
+                        </div>
+                        <div class="w-12 h-12 rounded-full bg-purple-100 flex items-center justify-center">
+                            <svg class="w-6 h-6 text-purple-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                            </svg>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            {{-- Loans List --}}
+            <div class="bg-white rounded-3xl shadow-lg border border-gray-100 overflow-hidden">
+                <div class="bg-gradient-to-r from-indigo-600 to-purple-600 px-8 py-6">
+                    <h2 class="text-2xl font-bold text-white flex items-center gap-3">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"></path>
+                        </svg>
+                        Loan History
+                    </h2>
+                </div>
+
+                @if ($pinjaman->count() > 0)
+                    <div class="divide-y divide-gray-100">
+                        @foreach ($pinjaman as $p)
+                            <div class="p-6 hover:bg-gray-50 transition-colors">
+                                <div class="flex flex-col lg:flex-row gap-6">
+                                    {{-- Book Image & Info --}}
+                                    <div class="flex gap-4 lg:flex-1">
+                                        <a href="{{ route('buku', $p->buku->slug) }}" class="flex-shrink-0">
+                                            <img src="{{ $p->buku->banner_url }}" 
+                                                 alt="{{ $p->buku->judul }}"
+                                                 class="w-20 h-28 object-cover rounded-xl shadow-md hover:shadow-lg transition-shadow">
+                                        </a>
+                                        <div class="flex-1 min-w-0">
+                                            <a href="{{ route('buku', $p->buku->slug) }}" class="group">
+                                                <h3 class="text-lg font-bold text-gray-900 group-hover:text-indigo-600 transition-colors line-clamp-2">
+                                                    {{ $p->buku->judul }}
+                                                </h3>
+                                            </a>
+                                            <p class="text-sm text-gray-500 mt-1">by {{ $p->buku->author ?? 'Unknown' }}</p>
+                                            <div class="mt-2 flex items-center gap-2">
+                                                <span class="px-3 py-1 rounded-full text-xs font-semibold bg-gray-100 text-gray-700">
+                                                    Qty: {{ $p->quantity }}
+                                                </span>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    {{-- Loan Details --}}
+                                    <div class="grid grid-cols-2 lg:grid-cols-4 gap-4 lg:flex-1">
+                                        {{-- Loan Date --}}
+                                        <div>
+                                            <p class="text-xs font-medium text-gray-500 mb-1">Loan Date</p>
+                                            <p class="text-sm font-semibold text-gray-900">{{ \Carbon\Carbon::parse($p->loan_date)->format('d M Y') }}</p>
+                                        </div>
+
+                                        {{-- Due Date --}}
+                                        <div>
+                                            <p class="text-xs font-medium text-gray-500 mb-1">Due Date</p>
+                                            <p class="text-sm font-semibold text-gray-900">{{ \Carbon\Carbon::parse($p->due_date)->format('d M Y') }}</p>
+                                        </div>
+
+                                        {{-- Return Date --}}
+                                        <div>
+                                            <p class="text-xs font-medium text-gray-500 mb-1">Return Date</p>
+                                            <p class="text-sm font-semibold text-gray-900">
+                                                {{ $p->return_date ? \Carbon\Carbon::parse($p->return_date)->format('d M Y') : '-' }}
+                                            </p>
+                                        </div>
+
+                                        {{-- Status --}}
+                                        <div>
+                                            <p class="text-xs font-medium text-gray-500 mb-1">Status</p>
+                                            @php
+                                                $statusColors = [
+                                                    'pending' => 'bg-yellow-100 text-yellow-700',
+                                                    'dipinjam' => 'bg-blue-100 text-blue-700',
+                                                    'dikembalikan' => 'bg-green-100 text-green-700',
+                                                    'terlambat' => 'bg-red-100 text-red-700',
+                                                ];
+                                                $statusClass = $statusColors[$p->status] ?? 'bg-gray-100 text-gray-700';
+                                            @endphp
+                                            <span class="inline-flex px-3 py-1 rounded-full text-xs font-bold {{ $statusClass }}">
+                                                {{ Str::of($p->status)->replace('_', ' ')->title() }}
+                                            </span>
+                                        </div>
+                                    </div>
+
+                                    {{-- Actions & Fee --}}
+                                    <div class="lg:w-40 flex flex-col justify-center gap-3" x-data="{ showWarning: false }">
+                                        {{-- Read Book Button (Only if status is 'dipinjam') --}}
+                                        @if (in_array($p->status, ['dipinjam', 'terlambat']))
+                                            @if ($p->buku->gdrive_link)
+                                                <a href="{{ $p->buku->gdrive_link }}" target="_blank"
+                                                   class="inline-flex items-center justify-center gap-2 px-4 py-2 bg-gradient-to-r from-blue-600 to-indigo-600 text-white rounded-lg font-semibold text-sm hover:from-blue-700 hover:to-indigo-700 transition-all shadow-md hover:shadow-lg">
+                                                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"></path>
+                                                    </svg>
+                                                    Read Book
+                                                </a>
+                                            @else
+                                                <button @click="showWarning = true" type="button"
+                                                        class="inline-flex items-center justify-center gap-2 px-4 py-2 bg-gray-400 text-white rounded-lg font-semibold text-sm hover:bg-gray-500 transition-all shadow-md hover:shadow-lg">
+                                                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"></path>
+                                                    </svg>
+                                                    Read Book
+                                                </button>
+
+                                                {{-- Warning Modal --}}
+                                                <div x-show="showWarning" 
+                                                     x-cloak
+                                                     style="display: none;"
+                                                     @keydown.escape.window="showWarning = false"
+                                                     class="fixed inset-0 z-50 overflow-y-auto" 
+                                                     role="dialog" 
+                                                     aria-modal="true">
+                                                    {{-- Backdrop --}}
+                                                    <div class="fixed inset-0 bg-black bg-opacity-50 transition-opacity"
+                                                         @click="showWarning = false"
+                                                         x-show="showWarning"
+                                                         x-transition:enter="ease-out duration-300"
+                                                         x-transition:enter-start="opacity-0"
+                                                         x-transition:enter-end="opacity-100"
+                                                         x-transition:leave="ease-in duration-200"
+                                                         x-transition:leave-start="opacity-100"
+                                                         x-transition:leave-end="opacity-0"></div>
+
+                                                    {{-- Modal Panel --}}
+                                                    <div class="flex min-h-screen items-center justify-center p-4">
+                                                        <div x-show="showWarning"
+                                                             x-transition:enter="ease-out duration-300"
+                                                             x-transition:enter-start="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
+                                                             x-transition:enter-end="opacity-100 translate-y-0 sm:scale-100"
+                                                             x-transition:leave="ease-in duration-200"
+                                                             x-transition:leave-start="opacity-100 translate-y-0 sm:scale-100"
+                                                             x-transition:leave-end="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
+                                                             class="relative bg-white rounded-3xl shadow-2xl max-w-md w-full overflow-hidden"
+                                                             @click.stop>
+                                                            
+                                                            {{-- Modal Header --}}
+                                                            <div class="bg-gradient-to-r from-yellow-500 to-orange-500 px-6 py-4">
+                                                                <div class="flex items-center justify-between">
+                                                                    <h3 class="text-lg font-bold text-white flex items-center gap-2">
+                                                                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"></path>
+                                                                        </svg>
+                                                                        Book Not Available Online
+                                                                    </h3>
+                                                                    <button type="button" @click="showWarning = false"
+                                                                            class="text-white hover:text-gray-200 transition-colors">
+                                                                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                                                                        </svg>
+                                                                    </button>
+                                                                </div>
+                                                            </div>
+
+                                                            {{-- Modal Body --}}
+                                                            <div class="p-6 space-y-4">
+                                                                <div class="flex items-start gap-4">
+                                                                    <div class="flex-shrink-0 w-12 h-12 rounded-full bg-yellow-100 flex items-center justify-center">
+                                                                        <svg class="w-6 h-6 text-yellow-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                                                                        </svg>
+                                                                    </div>
+                                                                    <div class="flex-1">
+                                                                        <p class="text-sm text-gray-700 leading-relaxed">
+                                                                            This book is not available for online reading. Please visit the library in person or contact the administrator for assistance.
+                                                                        </p>
+                                                                    </div>
+                                                                </div>
+
+                                                                <div class="bg-gray-50 rounded-xl p-4">
+                                                                    <p class="text-xs font-semibold text-gray-700 mb-2">Contact Information:</p>
+                                                                    <div class="flex items-center gap-2 text-sm text-gray-600">
+                                                                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"></path>
+                                                                        </svg>
+                                                                        <span class="font-medium">+62 877 4316 0171</span>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+
+                                                            {{-- Modal Footer --}}
+                                                            <div class="bg-gray-50 px-6 py-4 flex justify-end">
+                                                                <button type="button" @click="showWarning = false"
+                                                                        class="px-6 py-2.5 rounded-xl bg-gradient-to-r from-yellow-500 to-orange-500 text-white font-semibold hover:from-yellow-600 hover:to-orange-600 transition-all shadow-lg hover:shadow-xl">
+                                                                    Understood
+                                                                </button>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            @endif
+                                        @endif
+
+                                        {{-- Fee --}}
+                                        <div>
+                                            <p class="text-xs font-medium text-gray-500 mb-1">Fee</p>
+                                            @if ($p->final_price == 0)
+                                                <p class="text-lg font-bold text-green-600">Free</p>
+                                                <p class="text-xs text-gray-500">No penalty</p>
+                                            @else
+                                                <p class="text-lg font-bold text-red-600">Rp {{ number_format($p->final_price, 0, ',', '.') }}</p>
+                                                <p class="text-xs text-red-500">Late fee</p>
+                                            @endif
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        @endforeach
+                    </div>
+                @else
+                    {{-- Empty State --}}
+                    <div class="text-center py-16 px-4">
+                        <div class="inline-flex items-center justify-center w-20 h-20 rounded-full bg-gradient-to-br from-indigo-50 to-purple-50 mb-6">
+                            <svg class="w-10 h-10 text-indigo-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"></path>
+                            </svg>
+                        </div>
+                        <h3 class="text-xl font-bold text-gray-900 mb-2">No Loan History</h3>
+                        <p class="text-gray-600 mb-6">You haven't borrowed any books yet. Start exploring!</p>
+                        <a href="{{ route('allBuku') }}" class="inline-flex items-center gap-2 px-6 py-3 bg-gradient-to-r from-indigo-600 to-purple-600 text-white rounded-xl font-semibold hover:from-indigo-700 hover:to-purple-700 transition-all shadow-lg hover:shadow-xl">
+                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"></path>
+                            </svg>
+                            Browse Books
+                        </a>
+                    </div>
+                @endif
             </div>
         </div>
     </section>
