@@ -62,6 +62,10 @@ fi\n\
 echo "Running migrations..."\n\
 php artisan migrate --force\n\
 \n\
+# Seed database (create admin user)\n\
+echo "Seeding database..."\n\
+php artisan db:seed --force\n\
+\n\
 # Cache config\n\
 echo "Caching configuration..."\n\
 php artisan config:cache\n\
