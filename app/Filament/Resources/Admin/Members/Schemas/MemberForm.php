@@ -43,6 +43,16 @@ class MemberForm
                     ->visibility('public')
                     ->directory('images/member/foto')
                     ->nullable(),
+                
+                FileUpload::make('document_path')
+                    ->label('Dokumen Pendukung')
+                    ->disk('public')
+                    ->acceptedFileTypes(['application/pdf', 'image/jpeg', 'image/png', 'image/jpg'])
+                    ->maxSize(2048)
+                    ->visibility('public')
+                    ->directory('documents/members')
+                    ->helperText('Upload surat aktif kuliah/sekolah, KTP, atau dokumen identitas lainnya (Max 2MB)')
+                    ->nullable(),
             ]);
     }
 }

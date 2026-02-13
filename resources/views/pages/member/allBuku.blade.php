@@ -1,219 +1,425 @@
 @extends('main_member')
 @section('content')
-    <section class="py-5 mb-5" style="background: url(images/background-pattern.jpg);">
-        <div class="container-fluid">
-            <div class="d-flex justify-content-between">
-                <h1 class="page-title pb-2">List Buku</h1>
+    {{-- Modern Hero Section with Gradient --}}
+    <section
+        class="relative overflow-hidden bg-gradient-to-br from-indigo-600 via-purple-600 to-pink-500 py-20 lg:py-28 pb-32">
+        <!-- Gradient Fade to White at Bottom -->
+        <div
+            class="absolute bottom-0 left-0 right-0 h-48 bg-gradient-to-b from-transparent to-white pointer-events-none z-10">
+        </div>
+
+        <!-- Decorative Elements -->
+        <div class="absolute inset-0 overflow-hidden">
+            <div class="absolute -top-40 -right-40 w-80 h-80 bg-white/10 rounded-full blur-3xl"></div>
+            <div class="absolute -bottom-40 -left-40 w-80 h-80 bg-white/10 rounded-full blur-3xl"></div>
+            <div
+                class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-96 h-96 bg-white/5 rounded-full blur-3xl">
+            </div>
+        </div>
+
+        <div class="container relative mx-auto px-4">
+            <div class="text-white space-y-6">
+                <div
+                    class="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/20 backdrop-blur-sm border border-white/30">
+                    <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
+                        <path
+                            d="M9 4.804A7.968 7.968 0 005.5 4c-1.255 0-2.443.29-3.5.804v10A7.969 7.969 0 015.5 14c1.669 0 3.218.51 4.5 1.385A7.962 7.962 0 0114.5 14c1.255 0 2.443.29 3.5.804v-10A7.968 7.968 0 0014.5 4c-1.255 0-2.443.29-3.5.804V12a1 1 0 11-2 0V4.804z">
+                        </path>
+                    </svg>
+                    <span class="text-sm font-semibold">Discover Knowledge</span>
+                </div>
+                <h1 class="text-5xl lg:text-7xl font-bold leading-tight">
+                    Browse Our <span class="text-yellow-300">Collection</span>
+                </h1>
+                <p class="text-lg lg:text-xl text-white/90 max-w-2xl leading-relaxed">
+                    Discover thousands of books across all genres. Find your next great read.
+                </p>
             </div>
         </div>
     </section>
-    <div class="shopify-grid">
-        <div class="container-fluid">
-            <div class="row g-5">
-                <aside class="col-md-2">
-                    <div class="sidebar">
-                        <div class="widget-menu">
-                            <div class="widget-search-bar">
-                                <form role="search" action="{{ route('allBuku') }}" method="get"
-                                    class="d-flex position-relative">
 
-                                    <input class="form-control form-control-lg rounded-2 bg-light" type="text"
-                                        placeholder="Cari Judul" aria-label="Search here" name="search">
-                                    <button class="btn bg-transparent position-absolute end-0" type="submit"><svg
-                                            width="24" height="24" viewBox="0 0 24 24">
-                                            <use xlink:href="#search"></use>
-                                        </svg></button>
-                                </form>
-
-                            </div>
+    {{-- Main Content --}}
+    <section class="py-12 bg-white -mt-20 relative z-20">
+        <div class="container mx-auto px-4">
+            <div class="grid lg:grid-cols-4 gap-8">
+                {{-- Sidebar Filters --}}
+                <aside class="lg:col-span-1">
+                    <div class="bg-white rounded-3xl shadow-lg border border-gray-100 p-6 sticky top-24 space-y-6">
+                        {{-- Search Bar --}}
+                        <div>
+                            <h3 class="text-lg font-bold text-gray-900 mb-4">Search Books</h3>
+                            <form action="{{ route('allBuku') }}" method="get">
+                                <div class="relative">
+                                    <input type="text" name="search" value="{{ request('search') }}"
+                                        placeholder="Search by title, author..."
+                                        class="w-full px-4 py-3 pr-12 rounded-xl border border-gray-200 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200 transition-all">
+                                    <button type="submit"
+                                        class="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-indigo-600 transition-colors">
+                                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
+                                        </svg>
+                                    </button>
+                                </div>
+                            </form>
                         </div>
-                        <div class="widget-product-categories pt-5">
-                            <h5 class="widget-title">Categories</h5>
-                            <form action="{{ route('allBuku') }}" method="GET">
-                                <ul class="product-categories sidebar-list list-unstyled">
-                                    <li class="cat-item">
-                                        <input type="checkbox" name="category[]" value="all" onclick="this.form.submit()"
-                                            {{ in_array('all', (array) request('category')) ? 'checked' : '' }}>
-                                        All
-                                    </li>
+
+                        {{-- Categories Filter --}}
+                        <div>
+                            <h3 class="text-lg font-bold text-gray-900 mb-4">Categories</h3>
+                            <form action="{{ route('allBuku') }}" method="GET" id="categoryForm">
+                                <div class="space-y-3">
+                                    <label
+                                        class="flex items-center gap-3 p-3 rounded-lg hover:bg-gray-50 cursor-pointer transition-colors">
+                                        <input type="checkbox" name="category[]" value="all"
+                                            onchange="this.form.submit()"
+                                            {{ in_array('all', (array) request('category')) ? 'checked' : '' }}
+                                            class="w-4 h-4 rounded text-indigo-600 focus:ring-indigo-500">
+                                        <span class="text-sm font-medium text-gray-700">All Categories</span>
+                                    </label>
 
                                     @foreach ($categories as $c)
-                                        <li class="cat-item">
+                                        <label
+                                            class="flex items-center gap-3 p-3 rounded-lg hover:bg-gray-50 cursor-pointer transition-colors">
                                             <input type="checkbox" name="category[]" value="{{ $c->id }}"
-                                                onclick="this.form.submit()"
-                                                {{ in_array($c->id, (array) request('category')) ? 'checked' : '' }}>
-                                            {{ $c->nama }}
-                                        </li>
+                                                onchange="this.form.submit()"
+                                                {{ in_array($c->id, (array) request('category')) ? 'checked' : '' }}
+                                                class="w-4 h-4 rounded text-indigo-600 focus:ring-indigo-500">
+                                            <span class="text-sm font-medium text-gray-700">{{ $c->nama }}</span>
+                                        </label>
                                     @endforeach
-                                </ul>
+                                </div>
                             </form>
                         </div>
                     </div>
                 </aside>
 
-                <main class="col-md-10">
-                    <div class="filter-shop d-flex justify-content-between">
-                        <div class="showing-product">
-                            {{-- <p>Showing 1–9 of 55 results</p> --}}
-                            <p>Memperlihatkan 1 - {{ $buku->perPage() }} dari {{ $buku->total() }}</p>
-                        </div>
-                        <div class="sort-by">
-                            <form action="{{ route('allBuku') }}" method="GET">
-                                <select id="input-sort" class="form-control" name="sortBy" onchange="this.form.submit()">
+                {{-- Main Content Area --}}
+                <main class="lg:col-span-3">
+                    {{-- Filter Bar --}}
+                    <div class="bg-white rounded-3xl shadow-lg border border-gray-100 p-6 mb-8">
+                        <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
+                            <div class="text-sm text-gray-600">
+                                Showing <span class="font-semibold text-gray-900">{{ $buku->firstItem() ?? 0 }}</span> -
+                                <span class="font-semibold text-gray-900">{{ $buku->lastItem() ?? 0 }}</span> of
+                                <span class="font-semibold text-gray-900">{{ $buku->total() }}</span> results
+                            </div>
+                            <form action="{{ route('allBuku') }}" method="GET" class="w-full sm:w-auto">
+                                <select name="sortBy" onchange="this.form.submit()"
+                                    class="w-full sm:w-auto px-4 py-2 rounded-lg border border-gray-200 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200 text-sm font-medium transition-all">
                                     <option value="default" {{ request('sortBy') == 'default' ? 'selected' : '' }}>Default
-                                        sorting</option>
-                                    <option value="judulAZ" {{ request('sortBy') == 'judulAZ' ? 'selected' : '' }}>Judul (A
+                                        Sorting</option>
+                                    <option value="judulAZ" {{ request('sortBy') == 'judulAZ' ? 'selected' : '' }}>Title (A
                                         - Z)</option>
-                                    <option value="judulZA" {{ request('sortBy') == 'judulZA' ? 'selected' : '' }}>Judul (Z
+                                    <option value="judulZA" {{ request('sortBy') == 'judulZA' ? 'selected' : '' }}>Title (Z
                                         - A)</option>
-                                    <option value="rateH" {{ request('sortBy') == 'rateH' ? 'selected' : '' }}>Rating
-                                        (Highest)</option>
-                                    <option value="rateL" {{ request('sortBy') == 'rateL' ? 'selected' : '' }}>Rating
-                                        (Lowest)</option>
+                                    <option value="newest" {{ request('sortBy') == 'newest' ? 'selected' : '' }}>Newest
+                                        First</option>
+                                    <option value="oldest" {{ request('sortBy') == 'oldest' ? 'selected' : '' }}>Oldest
+                                        First</option>
                                 </select>
                             </form>
                         </div>
                     </div>
 
-                    <div class="product-grid row row-cols-sm-1 row-cols-md-2 row-cols-lg-3 row-cols-xl-4">
-                        @foreach ($buku->items() as $b)
-                            <div class="col d-flex">
-                                <div class="product-item card h-100 w-100 d-flex flex-column">
-                                    <a href="javascript:void(0)"
-                                        class="rounded-circle bg-light p-2 mx-1 add-to-wishlist {{ Auth::check() &&\App\Models\Wishlist::where('member_id', Auth::user()->member->membership_number)->where('buku_id', $b->id)->exists()? 'active': '' }}"
-                                        data-id="{{ $b->id }}">
-                                        <svg width="24" height="24" viewBox="0 0 24 24">
-                                            <use xlink:href="#heart"></use>
-                                        </svg>
-                                    </a>
-
-                                    {{-- Figure untuk gambar --}}
-                                    <figure class="product-figure align-center justify-content-center">
-                                        <a href="{{ route('buku', $b->slug) }}" title="{{ $b->judul }}">
-                                            <img src="{{ $b->banner_url }}" alt="Product Thumbnail" class="tab-image">
-                                        </a>
-                                    </figure>
-
-                                    {{-- Konten teks --}}
-                                    <div class="card-body d-flex flex-column">
-                                        <h3 class="product-title" title="{{ $b->judul }}">
-                                            {{ $b->judul }}
-                                        </h3>
-                                        <span class="qty">1 Unit</span>
-                                        <span class="rating">
-                                            <svg width="24" height="24" class="text-primary">
-                                                <use xlink:href="#star-solid"></use>
-                                            </svg>{{ $b->rating }}
-                                        </span>
-                                        <div class="mt-auto d-flex align-items-center justify-content-between">
-                                            <a href="{{ route('buku', $b->slug) }}" class="nav-link">Detail <svg
-                                                    width="18" height="18"></svg></a>
+                    {{-- Book Grid --}}
+                    <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+                        @forelse ($buku as $b)
+                            <div
+                                class="group bg-white rounded-3xl shadow-sm hover:shadow-2xl transition-all duration-500 overflow-hidden border border-gray-100 hover:border-indigo-200">
+                                <a href="{{ route('buku', $b->slug) }}" class="block">
+                                    <div
+                                        class="relative overflow-hidden bg-gradient-to-br from-gray-50 to-gray-100 aspect-[3/4]">
+                                        <img src="{{ $b->image ? asset('storage/' . $b->image) : asset('images/placeholder.png') }}"
+                                            alt="{{ $b->judul }}"
+                                            class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700">
+                                        <div
+                                            class="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500">
+                                        </div>
+                                        <div class="absolute top-4 left-4">
+                                            <span
+                                                class="px-3 py-1.5 bg-gradient-to-r from-indigo-600 to-purple-600 text-white text-xs font-bold rounded-full shadow-lg">
+                                                {{ $b->tahun ?? 'N/A' }}
+                                            </span>
+                                        </div>
+                                        <div class="absolute top-4 right-4">
+                                            <button
+                                                class="add-to-wishlist p-2.5 rounded-full bg-white/90 backdrop-blur-sm hover:bg-white shadow-lg transition-all duration-300 hover:scale-110 {{ Auth::check() &&!Auth::user()->role == 'admin' &&\App\Models\Wishlist::where('member_id', Auth::user()->member->membership_number)->where('buku_id', $b->id)->exists()? 'active': '' }}"
+                                                data-id="{{ $b->id }}" onclick="event.preventDefault();">
+                                                <svg class="w-5 h-5 text-gray-600 hover:text-red-500 transition-colors"
+                                                    fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                        d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z">
+                                                    </path>
+                                                </svg>
+                                            </button>
                                         </div>
                                     </div>
-                                </div>
+                                    <div class="p-6 space-y-3">
+                                        <h3
+                                            class="font-bold text-lg text-gray-900 line-clamp-2 group-hover:text-indigo-600 transition-colors min-h-[3.5rem]">
+                                            {{ $b->judul }}
+                                        </h3>
+                                        <div class="space-y-2">
+                                            <p class="text-sm text-gray-600 flex items-center gap-2">
+                                                <svg class="w-4 h-4 text-gray-400" fill="none" stroke="currentColor"
+                                                    viewBox="0 0 24 24">
+                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                        d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z">
+                                                    </path>
+                                                </svg>
+                                                <span class="line-clamp-1">{{ $b->author ?? 'Unknown Author' }}</span>
+                                            </p>
+                                            <p class="text-xs text-gray-500 flex items-center gap-2">
+                                                <svg class="w-4 h-4 text-gray-400" fill="none" stroke="currentColor"
+                                                    viewBox="0 0 24 24">
+                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                        d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4">
+                                                    </path>
+                                                </svg>
+                                                <span
+                                                    class="line-clamp-1">{{ $b->publisher ?? 'Unknown Publisher' }}</span>
+                                            </p>
+                                        </div>
+                                        <div class="pt-3 border-t border-gray-100">
+                                            <div class="flex items-center justify-between">
+                                                <span
+                                                    class="text-xs font-semibold text-indigo-600 bg-indigo-50 px-3 py-1 rounded-full">
+                                                    Available
+                                                </span>
+                                                <span
+                                                    class="text-sm font-bold text-gray-900 group-hover:text-indigo-600 transition-colors">
+                                                    View Details →
+                                                </span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </a>
                             </div>
-                        @endforeach
+                        @empty
+                            <div class="col-span-full text-center py-16">
+                                <div
+                                    class="inline-flex items-center justify-center w-20 h-20 rounded-full bg-gradient-to-br from-indigo-50 to-purple-50 mb-6">
+                                    <svg class="w-10 h-10 text-indigo-400" fill="none" stroke="currentColor"
+                                        viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                            d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253">
+                                        </path>
+                                    </svg>
+                                </div>
+                                <h3 class="text-xl font-bold text-gray-900 mb-2">No Books Found</h3>
+                                <p class="text-gray-600 mb-6">Try adjusting your search or filter to find what you're
+                                    looking for.</p>
+                                <a href="{{ route('allBuku') }}"
+                                    class="inline-flex items-center gap-2 px-6 py-3 bg-indigo-600 text-white rounded-xl font-semibold hover:bg-indigo-700 transition-colors">
+                                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                            d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15">
+                                        </path>
+                                    </svg>
+                                    Reset Filters
+                                </a>
+                            </div>
+                        @endforelse
                     </div>
 
-                    <!-- / product-grid -->
-
-                    <nav class="text-center py-4" aria-label="Page navigation">
-                        <ul class="pagination d-flex justify-content-center">
-                            {{-- Previous --}}
-                            <li class="page-item {{ $buku->onFirstPage() ? 'disabled' : '' }}">
-                                <a class="page-link bg-none border-0" href="{{ $buku->previousPageUrl() ?? '#' }}"
-                                    aria-label="Previous">
-                                    <span aria-hidden="true">«</span>
-                                </a>
-                            </li>
-
-                            {{-- Numbered Links --}}
-                            @foreach ($buku->links()->elements as $element)
-                                {{-- "Three Dots" Separator --}}
-                                @if (is_string($element))
-                                    <li class="page-item disabled">
-                                        <span class="page-link border-0">{{ $element }}</span>
-                                    </li>
+                    {{-- Pagination --}}
+                    @if ($buku->hasPages())
+                        <div class="flex justify-center mt-12">
+                            <div class="flex items-center gap-2">
+                                {{-- Previous --}}
+                                @if ($buku->onFirstPage())
+                                    <span
+                                        class="px-4 py-2.5 rounded-xl bg-gray-100 text-gray-400 cursor-not-allowed font-medium">
+                                        ← Previous
+                                    </span>
+                                @else
+                                    <a href="{{ $buku->previousPageUrl() }}"
+                                        class="px-4 py-2.5 rounded-xl bg-white border-2 border-gray-200 text-gray-700 hover:border-indigo-500 hover:text-indigo-600 transition-all font-medium shadow-sm hover:shadow-md">
+                                        ← Previous
+                                    </a>
                                 @endif
 
-                                {{-- Array Of Links --}}
-                                @if (is_array($element))
-                                    @foreach ($element as $page => $url)
-                                        <li class="page-item {{ $page == $buku->currentPage() ? 'active' : '' }}">
-                                            <a class="page-link border-0" href="{{ $url }}">
-                                                {{ $page }}
-                                            </a>
-                                        </li>
+                                {{-- Page Numbers --}}
+                                <div class="flex items-center gap-2 mx-2">
+                                    @foreach ($buku->links()->elements as $element)
+                                        @if (is_string($element))
+                                            <span class="px-3 py-2 text-gray-400">{{ $element }}</span>
+                                        @endif
+                                        @if (is_array($element))
+                                            @foreach ($element as $page => $url)
+                                                @if ($page == $buku->currentPage())
+                                                    <span
+                                                        class="w-10 h-10 flex items-center justify-center rounded-xl bg-gradient-to-br from-indigo-600 to-purple-600 text-white font-bold shadow-lg">
+                                                        {{ $page }}
+                                                    </span>
+                                                @else
+                                                    <a href="{{ $url }}"
+                                                        class="w-10 h-10 flex items-center justify-center rounded-xl bg-white border-2 border-gray-200 text-gray-700 hover:border-indigo-500 hover:text-indigo-600 transition-all font-medium shadow-sm hover:shadow-md">
+                                                        {{ $page }}
+                                                    </a>
+                                                @endif
+                                            @endforeach
+                                        @endif
                                     @endforeach
+                                </div>
+
+                                {{-- Next --}}
+                                @if ($buku->hasMorePages())
+                                    <a href="{{ $buku->nextPageUrl() }}"
+                                        class="px-4 py-2.5 rounded-xl bg-white border-2 border-gray-200 text-gray-700 hover:border-indigo-500 hover:text-indigo-600 transition-all font-medium shadow-sm hover:shadow-md">
+                                        Next →
+                                    </a>
+                                @else
+                                    <span
+                                        class="px-4 py-2.5 rounded-xl bg-gray-100 text-gray-400 cursor-not-allowed font-medium">
+                                        Next →
+                                    </span>
                                 @endif
-                            @endforeach
-
-                            {{-- Next --}}
-                            <li class="page-item {{ !$buku->hasMorePages() ? 'disabled' : '' }}">
-                                <a class="page-link border-0" href="{{ $buku->nextPageUrl() ?? '#' }}"
-                                    aria-label="Next">
-                                    <span aria-hidden="true">»</span>
-                                </a>
-                            </li>
-                        </ul>
-                    </nav>
-
+                            </div>
+                        </div>
+                    @endif
 
                 </main>
 
             </div>
         </div>
-    </div>
+    </section>
 @endsection
+
 @section('js')
     <script>
         document.addEventListener('DOMContentLoaded', () => {
-            document.querySelectorAll('.add-to-wishlist').forEach(btn => {
-                btn.addEventListener('click', async () => {
+        document.querySelectorAll('.add-to-wishlist').forEach(btn => {
+            btn.addEventListener('click', async (e) => {
+                    e.preventDefault();
+                    e.stopPropagation();
+
                     const bukuId = btn.dataset.id;
 
-                    try {
-                        const res = await fetch("{{ route('wishlist.store') }}", {
-                            method: "POST",
-                            headers: {
-                                "X-CSRF-TOKEN": "{{ csrf_token() }}",
-                                "Accept": "application/json",
-                                "Content-Type": "application/json"
-                            },
-                            body: JSON.stringify({
-                                buku_id: bukuId,
-                                member_id: {{ Auth::check() && Auth::user()->member->membership_number }}
-                            })
+                    // Check if user is authenticated
+                    @guest
+                    // Show login required modal
+                    window.modalSystem.showLoginRequired();
+                    return;
+                @endguest
+
+                @auth
+                // Check if user is member
+                @if (Auth::user()->role !== 'member' || !Auth::user()->member)
+                    // Show member only modal
+                    window.modalSystem.showMemberOnly();
+                    return;
+                @endif
+
+                try {
+                    const res = await fetch("{{ route('wishlist.store') }}", {
+                        method: "POST",
+                        headers: {
+                            "X-CSRF-TOKEN": "{{ csrf_token() }}",
+                            "Accept": "application/json",
+                            "Content-Type": "application/json"
+                        },
+                        body: JSON.stringify({
+                            buku_id: bukuId,
+                            member_id: {{ Auth::check() && !Auth::user()->role == 'admin' && Auth::user()->member->membership_number }}
+                        })
+                    });
+
+                    // Check if response is JSON
+                    const contentType = res.headers.get("content-type");
+                    if (!contentType || !contentType.includes("application/json")) {
+                        window.modalSystem.showAlert({
+                            type: 'danger',
+                            title: 'Session Expired',
+                            message: 'Your session has expired. Please login again.',
+                            buttons: [{
+                                    text: 'Login',
+                                    href: '{{ route('login') }}',
+                                    class: 'primary'
+                                },
+                                {
+                                    text: 'Cancel',
+                                    dismiss: true,
+                                    class: 'secondary'
+                                }
+                            ]
                         });
-
-                        const data = await res.json();
-
-                        if (data.success) {
-                            // 1) bikin heart jadi merah
-                            btn.classList.add("active");
-
-                            // 2) reload isi sidebar wishlist
-                            fetch("{{ route('wishlist.partial') }}")
-                                .then(r => r.text())
-                                .then(html => {
-                                    document.querySelector(
-                                            "#offcanvasWishlist .offcanvas-body")
-                                        .innerHTML = html;
-                                });
-
-                            // 3) buka sidebar
-                            const wishlistOffcanvas = new bootstrap.Offcanvas(document
-                                .getElementById('offcanvasWishlist'));
-                            wishlistOffcanvas.show();
-                        } else {
-                            alert(data.message || 'Gagal menambah ke wishlist');
-                        }
-                    } catch (err) {
-                        console.error(err);
-                        alert('Terjadi kesalahan');
+                        return;
                     }
-                });
-            });
+
+                    const data = await res.json();
+
+                    if (res.ok && data.success) {
+                        // Add active class
+                        btn.classList.add("active");
+
+                        // Show success modal
+                        window.modalSystem.showSuccess(
+                            'Book added to wishlist!',
+                            'You can view your wishlist anytime from the menu.'
+                        );
+
+                        // Update wishlist sidebar if exists
+                        try {
+                            const wishlistRes = await fetch("{{ route('wishlist.partial') }}");
+                            if (wishlistRes.ok) {
+                                const html = await wishlistRes.text();
+                                const wishlistBody = document.querySelector(
+                                    "#offcanvasWishlist .offcanvas-body");
+                                if (wishlistBody) {
+                                    wishlistBody.innerHTML = html;
+                                }
+
+                                // Show offcanvas if bootstrap is available
+                                const wishlistOffcanvas = document.getElementById(
+                                    'offcanvasWishlist');
+                                if (wishlistOffcanvas && typeof bootstrap !== 'undefined') {
+                                    const offcanvas = new bootstrap.Offcanvas(wishlistOffcanvas);
+                                    offcanvas.show();
+                                }
+                            }
+                        } catch (err) {
+                            console.warn('Could not update wishlist sidebar:', err);
+                        }
+                    } else {
+                        // Show error modal
+                        window.modalSystem.showError(
+                            data.message || 'Failed to add to wishlist',
+                            'Please try again later.'
+                        );
+                    }
+                } catch (err) {
+                    console.error('Wishlist error:', err);
+                    window.modalSystem.showError(
+                        'An error occurred',
+                        err.message || 'Please check your connection and try again.'
+                    );
+                }
+            @endauth
+        });
+        });
         });
     </script>
+
+    <style>
+        .add-to-wishlist.active svg {
+            fill: #ef4444;
+            stroke: #ef4444;
+        }
+
+        .line-clamp-1 {
+            display: -webkit-box;
+            -webkit-line-clamp: 1;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+        }
+
+        .line-clamp-2 {
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+        }
+    </style>
 @endsection

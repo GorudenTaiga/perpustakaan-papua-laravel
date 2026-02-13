@@ -1,0 +1,35 @@
+Perintah dari Client:
+1. Tambahkan aturan yang berhubungan dengan syarat untuk menjadi anggota
+2. Tambahkan fitur untuk membuat/memberikan tanda bintang
+3. Tambahkan batas waktu / denda pada buku yang hilang, rusak, dll
+4. Setiap kategori didalam sistem ditambahkan 10 judul buku
+5. Perhatikan admin yang mengaktifkan atau memvalidasi pinjaman dari anggota
+6. Perhatikan pada DPD terdapat 8 tabel, tetapi struktur filenya 3 ... yang benar
+7. DFD ... tabelnya (ini abaikan saja, clientnya tidak lengkap)
+8. Perbaiki program, sesuaikan dengan konsep peminjaman di perpus Jayapura, jangan tertukar dengan sistem jual beli buku
+9. Untuk konsep pinjam buku bagaimana? Apakah ada buku yang bisa dibaca di sistem? Atau tetap manual datang pinjam ke perpus langsung?
+10. Nama Aplikasi/Nama Situs websitenya diganti jadi "Perpustakaan Daerah"
+11. Batas pinjaman buku sampai kapan? sanksinya apa jika telat/hilang
+12. Buku disetiap kategori, 1 kategori terdapat 10 judul buku
+13. Fitur bintang di fungsikan/di hilangkan (dihilangkan saja)
+14. Fitur pembayaran apa gunanya? (dihapus)
+15. Hapus no hp, diganti dengan kata "Help" pada tampilan dashboard
+16. Saat pendaftaran, apa saja berkas pendukung
+
+Respon dariku kepada client mengenai permintaannya:
+1. Aturannya apa? Syaratnya apa? Dan memaparkan aturannya itu ketika ingin meminjam atau ketika baru mengakses webnya? 
+2. Oke
+3. Untuk batas waktu udah ya, dan udah termasuk denda ketika pengembalian diatas batas tersebut, untuk denda ketika hilang dan sebagainya, dari pihak perpus maunya bagaimana? Apakah dicantumkan juga dibagian bawah deskripsi buku? 
+4. Ini maksudnya apa? Langsung membuat 10 judul buku gitu? Kalau gitu, saya nggak bisa... Karena kan yang tau bukunya pihak perpus, tapi kalau maksudnya adalah menambah kategori pada 10 buku (meskipun kategorinya sama) itu bisa, bahkan 1 buku bisa memiliki beberapa kategori
+5. Jadi kalau mau pinjam, harus validasi admin terlebih dahulu kan? Itu sudah, bisa di cek pada menu pinjaman admin panel (tampilan yang isinya manajemen konten admin) 
+6. Ini aku kurang tau maksudnya bagaimana, bisa dijelaskan lebih detail
+7. Sama seperti nomor 6
+8. Oke
+9. Ini saya berikan, tapi maunya bagaimana? Apakah buku-bukunya disimpan pada gdrive perpustakaan dan pada bagian admin tinggal input linknya aja, atau mau langsung kasih softfilenya (dalam bentuk PDF) ke situsnya? Kalau saya sendiri, lebih menyarankan simpan ke gdrive perpus saja
+
+Jawaban dari Client mengenai responku:
+1. Itu syarat untuk akses web dan membuat kartu anggota misal surat aktif  kuliah  dll Selain email
+3. Iya
+4. Iya kategori satu tapi di dlm bisa 10 judul buku 
+6. Itu maksudnya kan ada bintang ² di dalam jd itu di hilang kan  
+9. pake gdrive saja

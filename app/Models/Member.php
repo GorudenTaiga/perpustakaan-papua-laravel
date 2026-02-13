@@ -17,7 +17,8 @@ class Member extends Model
         'valid_date',
         'jenis',
         'membership_number',
-        'image'
+        'image',
+        'document_path'
     ];
 
     public function user() {

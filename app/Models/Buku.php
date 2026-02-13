@@ -25,12 +25,11 @@ class Buku extends Model
         'year',
         'stock',
         'denda_per_hari',
-        'max_days',
         'deskripsi',
         'slug',
         'category_id',
-        'rating',
-        'banner'
+        'banner',
+        'gdrive_link'
     ];
 
     protected $casts = [

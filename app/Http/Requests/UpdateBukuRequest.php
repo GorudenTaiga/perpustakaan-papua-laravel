@@ -30,7 +30,6 @@ class UpdateBukuRequest extends FormRequest
             'year' => 'required|integer|min:1000|max:' . (date('Y') + 1),
             'stock' => 'required|integer|min:0',
             'price_per_day' => 'required|numeric|min:0',
-            'max_days' => 'nullable|integer|min:1',
             'deskripsi' => 'required|string',
             'slug' => 'required|string|max:255|unique:buku,slug,' . $bukuId,
             'category_id' => 'nullable|exists:categories,id',

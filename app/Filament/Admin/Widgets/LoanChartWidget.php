@@ -4,6 +4,7 @@ namespace App\Filament\Admin\Widgets;
 
 use Filament\Widgets\ChartWidget;
 use App\Models\Pinjaman;
+use App\Helpers\DatabaseHelper;
 use Illuminate\Support\Facades\DB;
 
 class LoanChartWidget extends ChartWidget
@@ -15,19 +16,25 @@ class LoanChartWidget extends ChartWidget
 
     protected function getData(): array
     {
-        $data = Pinjaman::selectRaw('MONTH(created_at) as month, COUNT(*) as count')
-    ->whereYear('created_at', date('Y'))
-    ->groupByRaw('MONTH(created_at)')
-    ->orderByRaw('MONTH(created_at)')
-    ->pluck('count', 'month')
-    ->toArray();
+        $currentYear = date('Y');
+        $monthExpr = DatabaseHelper::monthExpression('created_at');
+        $yearExpr = DatabaseHelper::yearExpression('created_at');
+        
+        $data = Pinjaman::selectRaw("{$monthExpr} as month, COUNT(*) as count")
+            ->whereRaw("{$yearExpr} = ?", [$currentYear])
+            ->groupByRaw($monthExpr)
+            ->orderByRaw($monthExpr)
+            ->pluck('count', 'month')
+            ->toArray();
 
         $months = [];
         $counts = [];
 
         for ($i = 1; $i <= 12; $i++) {
             $months[] = date('M', mktime(0, 0, 0, $i, 1));
-            $counts[] = $data[str_pad($i, 2, '0', STR_PAD_LEFT)] ?? 0;
+            // SQLite returns '01', '02', etc. MySQL returns 1, 2, etc.
+            $monthKey = DatabaseHelper::isSqlite() ? str_pad($i, 2, '0', STR_PAD_LEFT) : $i;
+            $counts[] = $data[$monthKey] ?? 0;
         }
 
         return [

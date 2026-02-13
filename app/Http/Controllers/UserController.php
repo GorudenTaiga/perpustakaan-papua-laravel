@@ -120,26 +120,37 @@ class UserController extends Controller
 
     public function register(Request $request) 
     {
-        if ($request->all()) {
+        if ($request->isMethod('post')) {
             $validate = $request->validate([
                 'email' => ['required', 'email', 'unique:users'],
                 'password' => ['required', 'min:6'],
                 'name' => ['required'],
+                'document' => ['nullable', 'file', 'mimes:pdf,jpg,jpeg,png', 'max:2048'],
             ]);
             $validate['role'] = 'member';
+            
             if ($validate) {
                 if ($user = User::create($validate)) {
+                    $documentPath = null;
+                    
+                    // Upload document if provided
+                    if ($request->hasFile('document')) {
+                        $documentPath = $request->file('document')->store('documents/members', 'public');
+                    }
+                    
                     if(Member::create([
                         'jenis' => $request->jenis,
                         'users_id' => $user->id,
-                        'membership_number' => strtotime($user->created_at)
+                        'membership_number' => strtotime($user->created_at),
+                        'document_path' => $documentPath
                     ])) {
                         return redirect()->back()->with('success', 'Register berhasil');
                     }
                 }
             }
         }
-        return view('register');
+        
+        return view('auth.register');
     }
 
     /**

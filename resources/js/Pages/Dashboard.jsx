@@ -41,8 +41,8 @@ export default function Dashboard({ title, books, auth }) {
             </div>
             <div className="flex items-center space-x-4">
               <div className="hidden lg:block text-right">
-                <p className="text-sm text-gray-600">For Support?</p>
-                <p className="text-lg font-semibold">+62 87743160171</p>
+                <p className="text-sm text-gray-600">Butuh Bantuan?</p>
+                <Link href="/help" className="text-lg font-semibold text-blue-600 hover:text-blue-800">Help Center</Link>
               </div>
               <div className="flex items-center space-x-2">
                 {user ? (

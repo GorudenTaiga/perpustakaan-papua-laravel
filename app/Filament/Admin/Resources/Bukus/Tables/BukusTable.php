@@ -9,10 +9,8 @@ use Filament\Actions\DeleteBulkAction;
 use Filament\Actions\EditAction;
 use Filament\Tables\Columns\ImageColumn;
 use Filament\Tables\Columns\TextColumn;
-use Filament\Tables\Filters\MultiSelectFilter;
 use Filament\Tables\Filters\SelectFilter;
 use Filament\Tables\Table;
-use Log;
 use Storage;
 
 class BukusTable
@@ -45,10 +43,6 @@ class BukusTable
                     ->numeric()
                     ->sortable(),
                 TextColumn::make('denda_per_hari')
-                    ->toggleable(isToggledHiddenByDefault: false)
-                    ->numeric()
-                    ->sortable(),
-                TextColumn::make('max_days')
                     ->toggleable(isToggledHiddenByDefault: false)
                     ->numeric()
                     ->sortable(),
@@ -99,7 +93,8 @@ class BukusTable
                     ->toggleable(isToggledHiddenByDefault: true),
             ])
             ->filters([
-                MultiSelectFilter::make('categories')
+                SelectFilter::make('categories')
+                ->multiple()
                 ->label('Category')
                 ->options(Category::pluck('nama', 'id'))
                 ->query(function ($query, $data) {

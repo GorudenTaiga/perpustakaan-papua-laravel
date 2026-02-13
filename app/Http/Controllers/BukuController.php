@@ -18,41 +18,51 @@ class BukuController extends Controller
      */
     public function index(BukuRequest $request)
     {
-        $buku = Buku::
-            when($request->query('sortBy'), function ($q, $sort) {
-                if ($sort == 'judulAZ') {
-                    $q->orderBy('judul', 'asc');
-                } else if ($sort == 'judulZA') {
-                    $q->orderBy('judul', 'desc');
-                } else if ($sort == 'rateH') {
-                    $q->orderBy('rating', 'desc');
-                } else if ($sort == 'rateL') {
-                    $q->orderBy('rating', 'asc');
-                } else {
-                    $q->orderBy('created_at', 'asc');
+        $buku = Buku::query()
+            // Sorting
+            ->when($request->query('sortBy'), function ($q, $sort) {
+                switch ($sort) {
+                    case 'judulAZ':
+                        $q->orderBy('judul', 'asc');
+                        break;
+                    case 'judulZA':
+                        $q->orderBy('judul', 'desc');
+                        break;
+                    case 'newest':
+                        $q->orderBy('created_at', 'desc');
+                        break;
+                    case 'oldest':
+                        $q->orderBy('created_at', 'asc');
+                        break;
+                    default:
+                        $q->orderBy('created_at', 'desc');
                 }
             })
+            // Category filtering
             ->when($request->query('category', []), function ($q, $categories) {
-                // dd(['Categories: ' => $categories]);
-                if (!in_array('all', $categories)) {
+                $categories = array_filter($categories); // Remove empty values
+                if (!empty($categories) && !in_array('all', $categories)) {
                     foreach ($categories as $cat) {
-                        $q->orWhereJsonContains('category_id', intval($cat));
+                        $q->whereJsonContains('category_id', intval($cat));
                     }
                 }
             })
+            // Search
             ->when($request->query('search'), function ($q, $search) {
-                $q->where('judul', 'like', '%' . $search . '%')
-                ->orWhere('author', 'like', '%'.$search.'%')
-                ->orWhere('publisher', 'like', '%'.$search.'%');
-        })
-        ->paginate(25);
+                $q->where(function($query) use ($search) {
+                    $query->where('judul', 'like', '%' . $search . '%')
+                          ->orWhere('author', 'like', '%' . $search . '%')
+                          ->orWhere('publisher', 'like', '%' . $search . '%')
+                          ->orWhere('deskripsi', 'like', '%' . $search . '%');
+                });
+            })
+            ->paginate(24);
     
+        // Use ultra modern view
         return view('pages.member.allBuku', [
             'buku' => $buku,
             'categories' => Category::all()
         ]);
-
-        // return dd($request->query());
     }
 
     public function allCategory() {

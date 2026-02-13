@@ -4,7 +4,7 @@
 <head>
     <meta charset="utf-8">
     <meta http-equiv="x-ua-compatible" content="ie=edge">
-    <title>Daftar Member - Perpustakaan Provinsi Papua</title>
+    <title>Daftar Member - Perpustakaan Daerah</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="shortcut icon" type="image/png" href="images/icon/favicon.ico">
     <link rel="stylesheet" href="css/bootstrap.min.css">
@@ -38,11 +38,11 @@
     <div class="login-area">
         <div class="container">
             <div class="login-box ptb--100">
-                <form method="post" action="{{ route('postRegister') }}">
+                <form method="post" action="{{ route('postRegister') }}" enctype="multipart/form-data">
                     @csrf
                     <div class="login-form-head">
                         <h4>Daftar Member</h4>
-                        <p>Selamat datang di Perpustakaan Provinsi Papua</p>
+                        <p>Selamat datang di Perpustakaan Daerah</p>
                     </div>
                     <div class="login-form-body">
                         <div class="form-gp">
@@ -72,6 +72,13 @@
                             <label for="exampleInputPassword1">Password</label>
                             <input type="password" name="password" id="exampleInputPassword1">
                             <i class="ti-lock" onclick="handleShowPassword()"></i>
+                            <div class="text-danger"></div>
+                        </div>
+                        <div class="form-gp">
+                            <label for="exampleInputDocument">Dokumen Pendukung</label>
+                            <small class="form-text text-muted">Upload surat aktif kuliah/sekolah, KTP, atau dokumen identitas lainnya (Max 2MB)</small>
+                            <input type="file" name="document" id="exampleInputDocument" accept=".pdf,.jpg,.jpeg,.png" class="form-control">
+                            <i class="ti-file"></i>
                             <div class="text-danger"></div>
                         </div>
                         <div class="submit-btn-area">

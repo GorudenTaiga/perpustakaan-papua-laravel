@@ -40,12 +40,12 @@ class BukuForm extends FormsComponent
                     ->required()
                     ->numeric(),
                 TextInput::make('denda_per_hari')
+                    ->label('Denda per Hari (Rp)')
                     ->required()
                     ->minValue(0)
                     ->maxValue(999999)
-                    ->numeric(),
-                TextInput::make('max_days')
-                    ->numeric(),
+                    ->numeric()
+                    ->prefix('Rp'),
                 TextInput::make('slug')
                     ->readOnly()
                     ->required(),
@@ -67,6 +67,13 @@ class BukuForm extends FormsComponent
                     ->visibility('public')
                     ->disk('public')
                     ->directory('buku/images/banner'),
+                TextInput::make('gdrive_link')
+                    ->label('Link Google Drive (Buku Digital)')
+                    ->url()
+                    ->helperText('Masukkan link Google Drive untuk buku digital (opsional)')
+                    ->placeholder('https://drive.google.com/...')
+                    ->nullable()
+                    ->columnSpanFull(),
             ]);
     }
 }
