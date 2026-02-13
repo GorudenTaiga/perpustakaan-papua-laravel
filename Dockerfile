@@ -18,7 +18,7 @@ RUN apt-get update && apt-get install -y \
 RUN apt-get clean && rm -rf /var/lib/apt/lists/*
 
 # Install PHP extensions
-RUN docker-php-ext-install pdo pdo_sqlite mbstring exif pcntl bcmath gd
+RUN docker-php-ext-install pdo pdo_sqlite mbstring exif pcntl bcmath gd intl zip
 
 # Get Composer
 COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
@@ -45,7 +45,8 @@ RUN chmod -R 775 /app/storage /app/bootstrap/cache /app/database
 EXPOSE 8080
 
 # Start application
-CMD php artisan config:cache && \
+CMD php artisan key:generate && \
+    php artisan config:cache && \
     php artisan route:cache && \
     php artisan view:cache && \
     php artisan migrate --force && \
