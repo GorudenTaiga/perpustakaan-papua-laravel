@@ -12,8 +12,7 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-        // User::factory(10)->create();
-
+        // Create admin user
         User::factory()->create([
             'name' => 'Admin User',
             'email' => 'admin@example.com',
@@ -21,8 +20,11 @@ class DatabaseSeeder extends Seeder
             'role' => 'admin',
         ]);
 
-        $this->call([
-            ReportSeeder::class,
-        ]);
+        // Skip other seeders in production to avoid Faker dependency
+        if (app()->environment('local')) {
+            $this->call([
+                ReportSeeder::class,
+            ]);
+        }
     }
 }
