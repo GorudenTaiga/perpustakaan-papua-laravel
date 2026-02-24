@@ -196,7 +196,7 @@
         </div>
 
         <!-- Wishlist Sidebar -->
-        <div x-data="{ wishlistOpen: false }" @keydown.escape.window="wishlistOpen = false">
+        <div x-data="wishlistSidebar()" @keydown.escape.window="wishlistOpen = false" @open-wishlist.window="open()" @wishlist-updated.window="refreshContent()">
             <div x-show="wishlistOpen" x-transition:enter="transition ease-out duration-300"
                 x-transition:enter-start="opacity-0" x-transition:enter-end="opacity-100"
                 x-transition:leave="transition ease-in duration-200" x-transition:leave-start="opacity-100"
@@ -208,7 +208,7 @@
                 x-transition:enter-start="translate-x-full" x-transition:enter-end="translate-x-0"
                 x-transition:leave="transition ease-in duration-200 transform"
                 x-transition:leave-start="translate-x-0" x-transition:leave-end="translate-x-full"
-                class="fixed right-0 top-0 z-50 h-full w-full sm:w-96 glass shadow-2xl" style="display: none;">
+                class="fixed right-0 top-0 z-50 h-full w-full sm:w-96 bg-white shadow-2xl" style="display: none;">
                 <div class="flex h-full flex-col">
                     <div
                         class="flex items-center justify-between border-b border-gray-200/50 bg-gradient-to-r from-pink-500 to-rose-500 p-6">
@@ -228,78 +228,13 @@
                         </button>
                     </div>
                     <div class="flex-1 overflow-y-auto p-6">
-                        @if (Auth::check())
-                            @if (isset($wishlist) && count($wishlist) > 0)
-                                <div class="space-y-4">
-                                    @foreach ($wishlist as $item)
-                                        @if ($item->buku)
-                                            <div
-                                                class="group relative overflow-hidden rounded-2xl bg-white p-4 shadow-lg hover:shadow-xl transition-all duration-300 border border-gray-100">
-                                                <div class="flex gap-4">
-                                                    <div
-                                                        class="relative w-16 h-24 flex-shrink-0 overflow-hidden rounded-lg">
-                                                        <img src="{{ Storage::disk('public')->url($item->buku?->banner) }}"
-                                                            alt="{{ $item->buku?->judul }}"
-                                                            class="h-full w-full object-cover group-hover:scale-110 transition-transform duration-300">
-                                                    </div>
-                                                    <div class="flex-1 min-w-0">
-                                                        <h4
-                                                            class="font-semibold text-gray-900 text-sm line-clamp-2 mb-2">
-                                                            {{ $item->buku?->judul }}</h4>
-                                                        <a href="{{ route('buku', $item->buku?->slug) }}"
-                                                            class="inline-flex items-center gap-1 text-xs font-medium text-indigo-600 hover:text-indigo-700 transition-colors">
-                                                            View Details
-                                                            <svg class="w-4 h-4" fill="none" stroke="currentColor"
-                                                                viewBox="0 0 24 24">
-                                                                <path stroke-linecap="round" stroke-linejoin="round"
-                                                                    stroke-width="2" d="M9 5l7 7-7 7"></path>
-                                                            </svg>
-                                                        </a>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        @endif
-                                    @endforeach
-                                </div>
-                            @else
-                                <div class="flex flex-col items-center justify-center h-full text-center py-12">
-                                    <div
-                                        class="w-24 h-24 bg-gradient-to-br from-pink-100 to-rose-100 rounded-full flex items-center justify-center mb-4">
-                                        <svg class="w-12 h-12 text-pink-400" fill="none" stroke="currentColor"
-                                            viewBox="0 0 24 24">
-                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                                d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z">
-                                            </path>
-                                        </svg>
-                                    </div>
-                                    <h4 class="text-lg font-semibold text-gray-900 mb-2">No books yet</h4>
-                                    <p class="text-sm text-gray-500 mb-4">Start adding books you love to your wishlist!
-                                    </p>
-                                    <a href="{{ route('allBuku') }}"
-                                        class="inline-flex items-center gap-2 rounded-lg bg-gradient-to-r from-pink-500 to-rose-500 px-4 py-2 text-sm font-medium text-white hover:from-pink-600 hover:to-rose-600 transition-all">
-                                        Browse Books
-                                    </a>
-                                </div>
-                            @endif
-                        @else
-                            <div class="flex flex-col items-center justify-center h-full text-center py-12">
-                                <div
-                                    class="w-24 h-24 bg-gradient-to-br from-indigo-100 to-purple-100 rounded-full flex items-center justify-center mb-4">
-                                    <svg class="w-12 h-12 text-indigo-400" fill="none" stroke="currentColor"
-                                        viewBox="0 0 24 24">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                            d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z">
-                                        </path>
-                                    </svg>
-                                </div>
-                                <h4 class="text-lg font-semibold text-gray-900 mb-2">Please login</h4>
-                                <p class="text-sm text-gray-500 mb-4">Login to view and manage your wishlist</p>
-                                <a href="{{ route('login') }}"
-                                    class="inline-flex items-center gap-2 rounded-lg bg-gradient-to-r from-indigo-600 to-purple-600 px-4 py-2 text-sm font-medium text-white hover:from-indigo-700 hover:to-purple-700 transition-all">
-                                    Login Now
-                                </a>
-                            </div>
-                        @endif
+                        {{-- Loading state --}}
+                        <div x-show="loading" class="flex flex-col items-center justify-center h-full">
+                            <svg class="animate-spin w-10 h-10 text-pink-500 mb-3" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z"></path></svg>
+                            <p class="text-sm text-gray-500">Memuat wishlist...</p>
+                        </div>
+                        {{-- Dynamic content --}}
+                        <div x-show="!loading" x-html="content"></div>
                     </div>
                 </div>
             </div>
@@ -343,6 +278,10 @@
                                 class="px-4 py-2 rounded-lg text-sm font-medium text-gray-700 hover:text-indigo-600 hover:bg-indigo-50 transition-all {{ request()->routeIs('pinjam') ? 'bg-indigo-50 text-indigo-600' : '' }}">
                                 My Loans
                             </a>
+                            <a href="{{ route('readingHistory') }}"
+                                class="px-4 py-2 rounded-lg text-sm font-medium text-gray-700 hover:text-indigo-600 hover:bg-indigo-50 transition-all {{ request()->routeIs('readingHistory') ? 'bg-indigo-50 text-indigo-600' : '' }}">
+                                Riwayat Baca
+                            </a>
                             <a target="_blank"
                                 href="{{ route('cetakKTA', base64_encode(Auth::user()->member->id)) }}"
                                 class="px-4 py-2 rounded-lg text-sm font-medium text-gray-700 hover:text-indigo-600 hover:bg-indigo-50 transition-all">
@@ -369,14 +308,32 @@
                         </div>
 
                         @if (Auth::user())
+                            <!-- Notification Bell -->
+                            @if(Auth::user()->role == 'member')
+                            <a href="{{ route('notifications') }}"
+                                class="relative p-2.5 rounded-lg hover:bg-gradient-to-br hover:from-blue-50 hover:to-indigo-50 text-gray-700 hover:text-blue-600 transition-all group">
+                                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"></path>
+                                </svg>
+                                @php
+                                    $unreadNotifCount = \App\Models\Notification::where('member_id', Auth::user()->member->membership_number)->whereNull('read_at')->count();
+                                @endphp
+                                @if($unreadNotifCount > 0)
+                                <span class="absolute -top-1 -right-1 w-5 h-5 bg-gradient-to-br from-red-500 to-orange-500 text-white text-xs font-bold rounded-full flex items-center justify-center animate-pulse">
+                                    {{ $unreadNotifCount > 9 ? '9+' : $unreadNotifCount }}
+                                </span>
+                                @endif
+                            </a>
+                            @endif
+
                             <!-- Wishlist Button -->
-                            <button @click="wishlistOpen = true"
+                            <button @click="$dispatch('open-wishlist')"
                                 class="relative p-2.5 rounded-lg hover:bg-gradient-to-br hover:from-pink-50 hover:to-rose-50 text-gray-700 hover:text-pink-600 transition-all group">
                                 <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                     <use xlink:href="#heart"></use>
                                 </svg>
                                 @if (isset($wishlist) && count($wishlist) > 0)
-                                    <span
+                                    <span data-wishlist-count
                                         class="absolute -top-1 -right-1 w-5 h-5 bg-gradient-to-br from-pink-500 to-rose-500 text-white text-xs font-bold rounded-full flex items-center justify-center animate-pulse">
                                         {{ count($wishlist) }}
                                     </span>
@@ -443,6 +400,21 @@
                             class="block px-4 py-3 rounded-lg text-sm font-medium text-gray-700 hover:bg-indigo-50 hover:text-indigo-600 transition-all {{ request()->routeIs('pinjam') ? 'bg-indigo-50 text-indigo-600' : '' }}">
                             My Loans
                         </a>
+                        <a href="{{ route('readingHistory') }}"
+                            class="block px-4 py-3 rounded-lg text-sm font-medium text-gray-700 hover:bg-indigo-50 hover:text-indigo-600 transition-all {{ request()->routeIs('readingHistory') ? 'bg-indigo-50 text-indigo-600' : '' }}">
+                            Riwayat Baca
+                        </a>
+                        <a href="{{ route('notifications') }}"
+                            class="block px-4 py-3 rounded-lg text-sm font-medium text-gray-700 hover:bg-indigo-50 hover:text-indigo-600 transition-all {{ request()->routeIs('notifications') ? 'bg-indigo-50 text-indigo-600' : '' }}">
+                            Notifikasi
+                            @if(isset($unreadNotifCount) && $unreadNotifCount > 0)
+                            <span class="ml-2 px-2 py-0.5 text-xs font-bold bg-red-100 text-red-600 rounded-full">{{ $unreadNotifCount }}</span>
+                            @endif
+                        </a>
+                        <a href="{{ route('reservations') }}"
+                            class="block px-4 py-3 rounded-lg text-sm font-medium text-gray-700 hover:bg-indigo-50 hover:text-indigo-600 transition-all {{ request()->routeIs('reservations') ? 'bg-indigo-50 text-indigo-600' : '' }}">
+                            Reservasi
+                        </a>
                         <a target="_blank" href="{{ route('cetakKTA', base64_encode(Auth::user()->member->id)) }}"
                             class="block px-4 py-3 rounded-lg text-sm font-medium text-gray-700 hover:bg-indigo-50 hover:text-indigo-600 transition-all">
                             Member Card
@@ -500,8 +472,91 @@
 
     <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/swiper@9/swiper-bundle.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js" defer></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
     <script src="{{ asset('js/modal-system.js') }}"></script>
+
+    {{-- Global Toast Notification & AJAX Helper --}}
+    <div x-data="toastSystem()" x-on:show-toast.window="show($event.detail)" class="fixed top-6 right-6 z-[100] space-y-3" style="pointer-events: none;">
+        <template x-for="(toast, index) in toasts" :key="index">
+            <div x-show="toast.visible"
+                 x-transition:enter="transition ease-out duration-300 transform"
+                 x-transition:enter-start="opacity-0 translate-x-8"
+                 x-transition:enter-end="opacity-100 translate-x-0"
+                 x-transition:leave="transition ease-in duration-200 transform"
+                 x-transition:leave-start="opacity-100 translate-x-0"
+                 x-transition:leave-end="opacity-0 translate-x-8"
+                 class="flex items-center gap-3 px-5 py-4 rounded-2xl shadow-2xl backdrop-blur-sm max-w-sm"
+                 :class="toast.type === 'success' ? 'bg-gradient-to-r from-emerald-500 to-green-500 text-white' : toast.type === 'error' ? 'bg-gradient-to-r from-red-500 to-rose-500 text-white' : 'bg-gradient-to-r from-blue-500 to-indigo-500 text-white'"
+                 style="pointer-events: auto;">
+                <div class="flex-shrink-0">
+                    <template x-if="toast.type === 'success'">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                    </template>
+                    <template x-if="toast.type === 'error'">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                    </template>
+                    <template x-if="toast.type === 'info'">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                    </template>
+                </div>
+                <p class="text-sm font-semibold" x-text="toast.message"></p>
+            </div>
+        </template>
+    </div>
+
+    <script>
+        function toastSystem() {
+            return {
+                toasts: [],
+                show(detail) {
+                    const toast = { message: detail.message, type: detail.type || 'success', visible: true };
+                    this.toasts.push(toast);
+                    setTimeout(() => { toast.visible = false; }, 3500);
+                    setTimeout(() => { this.toasts = this.toasts.filter(t => t !== toast); }, 4000);
+                }
+            }
+        }
+
+        function wishlistSidebar() {
+            return {
+                wishlistOpen: false,
+                loading: false,
+                content: '',
+                open() {
+                    this.wishlistOpen = true;
+                    this.refreshContent();
+                },
+                async refreshContent() {
+                    this.loading = true;
+                    try {
+                        const res = await fetch('{{ route("wishlist.partial") }}');
+                        this.content = await res.text();
+                    } catch (e) {
+                        this.content = '<p class="text-center text-gray-500 py-8">Gagal memuat wishlist</p>';
+                    }
+                    this.loading = false;
+                }
+            }
+        }
+
+        // Global AJAX helper
+        window.ajaxForm = async function(url, method, data, csrfToken) {
+            const opts = {
+                method: method,
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Accept': 'application/json',
+                    'X-CSRF-TOKEN': csrfToken,
+                    'X-Requested-With': 'XMLHttpRequest'
+                },
+            };
+            if (method !== 'GET') opts.body = JSON.stringify(data);
+            const res = await fetch(url, opts);
+            const json = await res.json();
+            if (!res.ok) throw { status: res.status, ...json };
+            return json;
+        };
+    </script>
 </body>
 @yield('js')
 
