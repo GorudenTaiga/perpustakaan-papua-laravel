@@ -20,10 +20,8 @@ class Pinjaman extends Model
         'due_date',
         'return_date',
         'status',
-        'total_price',
-        'discount',
-        'final_price',
-        'uuid'
+        'uuid',
+        'verif'
     ];
 
     public function member() {

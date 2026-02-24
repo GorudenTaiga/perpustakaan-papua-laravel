@@ -7,7 +7,6 @@ use App\Filament\Resources\Admin\Users\UserResource;
 use App\Filament\Resources\Admin\Members\MemberResource;
 use App\Filament\Resources\Admin\Payments\PaymentsResource;
 use App\Filament\Resources\Admin\Pinjamen\PinjamanResource;
-use App\Filament\Resources\Admin\PinjamanItems\PinjamanItemResource;
 use App\Filament\Resources\Admin\Categories\CategoryResource;
 use App\Filament\Resources\Admin\Reports\ReportResource;
 use Filament\Http\Middleware\Authenticate;
@@ -112,16 +111,16 @@ class AdminPanelProvider extends PanelProvider
                                 ->isActiveWhen(fn() => request()->routeIs('filament.admin.resources.admin.categories.index')),
                         ]),
 
-                    NavigationGroup::make('Loans & Payments')
+                    NavigationGroup::make('Peminjaman')
                         ->items([
-                            NavigationItem::make('Loans')
+                            NavigationItem::make('Peminjaman')
                                 ->icon('heroicon-o-document-text')
                                 ->url(PinjamanResource::getUrl())
                                 ->visible(Auth::user()->role === 'admin')
                                 ->isActiveWhen(fn() => request()->routeIs('filament.admin.resources.admin.pinjamen.index')),
 
-                            NavigationItem::make('Payments')
-                                ->icon('heroicon-o-currency-dollar')
+                            NavigationItem::make('Denda & Sanksi')
+                                ->icon('heroicon-o-exclamation-triangle')
                                 ->visible(Auth::user()->role === 'admin')
                                 ->url(PaymentsResource::getUrl())
                                 ->isActiveWhen(fn() => request()->routeIs('filament.admin.resources.admin.payments.index')),

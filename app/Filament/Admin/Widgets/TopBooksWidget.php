@@ -27,8 +27,8 @@ class TopBooksWidget extends BaseWidget
                     'buku.id',
                     'buku.judul',
                     'buku.category_id',
-                    DB::raw('COUNT(pinjaman.quantity) as total_pinjaman'),
-                    DB::raw('SUM(COALESCE(pinjaman.final_price, pinjaman.total_price)) as total_pendapatan')
+                    DB::raw('COUNT(pinjaman.id) as total_pinjaman'),
+                    DB::raw('SUM(CASE WHEN pinjaman.status = \'dipinjam\' THEN 1 ELSE 0 END) as sedang_dipinjam')
                 )
                 ->leftJoin('pinjaman', 'buku.id', '=', 'pinjaman.buku_id')
                 ->groupBy('buku.id', 'buku.judul', 'buku.category_id')
@@ -56,20 +56,16 @@ class TopBooksWidget extends BaseWidget
                             return '-';
                         }
 
-                        // Kalau masih string JSON, decode ke array
                         if (is_string($state)) {
                             $decoded = json_decode($state, true);
                             $state = is_array($decoded) ? $decoded : [$state];
                         }
 
-                        // Kalau integer atau bukan array, jadikan array
                         if (!is_array($state)) {
                             $state = [$state];
                         }
 
-                        // Pastikan array of int
                         $ids = array_map('intval', $state);
-
                         $categories = Category::whereIn('id', $ids)->pluck('nama');
 
                         return $categories->isNotEmpty()
@@ -80,26 +76,21 @@ class TopBooksWidget extends BaseWidget
                     ->badge(),
 
                 Tables\Columns\TextColumn::make('stock')
-                    ->label('Stok')
+                    ->label('Stok Tersedia')
                     ->numeric()
                     ->alignCenter(),
 
                 Tables\Columns\BadgeColumn::make('total_pinjaman')
-                    ->label('Total Dipinjam')
+                    ->label('Total Peminjaman')
                     ->numeric()
                     ->alignCenter()
                     ->color('success'),
 
-                Tables\Columns\TextColumn::make('price_per_day')
-                    ->label('Harga/Hari')
-                    ->money('IDR')
-                    ->alignCenter(),
-
-                Tables\Columns\TextColumn::make('total_pendapatan')
-                    ->label('Total Pendapatan')
-                    ->money('IDR')
+                Tables\Columns\BadgeColumn::make('sedang_dipinjam')
+                    ->label('Sedang Dipinjam')
+                    ->numeric()
                     ->alignCenter()
-                    ->color('primary'),
+                    ->color('warning'),
             ])
             ->defaultSort('total_pinjaman', 'desc')
             ->striped();

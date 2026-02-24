@@ -51,7 +51,6 @@ class UserController extends Controller
                 'quantity' => $request->quantity,
                 'status' => 'menunggu_verif',
                 'verif' => false,
-                'total_price' => 0
             ]);
             if ($create) {
                 return redirect()->back()->with('success', 'Buku telah berhasil di pinjam');

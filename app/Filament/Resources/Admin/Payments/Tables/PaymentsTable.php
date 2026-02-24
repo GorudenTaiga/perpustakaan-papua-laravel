@@ -14,22 +14,29 @@ class PaymentsTable
     {
         return $table
             ->columns([
-                TextColumn::make('pinjaman_id')
-                    ->numeric()
+                TextColumn::make('pinjaman.member.user.name')
+                    ->label('Nama Peminjam')
+                    ->sortable(),
+                TextColumn::make('pinjaman.buku.judul')
+                    ->label('Buku')
                     ->sortable(),
                 TextColumn::make('amount')
-                    ->numeric()
+                    ->label('Jumlah Denda')
+                    ->money('IDR')
                     ->sortable(),
                 TextColumn::make('payment_date')
+                    ->label('Tanggal Bayar')
                     ->date()
                     ->sortable(),
                 TextColumn::make('payment_method')
+                    ->label('Metode')
+                    ->badge()
                     ->searchable(),
+                TextColumn::make('keterangan')
+                    ->label('Keterangan')
+                    ->limit(50)
+                    ->toggleable(isToggledHiddenByDefault: false),
                 TextColumn::make('created_at')
-                    ->dateTime()
-                    ->sortable()
-                    ->toggleable(isToggledHiddenByDefault: true),
-                TextColumn::make('updated_at')
                     ->dateTime()
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),

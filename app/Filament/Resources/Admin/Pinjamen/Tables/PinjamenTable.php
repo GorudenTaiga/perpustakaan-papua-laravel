@@ -49,9 +49,7 @@ class PinjamenTable
                     })
                     ->sortable(),
                 TextColumn::make('quantity')
-                    ->numeric()
-                    ->sortable(),
-                TextColumn::make('final_price')
+                    ->label('Jumlah')
                     ->numeric()
                     ->sortable(),
                 TextColumn::make('created_at')

@@ -40,7 +40,8 @@ class BukuForm extends FormsComponent
                     ->required()
                     ->numeric(),
                 TextInput::make('denda_per_hari')
-                    ->label('Denda per Hari (Rp)')
+                    ->label('Denda Keterlambatan per Hari (Rp)')
+                    ->helperText('Nominal denda yang dikenakan per hari jika buku terlambat dikembalikan')
                     ->required()
                     ->minValue(0)
                     ->maxValue(999999)

@@ -43,8 +43,9 @@ class BukusTable
                     ->numeric()
                     ->sortable(),
                 TextColumn::make('denda_per_hari')
+                    ->label('Denda/Hari')
                     ->toggleable(isToggledHiddenByDefault: false)
-                    ->numeric()
+                    ->money('IDR')
                     ->sortable(),
                 TextColumn::make('slug')
                     ->toggleable(isToggledHiddenByDefault: false)
