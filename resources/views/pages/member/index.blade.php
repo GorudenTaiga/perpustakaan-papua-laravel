@@ -364,7 +364,7 @@
                                         <svg class="w-4 h-4 fill-current" viewBox="0 0 15 15">
                                             <use xlink:href="#star-solid"></use>
                                         </svg>
-                                        {{ $b->rating }}
+                                        {{ number_format($b->average_rating, 1) }}
                                     </span>
                                 </div>
                             </div>
@@ -385,6 +385,119 @@
             </div>
         </div>
     </section>
+
+    {{-- 🔥 Popular Books Section --}}
+    @if(isset($popularBooks) && $popularBooks->count() > 0)
+    <section class="py-20 bg-gradient-to-b from-gray-50 to-white">
+        <div class="container mx-auto px-4">
+            <div class="flex items-center justify-between mb-12">
+                <div>
+                    <div class="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-red-50 border border-red-100 mb-4">
+                        <svg class="w-5 h-5 text-red-500" fill="currentColor" viewBox="0 0 20 20">
+                            <path fill-rule="evenodd" d="M12.395 2.553a1 1 0 00-1.45-.385c-.345.23-.614.558-.822.88-.214.33-.403.713-.57 1.116-.334.804-.614 1.768-.84 2.734a31.365 31.365 0 00-.613 3.58 2.64 2.64 0 01-.945-1.067c-.328-.68-.398-1.534-.398-2.654A1 1 0 005.05 6.05 6.981 6.981 0 003 11a7 7 0 1011.95-4.95c-.592-.591-.98-.985-1.348-1.467-.363-.476-.724-1.063-1.207-2.03zM12.12 15.12A3 3 0 017 13s.879.5 2.5.5c0-1 .5-4 1.25-4.5.5 1 .786 1.293 1.371 1.879A2.99 2.99 0 0113 13a2.99 2.99 0 01-.879 2.121z" clip-rule="evenodd"></path>
+                        </svg>
+                        <span class="text-sm font-bold text-red-600">Trending</span>
+                    </div>
+                    <h2 class="text-4xl lg:text-5xl font-bold text-gray-900 mb-3">Buku Populer</h2>
+                    <p class="text-lg text-gray-600">Buku yang paling sering dipinjam oleh anggota perpustakaan</p>
+                </div>
+                <a href="{{ route('allBuku', ['sortBy' => 'newest']) }}"
+                    class="hidden md:inline-flex items-center gap-2 px-6 py-3 rounded-xl bg-gradient-to-r from-red-500 to-orange-500 text-white font-semibold hover:from-red-600 hover:to-orange-600 transition-all shadow-lg hover:shadow-xl hover:-translate-y-1">
+                    Lihat Semua
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"></path>
+                    </svg>
+                </a>
+            </div>
+
+            <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-6">
+                @foreach ($popularBooks as $index => $b)
+                    <div class="group relative">
+                        @if($index < 3)
+                        <div class="absolute -top-2 -left-2 z-20 w-10 h-10 rounded-full bg-gradient-to-r from-yellow-400 to-orange-500 flex items-center justify-center text-white font-bold text-sm shadow-lg">
+                            #{{ $index + 1 }}
+                        </div>
+                        @endif
+                        <a href="{{ route('buku', $b->slug) }}"
+                            class="block relative overflow-hidden rounded-2xl bg-white shadow-lg hover:shadow-2xl transition-all duration-500 hover:-translate-y-3">
+                            <div class="aspect-[3/4] overflow-hidden bg-gradient-to-br from-gray-100 to-gray-200">
+                                <img src="{{ $b->banner_url }}" alt="{{ $b->judul }}"
+                                    class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500">
+                            </div>
+                            <div class="p-4 space-y-2">
+                                <h3 class="font-bold text-gray-900 group-hover:text-indigo-600 transition-colors line-clamp-2 text-sm leading-snug">
+                                    {{ $b->judul }}
+                                </h3>
+                                <div class="flex items-center justify-between text-xs">
+                                    <span class="text-gray-500">{{ $b->author }}</span>
+                                    @if($b->average_rating > 0)
+                                    <span class="inline-flex items-center gap-1 text-yellow-500 font-semibold">
+                                        <svg class="w-3.5 h-3.5 fill-current" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"></path></svg>
+                                        {{ number_format($b->average_rating, 1) }}
+                                    </span>
+                                    @endif
+                                </div>
+                            </div>
+                        </a>
+                    </div>
+                @endforeach
+            </div>
+        </div>
+    </section>
+    @endif
+
+    {{-- 🆕 New Arrivals Section --}}
+    @if(isset($newArrivals) && $newArrivals->count() > 0)
+    <section class="py-20 bg-white">
+        <div class="container mx-auto px-4">
+            <div class="flex items-center justify-between mb-12">
+                <div>
+                    <div class="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-green-50 border border-green-100 mb-4">
+                        <svg class="w-5 h-5 text-green-500" fill="currentColor" viewBox="0 0 20 20">
+                            <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-11a1 1 0 10-2 0v2H7a1 1 0 100 2h2v2a1 1 0 102 0v-2h2a1 1 0 100-2h-2V7z" clip-rule="evenodd"></path>
+                        </svg>
+                        <span class="text-sm font-bold text-green-600">Baru Ditambahkan</span>
+                    </div>
+                    <h2 class="text-4xl lg:text-5xl font-bold text-gray-900 mb-3">Buku Terbaru</h2>
+                    <p class="text-lg text-gray-600">Koleksi terbaru yang baru ditambahkan ke perpustakaan</p>
+                </div>
+                <a href="{{ route('allBuku', ['sortBy' => 'newest']) }}"
+                    class="hidden md:inline-flex items-center gap-2 px-6 py-3 rounded-xl bg-gradient-to-r from-green-500 to-emerald-500 text-white font-semibold hover:from-green-600 hover:to-emerald-600 transition-all shadow-lg hover:shadow-xl hover:-translate-y-1">
+                    Lihat Semua
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"></path>
+                    </svg>
+                </a>
+            </div>
+
+            <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-6">
+                @foreach ($newArrivals as $b)
+                    <div class="group relative">
+                        <div class="absolute top-3 left-3 z-10">
+                            <span class="px-3 py-1 bg-green-500 text-white text-xs font-bold rounded-full shadow-lg">BARU</span>
+                        </div>
+                        <a href="{{ route('buku', $b->slug) }}"
+                            class="block relative overflow-hidden rounded-2xl bg-white shadow-lg hover:shadow-2xl transition-all duration-500 hover:-translate-y-3">
+                            <div class="aspect-[3/4] overflow-hidden bg-gradient-to-br from-gray-100 to-gray-200">
+                                <img src="{{ $b->banner_url }}" alt="{{ $b->judul }}"
+                                    class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500">
+                            </div>
+                            <div class="p-4 space-y-2">
+                                <h3 class="font-bold text-gray-900 group-hover:text-indigo-600 transition-colors line-clamp-2 text-sm leading-snug">
+                                    {{ $b->judul }}
+                                </h3>
+                                <div class="flex items-center justify-between text-xs">
+                                    <span class="text-gray-500">{{ $b->author }}</span>
+                                    <span class="text-gray-400">{{ $b->created_at->diffForHumans() }}</span>
+                                </div>
+                            </div>
+                        </a>
+                    </div>
+                @endforeach
+            </div>
+        </div>
+    </section>
+    @endif
 
     <section class="py-16 bg-gradient-to-b from-white to-gray-50">
         <div class="container mx-auto px-4">
