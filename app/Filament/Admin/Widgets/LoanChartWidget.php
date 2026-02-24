@@ -9,10 +9,11 @@ use Illuminate\Support\Facades\DB;
 
 class LoanChartWidget extends ChartWidget
 {
-    /* The line `// protected ?string  = 'Statistik Peminjaman Bulanan';` is a commented out
-    line of code in PHP. In PHP, the `//` syntax is used to add comments in the code, which are
-    ignored by the PHP interpreter and are meant for human readers to understand the code. */
     protected ?string $heading = 'Statistik Peminjaman Bulanan';
+
+    protected static ?int $sort = 2;
+
+    protected int | string | array $columnSpan = 1;
 
     protected function getData(): array
     {

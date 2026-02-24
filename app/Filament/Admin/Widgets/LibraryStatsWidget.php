@@ -11,6 +11,7 @@ use App\Models\Pinjaman;
 
 class LibraryStatsWidget extends StatsOverviewWidget
 {
+    protected static ?int $sort = 1;
     protected function getCards(): array
     {
         return [

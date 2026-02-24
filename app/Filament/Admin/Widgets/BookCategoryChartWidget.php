@@ -10,6 +10,10 @@ class BookCategoryChartWidget extends ChartWidget
 {
     protected ?string $heading = 'Distribusi Buku per Kategori';
 
+    protected static ?int $sort = 2;
+
+    protected int | string | array $columnSpan = 1;
+
     protected function getData(): array
     {
         // $data = Buku::join('categories', 'buku.category_id', '=', 'categories.id')
