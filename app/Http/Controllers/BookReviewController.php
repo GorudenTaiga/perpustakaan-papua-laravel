@@ -42,15 +42,24 @@ class BookReviewController extends Controller
         );
 
         if ($request->expectsJson()) {
+            $buku = \App\Models\Buku::find($request->buku_id);
+            $avgRating = BookReview::where('buku_id', $request->buku_id)->avg('rating');
+            $reviewCount = BookReview::where('buku_id', $request->buku_id)->count();
+
             return response()->json([
                 'success' => true,
                 'message' => 'Review berhasil disimpan!',
                 'review' => [
+                    'id' => $review->id,
                     'rating' => $review->rating,
                     'review' => $review->review,
                     'user_name' => Auth::user()->name,
+                    'user_initial' => strtoupper(substr(Auth::user()->name, 0, 1)),
                     'created_at' => $review->created_at->diffForHumans(),
+                    'is_update' => !$review->wasRecentlyCreated,
                 ],
+                'average_rating' => round($avgRating, 1),
+                'review_count' => $reviewCount,
             ]);
         }
         return redirect()->back()->with('success', 'Review berhasil disimpan!');
