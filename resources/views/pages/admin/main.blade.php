@@ -1,12 +1,13 @@
 <!doctype html>
-<html class="no-js" lang="en">
+<html class="no-js" lang="id">
 
 <head>
     <meta charset="utf-8">
     <meta http-equiv="x-ua-compatible" content="ie=edge">
-    <title>{{ $title ? $title : 'Admin Page' }}</title>
+    <title>{{ $title ? $title : 'Admin Page' }} - Perpustakaan Daerah</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="shortcut icon" type="image/png" href="images/icon/favicon.ico">
+    <meta name="robots" content="noindex, nofollow">
+    <link rel="shortcut icon" href="{{ asset('favicon.ico') }}">
     {{-- <link rel="stylesheet" href="{{ asset('css/bootstrap.min.css') }}">
     <link rel="stylesheet" href="{{ asset('css/font-awesome.min.css') }}">
     <link rel="stylesheet" href="{{ asset('css/themify-icons.css') }}">

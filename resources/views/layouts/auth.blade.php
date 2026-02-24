@@ -1,13 +1,17 @@
 <!DOCTYPE html>
-<html class="no-js" lang="en">
+<html class="no-js" lang="id">
 <head>
     <meta charset="utf-8">
     <meta http-equiv="x-ua-compatible" content="ie=edge">
     <title>@yield('title', 'Authentication') - Perpustakaan Daerah</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="Perpustakaan Daerah Provinsi Papua - Sistem autentikasi anggota perpustakaan.">
     
     <!-- Favicon -->
-    <link rel="shortcut icon" type="image/png" href="{{ asset('images/icon/favicon.ico') }}">
+    <link rel="apple-touch-icon" sizes="180x180" href="{{ asset('favicon_io/apple-touch-icon.png') }}">
+    <link rel="icon" type="image/png" sizes="32x32" href="{{ asset('favicon_io/favicon-32x32.png') }}">
+    <link rel="icon" type="image/png" sizes="16x16" href="{{ asset('favicon_io/favicon-16x16.png') }}">
+    <link rel="shortcut icon" href="{{ asset('favicon.ico') }}">
     
     <!-- Styles -->
     <link rel="stylesheet" href="{{ asset('css/bootstrap.min.css') }}">

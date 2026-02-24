@@ -1,20 +1,33 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="id">
 
 <head>
-    <title>Dashboard - Perpustakaan Provinsi Papua</title>
+    <title>@yield('title', 'Perpustakaan Daerah Provinsi Papua - Katalog Buku Digital')</title>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="format-detection" content="telephone=no">
     <meta name="apple-mobile-web-app-capable" content="yes">
-    <meta name="author" content="">
-    <meta name="keywords" content="">
-    <meta name="description" content="">
+    <meta name="author" content="Perpustakaan Daerah Provinsi Papua">
+    <meta name="keywords" content="perpustakaan, buku, pinjam buku, perpustakaan papua, katalog buku, perpustakaan digital">
+    <meta name="description" content="@yield('meta_description', 'Perpustakaan Daerah Provinsi Papua - Akses ribuan koleksi buku, pinjam buku online, dan jelajahi katalog digital terlengkap untuk masyarakat Papua.')">
+
+    <!-- Open Graph / Social Media -->
+    <meta property="og:type" content="website">
+    <meta property="og:title" content="@yield('title', 'Perpustakaan Daerah Provinsi Papua')">
+    <meta property="og:description" content="@yield('meta_description', 'Akses ribuan koleksi buku, pinjam buku online, dan jelajahi katalog digital terlengkap untuk masyarakat Papua.')">
+    <meta property="og:image" content="{{ asset('logo.png') }}">
+    <meta property="og:locale" content="id_ID">
+
+    <!-- Favicon -->
+    <link rel="apple-touch-icon" sizes="180x180" href="{{ asset('favicon_io/apple-touch-icon.png') }}">
+    <link rel="icon" type="image/png" sizes="32x32" href="{{ asset('favicon_io/favicon-32x32.png') }}">
+    <link rel="icon" type="image/png" sizes="16x16" href="{{ asset('favicon_io/favicon-16x16.png') }}">
+    <link rel="manifest" href="{{ asset('favicon_io/site.webmanifest') }}">
+    <link rel="shortcut icon" href="{{ asset('favicon.ico') }}">
 
     <link href="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.13/cropper.min.css" rel="stylesheet">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.13/cropper.min.js"></script>
-
 
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@9/swiper-bundle.min.css">
 
@@ -292,7 +305,7 @@
             </div>
         </div>
         <!-- Modern Header with Glassmorphism -->
-        <header class="sticky top-0 z-40 backdrop-blur-xl bg-white/80 border-b border-gray-200/50 shadow-sm">
+        <header x-data="{ mobileMenuOpen: false }" class="sticky top-0 z-40 backdrop-blur-xl bg-white/80 border-b border-gray-200/50 shadow-sm">
             <div class="container mx-auto px-4">
                 <!-- Top Bar -->
                 <div class="flex items-center justify-between py-4">
@@ -405,7 +418,7 @@
             </div>
 
             <!-- Mobile Menu -->
-            <div x-data="{ mobileMenuOpen: false }" x-show="mobileMenuOpen"
+            <div x-show="mobileMenuOpen"
                 x-transition:enter="transition ease-out duration-200"
                 x-transition:enter-start="opacity-0 -translate-y-4" x-transition:enter-end="opacity-100 translate-y-0"
                 x-transition:leave="transition ease-in duration-150"

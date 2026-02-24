@@ -1,11 +1,22 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="id">
 
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Daftar menjadi anggota Perpustakaan Daerah Provinsi Papua - Gratis, mudah, dan cepat. Akses ribuan koleksi buku digital.">
+    <meta property="og:title" content="Register - Perpustakaan Provinsi Papua">
+    <meta property="og:description" content="Daftar menjadi anggota Perpustakaan Daerah Provinsi Papua - pendaftaran gratis.">
+    <meta property="og:type" content="website">
+    <meta property="og:locale" content="id_ID">
     <title>Register - Perpustakaan Provinsi Papua</title>
+
+    <!-- Favicon -->
+    <link rel="apple-touch-icon" sizes="180x180" href="{{ asset('favicon_io/apple-touch-icon.png') }}">
+    <link rel="icon" type="image/png" sizes="32x32" href="{{ asset('favicon_io/favicon-32x32.png') }}">
+    <link rel="icon" type="image/png" sizes="16x16" href="{{ asset('favicon_io/favicon-16x16.png') }}">
+    <link rel="shortcut icon" href="{{ asset('favicon.ico') }}">
     
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
