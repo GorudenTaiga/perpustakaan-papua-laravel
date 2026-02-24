@@ -2,9 +2,12 @@
 
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\AssetController;
+use App\Http\Controllers\BookReservationController;
+use App\Http\Controllers\BookReviewController;
 use App\Http\Controllers\BukuController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\MemberController;
+use App\Http\Controllers\NotificationController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\WishlistController;
@@ -26,12 +29,32 @@ Route::middleware(['auth:member'])->group(function () {
     Route::get('/profile', [UserController::class, 'index'])->name('userProfile');
     Route::get('/pinjam', [UserController::class, 'peminjaman'])->name('pinjam');
     Route::post('/pinjam/store', [UserController::class, 'pinjam'])->name('pinjam.store');
+    Route::post('/pinjam/extend/{id}', [UserController::class, 'extendLoan'])->name('pinjam.extend');
+    Route::get('/pinjam/export-pdf', [UserController::class, 'exportLoanPdf'])->name('pinjam.exportPdf');
     Route::get('/cetakKTA/{id}', [UserController::class, 'cetakKTA'])->name('cetakKTA');
     Route::put('/member/update-photo', [UserController::class, 'updatePhoto'])->name('member.updatePhoto');
     Route::post('/wishlist', [WishlistController::class, 'store'])->name('wishlist.store');
     Route::delete('/wishlist', [WishlistController::class, 'destroy'])->name('wishlist.destroy');
     Route::get('/wishlist/partial', [WishlistController::class, 'partial'])->name('wishlist.partial');
+    Route::get('/wishlist', [WishlistController::class, 'index'])->name('wishlist.index');
 
+    // Book Reviews
+    Route::post('/review', [BookReviewController::class, 'store'])->name('review.store');
+    Route::delete('/review', [BookReviewController::class, 'destroy'])->name('review.destroy');
+
+    // Book Reservations
+    Route::post('/reservation', [BookReservationController::class, 'store'])->name('reservation.store');
+    Route::post('/reservation/cancel', [BookReservationController::class, 'cancel'])->name('reservation.cancel');
+    Route::get('/reservations', [BookReservationController::class, 'index'])->name('reservations');
+
+    // Notifications
+    Route::get('/notifications', [NotificationController::class, 'index'])->name('notifications');
+    Route::post('/notifications/{id}/read', [NotificationController::class, 'markAsRead'])->name('notifications.read');
+    Route::post('/notifications/read-all', [NotificationController::class, 'markAllAsRead'])->name('notifications.readAll');
+    Route::get('/notifications/unread-count', [NotificationController::class, 'unreadCount'])->name('notifications.unreadCount');
+
+    // Reading History
+    Route::get('/reading-history', [UserController::class, 'readingHistory'])->name('readingHistory');
 });
 
 Route::get('/getImage/{path}', [AssetController::class, 'index']);
