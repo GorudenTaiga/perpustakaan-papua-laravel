@@ -21,7 +21,9 @@ class Pinjaman extends Model
         'return_date',
         'status',
         'uuid',
-        'verif'
+        'verif',
+        'extended',
+        'extension_date'
     ];
 
     public function member() {

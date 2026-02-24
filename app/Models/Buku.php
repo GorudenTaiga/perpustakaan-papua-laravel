@@ -7,6 +7,7 @@ use Filament\Panel;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\DB;
 use Log;
 use Storage;
 
@@ -37,7 +38,9 @@ class Buku extends Model
     ];
 
     protected $appends = [
-        'banner_url'
+        'banner_url',
+        'average_rating',
+        'review_count',
     ];
     
 
@@ -61,5 +64,30 @@ class Buku extends Model
     public function getRouteKeyName()
     {
         return 'slug';
+    }
+
+    public function reviews()
+    {
+        return $this->hasMany(BookReview::class, 'buku_id', 'id');
+    }
+
+    public function reservations()
+    {
+        return $this->hasMany(BookReservation::class, 'buku_id', 'id');
+    }
+
+    public function averageRating(): Attribute
+    {
+        return Attribute::get(fn () => $this->reviews()->avg('rating') ?? 0);
+    }
+
+    public function reviewCount(): Attribute
+    {
+        return Attribute::get(fn () => $this->reviews()->count());
+    }
+
+    public function borrowCount(): Attribute
+    {
+        return Attribute::get(fn () => DB::table('pinjaman')->where('buku_id', $this->id)->count());
     }
 }

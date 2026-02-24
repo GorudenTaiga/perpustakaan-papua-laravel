@@ -28,4 +28,20 @@ class Member extends Model
     public function wishlist() {
         return $this->hasMany(Wishlist::class, 'member_id', 'membership_number');
     }
+
+    public function reviews() {
+        return $this->hasMany(BookReview::class, 'member_id', 'membership_number');
+    }
+
+    public function reservations() {
+        return $this->hasMany(BookReservation::class, 'member_id', 'membership_number');
+    }
+
+    public function notifications() {
+        return $this->hasMany(Notification::class, 'member_id', 'membership_number');
+    }
+
+    public function pinjaman() {
+        return $this->hasMany(Pinjaman::class, 'member_id', 'membership_number');
+    }
 }
