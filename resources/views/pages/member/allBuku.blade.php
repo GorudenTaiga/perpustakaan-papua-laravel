@@ -65,31 +65,61 @@
                         </div>
 
                         {{-- Categories Filter --}}
-                        <div>
-                            <h3 class="text-lg font-bold text-gray-900 mb-4">Categories</h3>
+                        <div x-data="{ expanded: false }">
+                            <h3 class="text-lg font-bold text-gray-900 mb-3">Categories</h3>
                             <form action="{{ route('allBuku') }}" method="GET" id="categoryForm">
-                                <div class="space-y-3">
+                                <div class="space-y-1">
                                     <label
-                                        class="flex items-center gap-3 p-3 rounded-lg hover:bg-gray-50 cursor-pointer transition-colors">
+                                        class="flex items-center gap-3 px-3 py-2 rounded-lg hover:bg-gray-50 cursor-pointer transition-colors">
                                         <input type="checkbox" name="category[]" value="all"
-                                            onchange="this.form.submit()"
-                                            {{ in_array('all', (array) request('category')) ? 'checked' : '' }}
+                                            onchange="categoryToggle(this, true)"
+                                            {{ empty(request('category')) || in_array('all', (array) request('category')) ? 'checked' : '' }}
                                             class="w-4 h-4 rounded text-indigo-600 focus:ring-indigo-500">
                                         <span class="text-sm font-medium text-gray-700">All Categories</span>
                                     </label>
 
-                                    @foreach ($categories as $c)
-                                        <label
-                                            class="flex items-center gap-3 p-3 rounded-lg hover:bg-gray-50 cursor-pointer transition-colors">
+                                    @foreach ($categories as $i => $c)
+                                        <label x-show="expanded || {{ $i }} < 5"
+                                            x-transition
+                                            class="flex items-center gap-3 px-3 py-2 rounded-lg hover:bg-gray-50 cursor-pointer transition-colors {{ in_array($c->id, (array) request('category')) ? 'bg-indigo-50' : '' }}">
                                             <input type="checkbox" name="category[]" value="{{ $c->id }}"
-                                                onchange="this.form.submit()"
+                                                onchange="categoryToggle(this, false)"
                                                 {{ in_array($c->id, (array) request('category')) ? 'checked' : '' }}
                                                 class="w-4 h-4 rounded text-indigo-600 focus:ring-indigo-500">
-                                            <span class="text-sm font-medium text-gray-700">{{ $c->nama }}</span>
+                                            <span class="text-sm font-medium text-gray-700 truncate">{{ $c->nama }}</span>
                                         </label>
                                     @endforeach
                                 </div>
+
+                                @if($categories->count() > 5)
+                                <button type="button" @click="expanded = !expanded"
+                                    class="mt-2 w-full flex items-center justify-center gap-1.5 py-2 text-xs font-semibold text-indigo-600 hover:text-indigo-700 hover:bg-indigo-50 rounded-lg transition-colors">
+                                    <span x-text="expanded ? 'Tampilkan Sedikit' : 'Tampilkan Semua ({{ $categories->count() }})'"></span>
+                                    <svg class="w-4 h-4 transition-transform duration-200" :class="expanded ? 'rotate-180' : ''" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+                                    </svg>
+                                </button>
+                                @endif
                             </form>
+                            <script>
+                                function categoryToggle(el, isAll) {
+                                    const form = document.getElementById('categoryForm');
+                                    const allCb = form.querySelector('input[value="all"]');
+                                    const others = form.querySelectorAll('input[name="category[]"]:not([value="all"])');
+                                    if (isAll) {
+                                        // "All" clicked: uncheck all others
+                                        allCb.checked = true;
+                                        others.forEach(cb => cb.checked = false);
+                                    } else {
+                                        // Specific category clicked: uncheck "All"
+                                        allCb.checked = false;
+                                        // If nothing is checked, re-check "All"
+                                        const anyChecked = Array.from(others).some(cb => cb.checked);
+                                        if (!anyChecked) allCb.checked = true;
+                                    }
+                                    form.submit();
+                                }
+                            </script>
                         </div>
                     </div>
                 </aside>
@@ -363,6 +393,7 @@
                                 'The book has been removed from your wishlist.'
                             );
                         }
+                        window.dispatchEvent(new CustomEvent('wishlist-updated'));
                     } else {
                         // Show error modal
                         window.modalSystem.showError(
