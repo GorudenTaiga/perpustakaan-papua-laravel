@@ -39,6 +39,12 @@ class WishlistController extends Controller
         return response()->json(['success' => true, 'added' => true, 'message' => 'Added to wishlist']);
     }
 
+    public function index()
+    {
+        $wishlist = auth()->user()->member->wishlist()->with('buku')->latest()->get();
+        return view('pages.member.wishlist', compact('wishlist'));
+    }
+
     public function partial()
     {
         if (!auth()->check()) {
