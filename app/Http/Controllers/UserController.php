@@ -4,12 +4,14 @@ namespace App\Http\Controllers;
 
 use App\Models\Buku;
 use App\Models\Member;
+use App\Models\Notification;
 use App\Models\Pinjaman;
 use App\Models\User;
 use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Http\Request;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 use Storage;
 
 class UserController extends Controller
@@ -53,8 +55,14 @@ class UserController extends Controller
                 'verif' => false,
             ]);
             if ($create) {
+                if ($request->expectsJson()) {
+                    return response()->json(['success' => true, 'message' => 'Buku telah berhasil di pinjam']);
+                }
                 return redirect()->back()->with('success', 'Buku telah berhasil di pinjam');
             }
+        }
+        if ($request->expectsJson()) {
+            return response()->json(['success' => false, 'message' => 'Buku gagal dipinjam'], 422);
         }
         return redirect()->back()->with('Error', 'Buku gagal dipinjam');
     }
@@ -150,6 +158,68 @@ class UserController extends Controller
         }
         
         return view('auth.register');
+    }
+
+    public function extendLoan($id)
+    {
+        $member = Auth::user()->member;
+        $pinjaman = Pinjaman::where('member_id', $member->membership_number)
+            ->where('id', $id)
+            ->whereIn('status', ['dipinjam'])
+            ->where('extended', false)
+            ->firstOrFail();
+
+        if (Carbon::parse($pinjaman->due_date)->isPast()) {
+            if (request()->expectsJson()) {
+                return response()->json(['success' => false, 'message' => 'Tidak bisa memperpanjang, peminjaman sudah melewati batas waktu.'], 422);
+            }
+            return redirect()->back()->with('error', 'Tidak bisa memperpanjang, peminjaman sudah melewati batas waktu.');
+        }
+
+        $newDueDate = Carbon::parse($pinjaman->due_date)->addDays(7);
+        $pinjaman->update([
+            'extended' => true,
+            'extension_date' => now(),
+            'due_date' => $newDueDate->toDateString(),
+        ]);
+
+        Notification::create([
+            'member_id' => $member->membership_number,
+            'type' => 'loan_extended',
+            'title' => 'Peminjaman Diperpanjang',
+            'message' => "Peminjaman buku \"{$pinjaman->buku->judul}\" berhasil diperpanjang hingga {$newDueDate->format('d M Y')}.",
+        ]);
+
+        if (request()->expectsJson()) {
+            return response()->json(['success' => true, 'message' => 'Peminjaman berhasil diperpanjang 7 hari.', 'new_due_date' => $newDueDate->format('d M Y')]);
+        }
+        return redirect()->back()->with('success', 'Peminjaman berhasil diperpanjang 7 hari.');
+    }
+
+    public function readingHistory()
+    {
+        $member = Auth::user()->member;
+        $history = Pinjaman::where('member_id', $member->membership_number)
+            ->where('status', 'dikembalikan')
+            ->with('buku')
+            ->orderBy('return_date', 'desc')
+            ->paginate(12);
+
+        return view('pages.member.reading_history', compact('history'));
+    }
+
+    public function exportLoanPdf()
+    {
+        $member = Auth::user()->member;
+        $pinjaman = Pinjaman::where('member_id', $member->membership_number)
+            ->with(['buku'])
+            ->orderBy('loan_date', 'desc')
+            ->get();
+
+        $pdf = Pdf::loadView('pages.member.loan_export_pdf', compact('member', 'pinjaman'))
+            ->setPaper('a4', 'landscape');
+
+        return $pdf->download("riwayat-peminjaman-{$member->membership_number}.pdf");
     }
 
     /**

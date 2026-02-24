@@ -80,12 +80,22 @@
             {{-- Loans List --}}
             <div class="bg-white rounded-3xl shadow-lg border border-gray-100 overflow-hidden">
                 <div class="bg-gradient-to-r from-indigo-600 to-purple-600 px-8 py-6">
-                    <h2 class="text-2xl font-bold text-white flex items-center gap-3">
-                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"></path>
-                        </svg>
-                        Loan History
-                    </h2>
+                    <div class="flex items-center justify-between">
+                        <h2 class="text-2xl font-bold text-white flex items-center gap-3">
+                            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"></path>
+                            </svg>
+                            Loan History
+                        </h2>
+                        @if($pinjaman->count() > 0)
+                        <a href="{{ route('pinjam.exportPdf') }}" class="inline-flex items-center gap-2 px-4 py-2 bg-white/20 backdrop-blur-sm text-white rounded-lg font-semibold hover:bg-white/30 transition-all border border-white/30 text-sm">
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
+                            </svg>
+                            Export PDF
+                        </a>
+                        @endif
+                    </div>
                 </div>
 
                 @if ($pinjaman->count() > 0)
@@ -156,7 +166,32 @@
                                     </div>
 
                                     {{-- Actions & Fee --}}
-                                    <div class="lg:w-40 flex flex-col justify-center gap-3" x-data="{ showWarning: false }">
+                                    <div class="lg:w-48 flex flex-col justify-center gap-3" x-data="{ showWarning: false, loading: false, extended: {{ $p->extended ? 'true' : 'false' }} }">
+                                        {{-- Extend Loan Button (Only if active and not yet extended) --}}
+                                        @if ($p->status === 'dipinjam' && !$p->extended)
+                                            <button x-show="!extended" :disabled="loading" @click="
+                                                if (!confirm('Perpanjang peminjaman 7 hari?')) return;
+                                                loading = true;
+                                                ajaxForm('{{ route('pinjam.extend', $p->id) }}', 'POST', {}, '{{ csrf_token() }}')
+                                                    .then(res => {
+                                                        $dispatch('show-toast', { message: res.message, type: 'success' });
+                                                        extended = true;
+                                                    })
+                                                    .catch(err => {
+                                                        $dispatch('show-toast', { message: err.message || 'Gagal memperpanjang', type: 'error' });
+                                                    })
+                                                    .finally(() => loading = false);
+                                            " class="w-full inline-flex items-center justify-center gap-2 px-4 py-2 bg-gradient-to-r from-green-500 to-emerald-500 text-white rounded-lg font-semibold text-sm hover:from-green-600 hover:to-emerald-600 transition-all shadow-md hover:shadow-lg disabled:opacity-50">
+                                                <svg x-show="loading" class="animate-spin w-4 h-4" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z"></path></svg>
+                                                <svg x-show="!loading" class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                                                </svg>
+                                                <span x-text="loading ? 'Memproses...' : 'Perpanjang'"></span>
+                                            </button>
+                                            <span x-show="extended" class="text-xs text-green-600 italic text-center font-semibold">✓ Sudah diperpanjang</span>
+                                        @elseif($p->extended)
+                                            <span class="text-xs text-gray-400 italic text-center">Sudah diperpanjang</span>
+                                        @endif
                                         {{-- Read Book Button (Only if status is 'dipinjam') --}}
                                         @if (in_array($p->status, ['dipinjam', 'terlambat']))
                                             @if ($p->buku->gdrive_link)
