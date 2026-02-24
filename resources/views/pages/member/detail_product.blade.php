@@ -329,7 +329,7 @@
     </section>
 
     {{-- ⭐ Reviews Section --}}
-    <section class="py-12 bg-white">
+    <section class="py-12 bg-white" x-data="reviewSection()">
         <div class="container mx-auto px-4">
             <div class="bg-white rounded-3xl shadow-xl border border-gray-200 overflow-hidden">
                 <div class="bg-gradient-to-r from-yellow-500 to-orange-500 px-8 py-6">
@@ -340,21 +340,19 @@
                             </svg>
                             Ulasan & Rating
                         </h2>
-                        @if($buku->average_rating > 0)
-                        <div class="flex items-center gap-2 text-white">
-                            <span class="text-3xl font-bold">{{ number_format($buku->average_rating, 1) }}</span>
+                        <div class="flex items-center gap-2 text-white" x-show="avgRating > 0">
+                            <span class="text-3xl font-bold" x-text="avgRating.toFixed(1)"></span>
                             <div>
                                 <div class="flex gap-1">
-                                    @for($i = 1; $i <= 5; $i++)
-                                        <svg class="w-5 h-5 {{ $i <= round($buku->average_rating) ? 'text-yellow-200' : 'text-white/30' }}" fill="currentColor" viewBox="0 0 20 20">
+                                    <template x-for="i in 5" :key="i">
+                                        <svg class="w-5 h-5" :class="i <= Math.round(avgRating) ? 'text-yellow-200' : 'text-white/30'" fill="currentColor" viewBox="0 0 20 20">
                                             <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"></path>
                                         </svg>
-                                    @endfor
+                                    </template>
                                 </div>
-                                <p class="text-sm text-white/80">{{ $buku->review_count }} ulasan</p>
+                                <p class="text-sm text-white/80"><span x-text="reviewCount"></span> ulasan</p>
                             </div>
                         </div>
-                        @endif
                     </div>
                 </div>
 
@@ -364,52 +362,37 @@
                         @php
                             $existingReview = $reviews->where('member_id', Auth::user()->member->membership_number)->first();
                         @endphp
-                        <div class="mb-8 bg-gradient-to-br from-gray-50 to-gray-100 rounded-2xl p-6 border border-gray-200" x-data="{ rating: {{ $existingReview->rating ?? 5 }}, showForm: false, loading: false, reviewText: '{{ addslashes($existingReview->review ?? '') }}' }">
+                        <div class="mb-8 bg-gradient-to-br from-gray-50 to-gray-100 rounded-2xl p-6 border border-gray-200">
                             <button @click="showForm = !showForm" class="flex items-center gap-2 text-indigo-600 font-semibold hover:text-indigo-700 transition-colors">
                                 <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z"></path>
                                 </svg>
-                                {{ $existingReview ? 'Edit Ulasan Anda' : 'Tulis Ulasan' }}
+                                <span x-text="hasMyReview ? 'Edit Ulasan Anda' : 'Tulis Ulasan'"></span>
                             </button>
 
                             <div x-show="showForm" x-transition class="mt-4">
-                                <form @submit.prevent="
-                                    loading = true;
-                                    ajaxForm('{{ route('review.store') }}', 'POST', { buku_id: {{ $buku->id }}, rating: rating, review: reviewText }, '{{ csrf_token() }}')
-                                        .then(res => {
-                                            $dispatch('show-toast', { message: res.message, type: 'success' });
-                                            showForm = false;
-                                            setTimeout(() => location.reload(), 1500);
-                                        })
-                                        .catch(err => {
-                                            $dispatch('show-toast', { message: err.message || 'Gagal menyimpan review', type: 'error' });
-                                        })
-                                        .finally(() => loading = false);
-                                ">
-                                    <input type="hidden" name="buku_id" value="{{ $buku->id }}">
-                                    <input type="hidden" name="rating" x-bind:value="rating">
-
+                                <form @submit.prevent="submitReview()">
                                     <div class="mb-4">
                                         <label class="block text-sm font-bold text-gray-700 mb-2">Rating</label>
                                         <div class="flex gap-1">
-                                            @for($i = 1; $i <= 5; $i++)
-                                            <button type="button" @click="rating = {{ $i }}" class="focus:outline-none">
-                                                <svg class="w-8 h-8 transition-colors" :class="rating >= {{ $i }} ? 'text-yellow-400' : 'text-gray-300'" fill="currentColor" viewBox="0 0 20 20">
-                                                    <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"></path>
-                                                </svg>
-                                            </button>
-                                            @endfor
+                                            <template x-for="i in 5" :key="i">
+                                                <button type="button" @click="formRating = i" class="focus:outline-none">
+                                                    <svg class="w-8 h-8 transition-colors" :class="formRating >= i ? 'text-yellow-400' : 'text-gray-300'" fill="currentColor" viewBox="0 0 20 20">
+                                                        <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"></path>
+                                                    </svg>
+                                                </button>
+                                            </template>
                                         </div>
                                     </div>
 
                                     <div class="mb-4">
                                         <label class="block text-sm font-bold text-gray-700 mb-2">Ulasan (Opsional)</label>
-                                        <textarea name="review" x-model="reviewText" rows="3" class="w-full px-4 py-3 rounded-xl border-2 border-gray-200 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200 transition-all" placeholder="Bagikan pendapat Anda tentang buku ini..."></textarea>
+                                        <textarea x-model="formText" rows="3" class="w-full px-4 py-3 rounded-xl border-2 border-gray-200 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200 transition-all" placeholder="Bagikan pendapat Anda tentang buku ini..."></textarea>
                                     </div>
 
                                     <button type="submit" :disabled="loading" class="px-6 py-2.5 rounded-xl bg-gradient-to-r from-indigo-600 to-purple-600 text-white font-semibold hover:from-indigo-700 hover:to-purple-700 transition-all shadow-lg disabled:opacity-50 flex items-center gap-2">
                                         <svg x-show="loading" class="animate-spin w-4 h-4" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z"></path></svg>
-                                        <span x-text="loading ? 'Menyimpan...' : '{{ $existingReview ? 'Update Ulasan' : 'Kirim Ulasan' }}'"></span>
+                                        <span x-text="loading ? 'Menyimpan...' : (hasMyReview ? 'Update Ulasan' : 'Kirim Ulasan')"></span>
                                     </button>
                                 </form>
                             </div>
@@ -417,35 +400,32 @@
                     @endif
 
                     {{-- Reviews List --}}
-                    @if($reviews->count() > 0)
+                    <template x-if="reviews.length > 0">
                         <div class="space-y-6">
-                            @foreach($reviews as $review)
-                            <div class="flex gap-4 p-4 rounded-2xl hover:bg-gray-50 transition-colors">
-                                <div class="flex-shrink-0">
-                                    <div class="w-12 h-12 rounded-full bg-gradient-to-br from-indigo-500 to-purple-500 flex items-center justify-center text-white font-bold text-lg">
-                                        {{ strtoupper(substr($review->member->user->name ?? 'U', 0, 1)) }}
+                            <template x-for="(rev, idx) in reviews" :key="idx">
+                                <div class="flex gap-4 p-4 rounded-2xl hover:bg-gray-50 transition-colors">
+                                    <div class="flex-shrink-0">
+                                        <div class="w-12 h-12 rounded-full bg-gradient-to-br from-indigo-500 to-purple-500 flex items-center justify-center text-white font-bold text-lg" x-text="rev.user_initial"></div>
                                     </div>
-                                </div>
-                                <div class="flex-1">
-                                    <div class="flex items-center gap-3 mb-1">
-                                        <span class="font-bold text-gray-900">{{ $review->member->user->name ?? 'Anggota' }}</span>
-                                        <div class="flex gap-0.5">
-                                            @for($i = 1; $i <= 5; $i++)
-                                            <svg class="w-4 h-4 {{ $i <= $review->rating ? 'text-yellow-400' : 'text-gray-200' }}" fill="currentColor" viewBox="0 0 20 20">
-                                                <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"></path>
-                                            </svg>
-                                            @endfor
+                                    <div class="flex-1">
+                                        <div class="flex items-center gap-3 mb-1">
+                                            <span class="font-bold text-gray-900" x-text="rev.user_name"></span>
+                                            <div class="flex gap-0.5">
+                                                <template x-for="i in 5" :key="'star-'+idx+'-'+i">
+                                                    <svg class="w-4 h-4" :class="i <= rev.rating ? 'text-yellow-400' : 'text-gray-200'" fill="currentColor" viewBox="0 0 20 20">
+                                                        <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"></path>
+                                                    </svg>
+                                                </template>
+                                            </div>
+                                            <span class="text-xs text-gray-400" x-text="rev.created_at"></span>
                                         </div>
-                                        <span class="text-xs text-gray-400">{{ $review->created_at->diffForHumans() }}</span>
+                                        <p x-show="rev.review" class="text-gray-600 text-sm leading-relaxed" x-text="rev.review"></p>
                                     </div>
-                                    @if($review->review)
-                                    <p class="text-gray-600 text-sm leading-relaxed">{{ $review->review }}</p>
-                                    @endif
                                 </div>
-                            </div>
-                            @endforeach
+                            </template>
                         </div>
-                    @else
+                    </template>
+                    <template x-if="reviews.length === 0">
                         <div class="text-center py-8">
                             <svg class="w-16 h-16 text-gray-300 mx-auto mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"></path>
@@ -455,7 +435,7 @@
                             <p class="text-gray-400 text-sm mt-1">Jadilah yang pertama memberikan ulasan!</p>
                             @endif
                         </div>
-                    @endif
+                    </template>
                 </div>
             </div>
         </div>
@@ -540,6 +520,81 @@
 @endsection
 
 @section('js')
+    @php
+        $reviewsJson = $reviews->map(function($r) {
+            return [
+                'id' => $r->id,
+                'rating' => $r->rating,
+                'review' => $r->review,
+                'user_name' => $r->member->user->name ?? 'Anggota',
+                'user_initial' => strtoupper(substr($r->member->user->name ?? 'U', 0, 1)),
+                'created_at' => $r->created_at->diffForHumans(),
+                'member_id' => $r->member_id,
+            ];
+        });
+        $existingReviewForJs = null;
+        if (Auth::check() && Auth::user()->member) {
+            $existingReviewForJs = $reviews->where('member_id', Auth::user()->member->membership_number)->first();
+        }
+    @endphp
+    <script>
+        function reviewSection() {
+            return {
+                reviews: @json($reviewsJson),
+                avgRating: {{ $buku->average_rating ?? 0 }},
+                reviewCount: {{ $buku->review_count ?? 0 }},
+                showForm: false,
+                loading: false,
+                formRating: {{ $existingReviewForJs->rating ?? 5 }},
+                formText: '{{ addslashes($existingReviewForJs->review ?? "") }}',
+                hasMyReview: {{ $existingReviewForJs ? 'true' : 'false' }},
+                myMemberId: '{{ Auth::check() && Auth::user()->member ? Auth::user()->member->membership_number : '' }}',
+
+                submitReview() {
+                    this.loading = true;
+                    ajaxForm('{{ route("review.store") }}', 'POST', {
+                        buku_id: {{ $buku->id }},
+                        rating: this.formRating,
+                        review: this.formText
+                    }, '{{ csrf_token() }}')
+                    .then(res => {
+                        this.$dispatch('show-toast', { message: res.message, type: 'success' });
+                        this.showForm = false;
+
+                        // Update average rating and count
+                        this.avgRating = parseFloat(res.average_rating);
+                        this.reviewCount = res.review_count;
+
+                        // Update or add the review in the list
+                        const newReview = {
+                            id: res.review.id,
+                            rating: res.review.rating,
+                            review: res.review.review,
+                            user_name: res.review.user_name,
+                            user_initial: res.review.user_initial,
+                            created_at: res.review.created_at,
+                            member_id: this.myMemberId,
+                        };
+
+                        if (res.review.is_update) {
+                            const idx = this.reviews.findIndex(r => r.member_id === this.myMemberId);
+                            if (idx !== -1) {
+                                this.reviews[idx] = newReview;
+                            }
+                        } else {
+                            this.reviews.unshift(newReview);
+                        }
+
+                        this.hasMyReview = true;
+                    })
+                    .catch(err => {
+                        this.$dispatch('show-toast', { message: err.message || 'Gagal menyimpan review', type: 'error' });
+                    })
+                    .finally(() => this.loading = false);
+                }
+            };
+        }
+    </script>
     <style>
         .prose {
             color: #374151;
