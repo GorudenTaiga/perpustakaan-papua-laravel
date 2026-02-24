@@ -103,7 +103,7 @@
         {{-- HEADER --}}
         <div class="header">
             <img style="max-width: 64px; max-height: 64px;"
-                src="{{ 'data:image/png;base64,' . base64_encode(file_get_contents(asset('icon.png'))) }}" alt="Logo">
+                src="{{ 'data:image/png;base64,' . base64_encode(file_get_contents(public_path('icon.png'))) }}" alt="Logo">
             <div><b>KARTU ANGGOTA PERPUSTAKAAN</b></div>
             <div><b>PERPUSTAKAAN PROVINSI PAPUA</b></div>
             <div class="sub-header">
@@ -119,11 +119,11 @@
                         <!-- Bagian kiri (foto + barcode) -->
                         <td width="38%" align="left" style="padding-left: 5px; text-align: center;">
                             <div class="photo">
-                                @if (isset($member->image))
+                                @if (isset($member->image) && file_exists(Storage::disk('public')->path($member->image)))
                                     <img src="{{ 'data:image/png;base64,' . base64_encode(file_get_contents(Storage::disk('public')->path($member->image))) }}"
                                         alt="Foto Member">
                                 @else
-                                    <img src="{{ asset('blank_person.png') }}" alt="">
+                                    <img src="{{ 'data:image/png;base64,' . base64_encode(file_get_contents(public_path('blank_person.png'))) }}" alt="No Photo">
                                 @endif
                             </div>
                             <div class="barcode">
