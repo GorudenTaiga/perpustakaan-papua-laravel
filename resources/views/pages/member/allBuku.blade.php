@@ -144,7 +144,7 @@
                                         </div>
                                         <div class="absolute top-4 right-4">
                                             <button
-                                                class="add-to-wishlist p-2.5 rounded-full bg-white/90 backdrop-blur-sm hover:bg-white shadow-lg transition-all duration-300 hover:scale-110 {{ Auth::check() &&!Auth::user()->role == 'admin' &&\App\Models\Wishlist::where('member_id', Auth::user()->member->membership_number)->where('buku_id', $b->id)->exists()? 'active': '' }}"
+                                                class="add-to-wishlist p-2.5 rounded-full bg-white/90 backdrop-blur-sm hover:bg-white shadow-lg transition-all duration-300 hover:scale-110 {{ Auth::check() && Auth::user()->member && \App\Models\Wishlist::where('member_id', Auth::user()->member->membership_number)->where('buku_id', $b->id)->exists() ? 'active' : '' }}"
                                                 data-id="{{ $b->id }}" onclick="event.preventDefault();">
                                                 <svg class="w-5 h-5 text-gray-600 hover:text-red-500 transition-colors"
                                                     fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -321,8 +321,7 @@
                             "Content-Type": "application/json"
                         },
                         body: JSON.stringify({
-                            buku_id: bukuId,
-                            member_id: {{ Auth::check() && !Auth::user()->role == 'admin' && Auth::user()->member->membership_number }}
+                            buku_id: bukuId
                         })
                     });
 
@@ -351,41 +350,23 @@
                     const data = await res.json();
 
                     if (res.ok && data.success) {
-                        // Add active class
-                        btn.classList.add("active");
-
-                        // Show success modal
-                        window.modalSystem.showSuccess(
-                            'Book added to wishlist!',
-                            'You can view your wishlist anytime from the menu.'
-                        );
-
-                        // Update wishlist sidebar if exists
-                        try {
-                            const wishlistRes = await fetch("{{ route('wishlist.partial') }}");
-                            if (wishlistRes.ok) {
-                                const html = await wishlistRes.text();
-                                const wishlistBody = document.querySelector(
-                                    "#offcanvasWishlist .offcanvas-body");
-                                if (wishlistBody) {
-                                    wishlistBody.innerHTML = html;
-                                }
-
-                                // Show offcanvas if bootstrap is available
-                                const wishlistOffcanvas = document.getElementById(
-                                    'offcanvasWishlist');
-                                if (wishlistOffcanvas && typeof bootstrap !== 'undefined') {
-                                    const offcanvas = new bootstrap.Offcanvas(wishlistOffcanvas);
-                                    offcanvas.show();
-                                }
-                            }
-                        } catch (err) {
-                            console.warn('Could not update wishlist sidebar:', err);
+                        if (data.added) {
+                            btn.classList.add("active");
+                            window.modalSystem.showSuccess(
+                                'Book added to wishlist!',
+                                'You can view your wishlist anytime from the menu.'
+                            );
+                        } else if (data.removed) {
+                            btn.classList.remove("active");
+                            window.modalSystem.showSuccess(
+                                'Book removed from wishlist',
+                                'The book has been removed from your wishlist.'
+                            );
                         }
                     } else {
                         // Show error modal
                         window.modalSystem.showError(
-                            data.message || 'Failed to add to wishlist',
+                            data.message || 'Failed to update wishlist',
                             'Please try again later.'
                         );
                     }

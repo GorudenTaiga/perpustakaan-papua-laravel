@@ -29,6 +29,7 @@ Route::middleware(['auth:member'])->group(function () {
     Route::get('/cetakKTA/{id}', [UserController::class, 'cetakKTA'])->name('cetakKTA');
     Route::put('/member/update-photo', [UserController::class, 'updatePhoto'])->name('member.updatePhoto');
     Route::post('/wishlist', [WishlistController::class, 'store'])->name('wishlist.store');
+    Route::delete('/wishlist', [WishlistController::class, 'destroy'])->name('wishlist.destroy');
     Route::get('/wishlist/partial', [WishlistController::class, 'partial'])->name('wishlist.partial');
 
 });

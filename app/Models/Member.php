@@ -26,6 +26,6 @@ class Member extends Model
     }
 
     public function wishlist() {
-        return $this->belongsTo(Wishlist::class, 'membership_number', 'member_id');
+        return $this->hasMany(Wishlist::class, 'member_id', 'membership_number');
     }
 }

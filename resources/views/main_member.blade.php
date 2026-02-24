@@ -232,7 +232,7 @@
                             @if (isset($wishlist) && count($wishlist) > 0)
                                 <div class="space-y-4">
                                     @foreach ($wishlist as $item)
-                                        @if (!is_null($item->buku()))
+                                        @if ($item->buku)
                                             <div
                                                 class="group relative overflow-hidden rounded-2xl bg-white p-4 shadow-lg hover:shadow-xl transition-all duration-300 border border-gray-100">
                                                 <div class="flex gap-4">

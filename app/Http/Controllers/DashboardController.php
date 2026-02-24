@@ -12,18 +12,11 @@ class DashboardController extends Controller
     public function index()
     {
         $categories = Category::all();
-
         $books = Buku::limit(15)->get();
-        $wishlist = [];
-        
-        if (Auth::check() && !is_null(Auth::user()->member?->wishlist())) {
-            $wishlist = Auth::user()->member->wishlist()->with('buku')->get();
-        }
 
         return view('pages.member.index', [
             'categories' => $categories,
             'books' => $books,
-            'wishlist' => $wishlist
         ]);
     }
 }
