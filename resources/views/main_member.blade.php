@@ -164,7 +164,7 @@
                 class="fixed right-0 top-0 z-50 h-full w-full sm:w-96 glass shadow-2xl" style="display: none;">
                 <div class="flex h-full flex-col">
                     <div class="flex items-center justify-between border-b border-gray-200/50 p-6">
-                        <h3 class="text-xl font-bold text-gray-800">Search Books</h3>
+                        <h3 class="text-xl font-bold text-gray-800">Cari Buku</h3>
                         <button @click="open = false" class="rounded-lg p-2 hover:bg-gray-100 transition-colors">
                             <svg class="w-6 h-6 text-gray-600" fill="none" stroke="currentColor"
                                 viewBox="0 0 24 24">
@@ -178,8 +178,8 @@
                             <div class="relative">
                                 <input
                                     class="w-full rounded-xl border-2 border-gray-200 bg-white px-5 py-4 pr-12 text-gray-900 placeholder-gray-400 focus:border-indigo-500 focus:outline-none focus:ring-2 focus:ring-indigo-200 transition-all"
-                                    type="text" placeholder="Search by title, author, or ISBN..."
-                                    aria-label="Search" name="search" autocomplete="off">
+                                    type="text" placeholder="Cari berdasarkan judul, penulis, atau ISBN..."
+                                    aria-label="Cari" name="search" autocomplete="off">
                                 <button
                                     class="absolute right-3 top-1/2 -translate-y-1/2 rounded-lg bg-gradient-to-r from-indigo-600 to-purple-600 p-2 text-white hover:from-indigo-700 hover:to-purple-700 transition-all"
                                     type="submit">
@@ -216,7 +216,7 @@
                             <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24">
                                 <use xlink:href="#heart"></use>
                             </svg>
-                            My Wishlist
+                            Wishlist Saya
                         </h3>
                         <button @click="wishlistOpen = false"
                             class="rounded-lg p-2 hover:bg-white/20 transition-colors">
@@ -263,20 +263,20 @@
                     <nav class="hidden lg:flex items-center gap-1">
                         <a href="{{ route('dashboard') }}"
                             class="px-4 py-2 rounded-lg text-sm font-medium text-gray-700 hover:text-indigo-600 hover:bg-indigo-50 transition-all {{ request()->routeIs('dashboard') ? 'bg-indigo-50 text-indigo-600' : '' }}">
-                            Home
+                            Beranda
                         </a>
                         <a href="{{ route('allBuku') }}"
                             class="px-4 py-2 rounded-lg text-sm font-medium text-gray-700 hover:text-indigo-600 hover:bg-indigo-50 transition-all {{ request()->routeIs('allBuku') ? 'bg-indigo-50 text-indigo-600' : '' }}">
-                            Books
+                            Buku
                         </a>
                         <a href="{{ route('allCategories') }}"
                             class="px-4 py-2 rounded-lg text-sm font-medium text-gray-700 hover:text-indigo-600 hover:bg-indigo-50 transition-all {{ request()->routeIs('allCategories') ? 'bg-indigo-50 text-indigo-600' : '' }}">
-                            Categories
+                            Kategori
                         </a>
                         @if (Auth::check() && Auth::user()->role == 'member')
                             <a href="{{ route('pinjam') }}"
                                 class="px-4 py-2 rounded-lg text-sm font-medium text-gray-700 hover:text-indigo-600 hover:bg-indigo-50 transition-all {{ request()->routeIs('pinjam') ? 'bg-indigo-50 text-indigo-600' : '' }}">
-                                My Loans
+                                Peminjaman
                             </a>
                             <a href="{{ route('readingHistory') }}"
                                 class="px-4 py-2 rounded-lg text-sm font-medium text-gray-700 hover:text-indigo-600 hover:bg-indigo-50 transition-all {{ request()->routeIs('readingHistory') ? 'bg-indigo-50 text-indigo-600' : '' }}">
@@ -285,7 +285,7 @@
                             <a target="_blank"
                                 href="{{ route('cetakKTA', base64_encode(Auth::user()->member->id)) }}"
                                 class="px-4 py-2 rounded-lg text-sm font-medium text-gray-700 hover:text-indigo-600 hover:bg-indigo-50 transition-all">
-                                Member Card
+                                Kartu Anggota
                             </a>
                         @endif
                     </nav>
@@ -302,7 +302,7 @@
                                 </path>
                             </svg>
                             <div class="text-left">
-                                <p class="text-xs text-gray-500">Need help?</p>
+                                <p class="text-xs text-gray-500">Butuh bantuan?</p>
                                 <p class="text-sm font-semibold text-gray-900">+62 877 4316 0171</p>
                             </div>
                         </div>
@@ -359,7 +359,7 @@
                                 <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                     <use xlink:href="#user"></use>
                                 </svg>
-                                <span class="hidden sm:inline">Login</span>
+                                <span class="hidden sm:inline">Masuk</span>
                             </a>
                         @endif
 
@@ -385,20 +385,20 @@
                 <div class="container mx-auto px-4 py-4 space-y-2">
                     <a href="{{ route('dashboard') }}"
                         class="block px-4 py-3 rounded-lg text-sm font-medium text-gray-700 hover:bg-indigo-50 hover:text-indigo-600 transition-all {{ request()->routeIs('dashboard') ? 'bg-indigo-50 text-indigo-600' : '' }}">
-                        Home
+                        Beranda
                     </a>
                     <a href="{{ route('allBuku') }}"
                         class="block px-4 py-3 rounded-lg text-sm font-medium text-gray-700 hover:bg-indigo-50 hover:text-indigo-600 transition-all {{ request()->routeIs('allBuku') ? 'bg-indigo-50 text-indigo-600' : '' }}">
-                        Books
+                        Buku
                     </a>
                     <a href="{{ route('allCategories') }}"
                         class="block px-4 py-3 rounded-lg text-sm font-medium text-gray-700 hover:bg-indigo-50 hover:text-indigo-600 transition-all {{ request()->routeIs('allCategories') ? 'bg-indigo-50 text-indigo-600' : '' }}">
-                        Categories
+                        Kategori
                     </a>
                     @if (Auth::check() && Auth::user()->role == 'member')
                         <a href="{{ route('pinjam') }}"
                             class="block px-4 py-3 rounded-lg text-sm font-medium text-gray-700 hover:bg-indigo-50 hover:text-indigo-600 transition-all {{ request()->routeIs('pinjam') ? 'bg-indigo-50 text-indigo-600' : '' }}">
-                            My Loans
+                            Peminjaman
                         </a>
                         <a href="{{ route('readingHistory') }}"
                             class="block px-4 py-3 rounded-lg text-sm font-medium text-gray-700 hover:bg-indigo-50 hover:text-indigo-600 transition-all {{ request()->routeIs('readingHistory') ? 'bg-indigo-50 text-indigo-600' : '' }}">
@@ -417,7 +417,7 @@
                         </a>
                         <a target="_blank" href="{{ route('cetakKTA', base64_encode(Auth::user()->member->id)) }}"
                             class="block px-4 py-3 rounded-lg text-sm font-medium text-gray-700 hover:bg-indigo-50 hover:text-indigo-600 transition-all">
-                            Member Card
+                            Kartu Anggota
                         </a>
                     @endif
                     <div class="pt-3 border-t border-gray-200">
@@ -430,7 +430,7 @@
                                 </path>
                             </svg>
                             <div>
-                                <p class="text-xs text-gray-500">Need help?</p>
+                                <p class="text-xs text-gray-500">Butuh bantuan?</p>
                                 <p class="text-sm font-semibold text-gray-900">+62 877 4316 0171</p>
                             </div>
                         </div>

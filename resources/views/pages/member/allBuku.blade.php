@@ -26,13 +26,13 @@
                             d="M9 4.804A7.968 7.968 0 005.5 4c-1.255 0-2.443.29-3.5.804v10A7.969 7.969 0 015.5 14c1.669 0 3.218.51 4.5 1.385A7.962 7.962 0 0114.5 14c1.255 0 2.443.29 3.5.804v-10A7.968 7.968 0 0014.5 4c-1.255 0-2.443.29-3.5.804V12a1 1 0 11-2 0V4.804z">
                         </path>
                     </svg>
-                    <span class="text-sm font-semibold">Discover Knowledge</span>
+                    <span class="text-sm font-semibold">Jelajahi Pengetahuan</span>
                 </div>
                 <h1 class="text-5xl lg:text-7xl font-bold leading-tight">
-                    Browse Our <span class="text-yellow-300">Collection</span>
+                    Jelajahi <span class="text-yellow-300">Koleksi</span> Kami
                 </h1>
                 <p class="text-lg lg:text-xl text-white/90 max-w-2xl leading-relaxed">
-                    Discover thousands of books across all genres. Find your next great read.
+                    Temukan ribuan buku dari berbagai genre. Temukan bacaan hebat berikutnya.
                 </p>
             </div>
         </div>
@@ -47,11 +47,11 @@
                     <div class="bg-white rounded-3xl shadow-lg border border-gray-100 p-6 sticky top-24 space-y-6">
                         {{-- Search Bar --}}
                         <div>
-                            <h3 class="text-lg font-bold text-gray-900 mb-4">Search Books</h3>
+                            <h3 class="text-lg font-bold text-gray-900 mb-4">Cari Buku</h3>
                             <form action="{{ route('allBuku') }}" method="get">
                                 <div class="relative">
                                     <input type="text" name="search" value="{{ request('search') }}"
-                                        placeholder="Search by title, author..."
+                                        placeholder="Cari berdasarkan judul, penulis..."
                                         class="w-full px-4 py-3 pr-12 rounded-xl border border-gray-200 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200 transition-all">
                                     <button type="submit"
                                         class="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-indigo-600 transition-colors">
@@ -66,7 +66,7 @@
 
                         {{-- Categories Filter --}}
                         <div x-data="{ expanded: false }">
-                            <h3 class="text-lg font-bold text-gray-900 mb-3">Categories</h3>
+                            <h3 class="text-lg font-bold text-gray-900 mb-3">Kategori</h3>
                             <form action="{{ route('allBuku') }}" method="GET" id="categoryForm">
                                 <div class="space-y-1">
                                     <label
@@ -75,7 +75,7 @@
                                             onchange="categoryToggle(this, true)"
                                             {{ empty(request('category')) || in_array('all', (array) request('category')) ? 'checked' : '' }}
                                             class="w-4 h-4 rounded text-indigo-600 focus:ring-indigo-500">
-                                        <span class="text-sm font-medium text-gray-700">All Categories</span>
+                                        <span class="text-sm font-medium text-gray-700">Semua Kategori</span>
                                     </label>
 
                                     @foreach ($categories as $i => $c)
@@ -130,23 +130,21 @@
                     <div class="bg-white rounded-3xl shadow-lg border border-gray-100 p-6 mb-8">
                         <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
                             <div class="text-sm text-gray-600">
-                                Showing <span class="font-semibold text-gray-900">{{ $buku->firstItem() ?? 0 }}</span> -
-                                <span class="font-semibold text-gray-900">{{ $buku->lastItem() ?? 0 }}</span> of
-                                <span class="font-semibold text-gray-900">{{ $buku->total() }}</span> results
+                                Menampilkan <span class="font-semibold text-gray-900">{{ $buku->firstItem() ?? 0 }}</span> -
+                                <span class="font-semibold text-gray-900">{{ $buku->lastItem() ?? 0 }}</span> dari
+                                <span class="font-semibold text-gray-900">{{ $buku->total() }}</span> hasil
                             </div>
                             <form action="{{ route('allBuku') }}" method="GET" class="w-full sm:w-auto">
                                 <select name="sortBy" onchange="this.form.submit()"
                                     class="w-full sm:w-auto px-4 py-2 rounded-lg border border-gray-200 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200 text-sm font-medium transition-all">
-                                    <option value="default" {{ request('sortBy') == 'default' ? 'selected' : '' }}>Default
-                                        Sorting</option>
-                                    <option value="judulAZ" {{ request('sortBy') == 'judulAZ' ? 'selected' : '' }}>Title (A
+                                    <option value="default" {{ request('sortBy') == 'default' ? 'selected' : '' }}>Urutan
+                                        Bawaan</option>
+                                    <option value="judulAZ" {{ request('sortBy') == 'judulAZ' ? 'selected' : '' }}>Judul (A
                                         - Z)</option>
-                                    <option value="judulZA" {{ request('sortBy') == 'judulZA' ? 'selected' : '' }}>Title (Z
+                                    <option value="judulZA" {{ request('sortBy') == 'judulZA' ? 'selected' : '' }}>Judul (Z
                                         - A)</option>
-                                    <option value="newest" {{ request('sortBy') == 'newest' ? 'selected' : '' }}>Newest
-                                        First</option>
-                                    <option value="oldest" {{ request('sortBy') == 'oldest' ? 'selected' : '' }}>Oldest
-                                        First</option>
+                                    <option value="newest" {{ request('sortBy') == 'newest' ? 'selected' : '' }}>Terbaru</option>
+                                    <option value="oldest" {{ request('sortBy') == 'oldest' ? 'selected' : '' }}>Terlama</option>
                                 </select>
                             </form>
                         </div>
@@ -226,7 +224,7 @@
                                                 </div>
                                                 <span
                                                     class="text-sm font-bold text-gray-900 group-hover:text-indigo-600 transition-colors">
-                                                    View Details →
+                                                    Lihat Detail →
                                                 </span>
                                             </div>
                                         </div>
@@ -244,9 +242,8 @@
                                         </path>
                                     </svg>
                                 </div>
-                                <h3 class="text-xl font-bold text-gray-900 mb-2">No Books Found</h3>
-                                <p class="text-gray-600 mb-6">Try adjusting your search or filter to find what you're
-                                    looking for.</p>
+                                <h3 class="text-xl font-bold text-gray-900 mb-2">Buku Tidak Ditemukan</h3>
+                                <p class="text-gray-600 mb-6">Coba sesuaikan pencarian atau filter untuk menemukan yang Anda cari.</p>
                                 <a href="{{ route('allBuku') }}"
                                     class="inline-flex items-center gap-2 px-6 py-3 bg-indigo-600 text-white rounded-xl font-semibold hover:bg-indigo-700 transition-colors">
                                     <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -254,7 +251,7 @@
                                             d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15">
                                         </path>
                                     </svg>
-                                    Reset Filters
+                                    Atur Ulang Filter
                                 </a>
                             </div>
                         @endforelse
@@ -268,12 +265,12 @@
                                 @if ($buku->onFirstPage())
                                     <span
                                         class="px-4 py-2.5 rounded-xl bg-gray-100 text-gray-400 cursor-not-allowed font-medium">
-                                        ← Previous
+                                        ← Sebelumnya
                                     </span>
                                 @else
                                     <a href="{{ $buku->previousPageUrl() }}"
                                         class="px-4 py-2.5 rounded-xl bg-white border-2 border-gray-200 text-gray-700 hover:border-indigo-500 hover:text-indigo-600 transition-all font-medium shadow-sm hover:shadow-md">
-                                        ← Previous
+                                        ← Sebelumnya
                                     </a>
                                 @endif
 
@@ -305,12 +302,12 @@
                                 @if ($buku->hasMorePages())
                                     <a href="{{ $buku->nextPageUrl() }}"
                                         class="px-4 py-2.5 rounded-xl bg-white border-2 border-gray-200 text-gray-700 hover:border-indigo-500 hover:text-indigo-600 transition-all font-medium shadow-sm hover:shadow-md">
-                                        Next →
+                                        Berikutnya →
                                     </a>
                                 @else
                                     <span
                                         class="px-4 py-2.5 rounded-xl bg-gray-100 text-gray-400 cursor-not-allowed font-medium">
-                                        Next →
+                                        Berikutnya →
                                     </span>
                                 @endif
                             </div>

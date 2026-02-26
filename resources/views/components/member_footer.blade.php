@@ -54,7 +54,7 @@
 
             {{-- Divider + Copyright --}}
             <div class="mt-6 pt-4 border-t border-gray-800 text-center">
-                <p class="text-xs text-gray-500">&copy; 2025 Perpustakaan Daerah Provinsi Papua. All rights reserved.</p>
+                <p class="text-xs text-gray-500">&copy; 2025 Perpustakaan Daerah Provinsi Papua. Hak cipta dilindungi.</p>
             </div>
         </div>
     </div>

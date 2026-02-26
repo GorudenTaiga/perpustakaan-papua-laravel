@@ -50,11 +50,11 @@
                     {{-- Hero Text --}}
                     <div class="space-y-6">
                         <h1 class="text-5xl lg:text-6xl font-bold leading-tight">
-                            Join Our<br>
-                            <span class="text-yellow-300">Library Community</span>
+                            Bergabung di<br>
+                            <span class="text-yellow-300">Perpustakaan Digital</span>
                         </h1>
                         <p class="text-lg text-white/90 leading-relaxed">
-                            Create your account and start exploring thousands of books. Get instant access to our comprehensive digital library system.
+                            Buat akun Anda dan mulai jelajahi ribuan buku. Dapatkan akses instan ke sistem perpustakaan digital kami yang lengkap.
                         </p>
                     </div>
 
@@ -66,7 +66,7 @@
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
                                 </svg>
                             </div>
-                            <span class="text-white/90 font-medium">Free membership registration</span>
+                            <span class="text-white/90 font-medium">Pendaftaran anggota gratis</span>
                         </div>
                         <div class="flex items-center gap-3">
                             <div class="flex-shrink-0 w-10 h-10 rounded-full bg-white/20 backdrop-blur-sm flex items-center justify-center">
@@ -74,7 +74,7 @@
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
                                 </svg>
                             </div>
-                            <span class="text-white/90 font-medium">Instant book borrowing access</span>
+                            <span class="text-white/90 font-medium">Akses peminjaman buku instan</span>
                         </div>
                         <div class="flex items-center gap-3">
                             <div class="flex-shrink-0 w-10 h-10 rounded-full bg-white/20 backdrop-blur-sm flex items-center justify-center">
@@ -82,7 +82,7 @@
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
                                 </svg>
                             </div>
-                            <span class="text-white/90 font-medium">Personalized reading recommendations</span>
+                            <span class="text-white/90 font-medium">Rekomendasi bacaan yang dipersonalisasi</span>
                         </div>
                     </div>
                 </div>
@@ -104,8 +104,8 @@
 
                 {{-- Form Header --}}
                 <div class="text-center lg:text-left">
-                    <h2 class="text-3xl lg:text-4xl font-bold text-gray-900 mb-2">Create Account</h2>
-                    <p class="text-gray-600">Register as a new library member</p>
+                    <h2 class="text-3xl lg:text-4xl font-bold text-gray-900 mb-2">Buat Akun</h2>
+                    <p class="text-gray-600">Daftar sebagai anggota perpustakaan baru</p>
                 </div>
 
                 {{-- Register Form --}}
@@ -120,7 +120,7 @@
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
                                 </svg>
                                 <div class="flex-1">
-                                    <h3 class="text-sm font-semibold text-red-800 mb-1">There were some errors:</h3>
+                                    <h3 class="text-sm font-semibold text-red-800 mb-1">Terdapat beberapa kesalahan:</h3>
                                     <ul class="list-disc list-inside text-sm text-red-700 space-y-1">
                                         @foreach ($errors->all() as $error)
                                             <li>{{ $error }}</li>
@@ -140,7 +140,7 @@
                                 </svg>
                                 <div class="flex-1">
                                     <p class="text-sm font-semibold text-green-800">{{ session('success') }}</p>
-                                    <p class="text-sm text-green-700 mt-1">Please click the Login button to access your account</p>
+                                    <p class="text-sm text-green-700 mt-1">Silakan klik tombol Masuk untuk mengakses akun Anda</p>
                                 </div>
                             </div>
                         </div>
@@ -149,7 +149,7 @@
                     {{-- Full Name --}}
                     <div class="space-y-2">
                         <label for="name" class="block text-sm font-bold text-gray-900">
-                            Full Name
+                            Nama Lengkap
                         </label>
                         <div class="relative">
                             <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
@@ -161,7 +161,7 @@
                                    name="name" 
                                    id="name" 
                                    value="{{ old('name') }}"
-                                   placeholder="Enter your full name"
+                                   placeholder="Masukkan nama lengkap Anda"
                                    required
                                    autofocus
                                    class="w-full pl-12 pr-4 py-3 rounded-xl border-2 border-gray-200 focus:border-indigo-500 focus:ring-4 focus:ring-indigo-100 transition-all text-gray-900 placeholder-gray-400">
@@ -171,7 +171,7 @@
                     {{-- Member Type --}}
                     <div class="space-y-2">
                         <label for="jenis" class="block text-sm font-bold text-gray-900">
-                            Member Type
+                            Jenis Anggota
                         </label>
                         <div class="relative">
                             <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
@@ -183,7 +183,7 @@
                                     id="jenis" 
                                     required
                                     class="w-full pl-12 pr-4 py-3 rounded-xl border-2 border-gray-200 focus:border-indigo-500 focus:ring-4 focus:ring-indigo-100 transition-all text-gray-900 appearance-none bg-white">
-                                <option value="">Select member type</option>
+                                <option value="">Pilih jenis anggota</option>
                                 <option value="Mahasiswa" {{ old('jenis') == 'Mahasiswa' ? 'selected' : '' }}>Mahasiswa</option>
                                 <option value="Dosen" {{ old('jenis') == 'Dosen' ? 'selected' : '' }}>Dosen</option>
                                 <option value="Pelajar" {{ old('jenis') == 'Pelajar' ? 'selected' : '' }}>Pelajar</option>
@@ -201,7 +201,7 @@
                     {{-- Email --}}
                     <div class="space-y-2">
                         <label for="email" class="block text-sm font-bold text-gray-900">
-                            Email Address
+                            Alamat Email
                         </label>
                         <div class="relative">
                             <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
@@ -222,7 +222,7 @@
                     {{-- Password --}}
                     <div class="space-y-2">
                         <label for="password" class="block text-sm font-bold text-gray-900">
-                            Password
+                            Kata Sandi
                         </label>
                         <div class="relative">
                             <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
@@ -233,7 +233,7 @@
                             <input type="password" 
                                    name="password" 
                                    id="password" 
-                                   placeholder="Create a secure password"
+                                   placeholder="Buat kata sandi yang aman"
                                    required
                                    class="w-full pl-12 pr-4 py-3 rounded-xl border-2 border-gray-200 focus:border-indigo-500 focus:ring-4 focus:ring-indigo-100 transition-all text-gray-900 placeholder-gray-400">
                         </div>
@@ -242,7 +242,7 @@
                     {{-- Supporting Document --}}
                     <div class="space-y-2">
                         <label for="document" class="block text-sm font-bold text-gray-900">
-                            Supporting Document
+                            Dokumen Pendukung
                         </label>
                         <div class="relative">
                             <input type="file" 
@@ -252,14 +252,14 @@
                                    class="w-full px-4 py-3 rounded-xl border-2 border-gray-200 focus:border-indigo-500 focus:ring-4 focus:ring-indigo-100 transition-all text-gray-900 file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:text-sm file:font-semibold file:bg-indigo-50 file:text-indigo-700 hover:file:bg-indigo-100">
                         </div>
                         <p class="text-xs text-gray-500 mt-1">
-                            Upload active student/school letter, ID card, or other identity documents (Max 2MB)
+                            Unggah surat aktif siswa/sekolah, KTP, atau dokumen identitas lainnya (Maks 2MB)
                         </p>
                     </div>
 
                     {{-- Submit Button --}}
                     <button type="submit"
                             class="w-full inline-flex items-center justify-center gap-2 px-8 py-4 bg-gradient-to-r from-indigo-600 to-purple-600 text-white rounded-xl font-bold hover:from-indigo-700 hover:to-purple-700 transition-all duration-300 shadow-lg hover:shadow-xl hover:-translate-y-0.5">
-                        <span>Create Account</span>
+                        <span>Buat Akun</span>
                         <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7l5 5m0 0l-5 5m5-5H6"></path>
                         </svg>
@@ -268,9 +268,9 @@
                     {{-- Login Link --}}
                     <div class="text-center pt-4">
                         <p class="text-sm text-gray-600">
-                            Already have an account? 
+                            Sudah punya akun? 
                             <a href="{{ route('login') }}" class="font-bold text-indigo-600 hover:text-indigo-700 transition-colors">
-                                Login here
+                                Masuk di sini
                             </a>
                         </p>
                     </div>
@@ -281,7 +281,7 @@
                             <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"></path>
                             </svg>
-                            <span>Back to Homepage</span>
+                            <span>Kembali ke Beranda</span>
                         </a>
                     </div>
                 </form>

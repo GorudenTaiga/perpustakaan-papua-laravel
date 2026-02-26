@@ -32,21 +32,21 @@
                                             d="M9 4.804A7.968 7.968 0 005.5 4c-1.255 0-2.443.29-3.5.804v10A7.969 7.969 0 015.5 14c1.669 0 3.218.51 4.5 1.385A7.962 7.962 0 0114.5 14c1.255 0 2.443.29 3.5.804v-10A7.968 7.968 0 0014.5 4c-1.255 0-2.443.29-3.5.804V12a1 1 0 11-2 0V4.804z">
                                         </path>
                                     </svg>
-                                    <span class="text-sm font-semibold">Discover Knowledge</span>
+                                    <span class="text-sm font-semibold">Jelajahi Pengetahuan</span>
                                 </div>
                                 <h1 class="text-5xl lg:text-7xl font-bold leading-tight">
-                                    Explore Our<br>
-                                    <span class="text-yellow-300">Digital Library</span><br>
-                                    Collection
+                                    Selamat Datang di<br>
+                                    <span class="text-yellow-300">Perpustakaan Daerah</span><br>
+                                    Provinsi Papua
                                 </h1>
                                 <p class="text-lg lg:text-xl text-white/90 leading-relaxed max-w-xl">
-                                    Browse thousands of books across all genres. From classic literature to modern
-                                    bestsellers, find your next great read.
+                                    Jelajahi ribuan buku dari berbagai genre. Dari sastra klasik hingga modern,
+                                    temukan bacaan hebat berikutnya untuk Anda.
                                 </p>
                                 <div class="flex flex-wrap gap-4 pt-4">
                                     <a href="{{ route('allBuku') }}"
                                         class="inline-flex items-center gap-2 px-8 py-4 bg-white text-indigo-600 rounded-xl font-bold hover:bg-yellow-300 hover:text-indigo-900 transition-all duration-300 shadow-xl hover:shadow-2xl hover:-translate-y-1">
-                                        Browse Books
+                                        Jelajahi Buku
                                         <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                                 d="M13 7l5 5m0 0l-5 5m5-5H6"></path>
@@ -54,13 +54,13 @@
                                     </a>
                                     <a href="{{ route('allCategories') }}"
                                         class="inline-flex items-center gap-2 px-8 py-4 bg-white/10 text-white rounded-xl font-bold backdrop-blur-sm border-2 border-white/30 hover:bg-white/20 transition-all duration-300">
-                                        View Categories
+                                        Lihat Kategori
                                     </a>
                                 </div>
                             </div>
                             <div class="relative hidden lg:block">
                                 <div class="relative z-10 transform hover:scale-105 transition-transform duration-500">
-                                    <img src="{{ asset('images/buku_dashboard.png') }}" alt="Books"
+                                    <img src="{{ asset('images/buku_dashboard.png') }}" alt="Buku"
                                         class="w-full h-auto drop-shadow-2xl">
                                 </div>
                             </div>
@@ -79,21 +79,21 @@
                                             d="M4 5a2 2 0 012-2 3 3 0 003 3h2a3 3 0 003-3 2 2 0 012 2v11a2 2 0 01-2 2H6a2 2 0 01-2-2V5zm3 4a1 1 0 000 2h.01a1 1 0 100-2H7zm3 0a1 1 0 000 2h3a1 1 0 100-2h-3zm-3 4a1 1 0 100 2h.01a1 1 0 100-2H7zm3 0a1 1 0 100 2h3a1 1 0 100-2h-3z"
                                             clip-rule="evenodd"></path>
                                     </svg>
-                                    <span class="text-sm font-semibold">New Arrivals</span>
+                                    <span class="text-sm font-semibold">Buku Terbaru</span>
                                 </div>
                                 <h1 class="text-5xl lg:text-7xl font-bold leading-tight">
-                                    Latest Additions<br>
-                                    to Our<br>
-                                    <span class="text-yellow-300">Collection</span>
+                                    Tambahan Terbaru<br>
+                                    untuk<br>
+                                    <span class="text-yellow-300">Koleksi Kami</span>
                                 </h1>
                                 <p class="text-lg lg:text-xl text-white/90 leading-relaxed max-w-xl">
-                                    Discover the newest books added to our library. Stay updated with the latest
-                                    publications and trending titles.
+                                    Temukan buku-buku terbaru yang ditambahkan ke perpustakaan kami. Tetap ikuti
+                                    publikasi terkini dan judul-judul yang sedang tren.
                                 </p>
                                 <div class="flex flex-wrap gap-4 pt-4">
                                     <a href="{{ route('allBuku') }}"
                                         class="inline-flex items-center gap-2 px-8 py-4 bg-white text-indigo-600 rounded-xl font-bold hover:bg-yellow-300 hover:text-indigo-900 transition-all duration-300 shadow-xl hover:shadow-2xl hover:-translate-y-1">
-                                        View New Books
+                                        Lihat Buku Baru
                                         <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                                 d="M13 7l5 5m0 0l-5 5m5-5H6"></path>
@@ -103,7 +103,7 @@
                             </div>
                             <div class="relative hidden lg:block">
                                 <div class="relative z-10 transform hover:scale-105 transition-transform duration-500">
-                                    <img src="{{ asset('images/buku_dashboard.png') }}" alt="New Books"
+                                    <img src="{{ asset('images/buku_dashboard.png') }}" alt="Buku Baru"
                                         class="w-full h-auto drop-shadow-2xl">
                                 </div>
                             </div>
@@ -121,20 +121,20 @@
                                             d="M6 2a1 1 0 00-1 1v1H4a2 2 0 00-2 2v10a2 2 0 002 2h12a2 2 0 002-2V6a2 2 0 00-2-2h-1V3a1 1 0 10-2 0v1H7V3a1 1 0 00-1-1zm0 5a1 1 0 000 2h8a1 1 0 100-2H6z"
                                             clip-rule="evenodd"></path>
                                     </svg>
-                                    <span class="text-sm font-semibold">Digital Access</span>
+                                    <span class="text-sm font-semibold">Akses Digital</span>
                                 </div>
                                 <h1 class="text-5xl lg:text-7xl font-bold leading-tight">
-                                    24/7 Digital<br>
-                                    <span class="text-yellow-300">Library Access</span>
+                                    Akses Digital<br>
+                                    <span class="text-yellow-300">Perpustakaan 24/7</span>
                                 </h1>
                                 <p class="text-lg lg:text-xl text-white/90 leading-relaxed max-w-xl">
-                                    Access our complete library collection anytime, anywhere. Borrow books digitally and
-                                    read on any device.
+                                    Akses koleksi perpustakaan lengkap kami kapan saja, di mana saja. Pinjam buku secara
+                                    digital dan baca di perangkat apa pun.
                                 </p>
                                 <div class="flex flex-wrap gap-4 pt-4">
                                     <a href="{{ route('allBuku') }}"
                                         class="inline-flex items-center gap-2 px-8 py-4 bg-white text-indigo-600 rounded-xl font-bold hover:bg-yellow-300 hover:text-indigo-900 transition-all duration-300 shadow-xl hover:shadow-2xl hover:-translate-y-1">
-                                        Start Reading
+                                        Mulai Membaca
                                         <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                                 d="M13 7l5 5m0 0l-5 5m5-5H6"></path>
@@ -144,7 +144,7 @@
                             </div>
                             <div class="relative hidden lg:block">
                                 <div class="relative z-10 transform hover:scale-105 transition-transform duration-500">
-                                    <img src="{{ asset('images/buku_dashboard.png') }}" alt="Digital Library"
+                                    <img src="{{ asset('images/buku_dashboard.png') }}" alt="Perpustakaan Digital"
                                         class="w-full h-auto drop-shadow-2xl">
                                 </div>
                             </div>
@@ -193,11 +193,11 @@
                                 </path>
                             </svg>
                         </div>
-                        <h3 class="text-3xl font-bold text-white mb-3">Browse Categories</h3>
-                        <p class="text-white/90 text-lg mb-6">Explore books by genre and discover new favorites</p>
+                        <h3 class="text-3xl font-bold text-white mb-3">Jelajahi Kategori</h3>
+                        <p class="text-white/90 text-lg mb-6">Jelajahi buku berdasarkan genre dan temukan favorit baru</p>
                         <div
                             class="inline-flex items-center gap-2 text-white font-semibold group-hover:gap-4 transition-all">
-                            View All Categories
+                            Lihat Semua Kategori
                             <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <use xlink:href="#arrow-right"></use>
                             </svg>
@@ -220,11 +220,11 @@
                                 </path>
                             </svg>
                         </div>
-                        <h3 class="text-3xl font-bold text-white mb-3">Digital Collection</h3>
-                        <p class="text-white/90 text-lg mb-6">Access thousands of e-books and digital resources</p>
+                        <h3 class="text-3xl font-bold text-white mb-3">Koleksi Digital</h3>
+                        <p class="text-white/90 text-lg mb-6">Akses ribuan e-book dan sumber daya digital</p>
                         <div
                             class="inline-flex items-center gap-2 text-white font-semibold group-hover:gap-4 transition-all">
-                            Browse E-Books
+                            Jelajahi E-Book
                             <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <use xlink:href="#arrow-right"></use>
                             </svg>
@@ -240,12 +240,12 @@
         <div class="container mx-auto px-4">
             <div class="flex items-center justify-between mb-12">
                 <div>
-                    <h2 class="text-4xl lg:text-5xl font-bold text-gray-900 mb-3">Book Categories</h2>
-                    <p class="text-lg text-gray-600">Discover books organized by your favorite genres</p>
+                    <h2 class="text-4xl lg:text-5xl font-bold text-gray-900 mb-3">Kategori Buku</h2>
+                    <p class="text-lg text-gray-600">Temukan buku yang dikelompokkan berdasarkan genre favorit Anda</p>
                 </div>
                 <a href="{{ route('allCategories') }}"
                     class="hidden md:inline-flex items-center gap-2 px-6 py-3 rounded-xl bg-gradient-to-r from-indigo-600 to-purple-600 text-white font-semibold hover:from-indigo-700 hover:to-purple-700 transition-all shadow-lg hover:shadow-xl hover:-translate-y-1">
-                    View All
+                    Lihat Semua
                     <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <use xlink:href="#arrow-right"></use>
                     </svg>
@@ -313,12 +313,12 @@
         <div class="container mx-auto px-4">
             <div class="flex items-center justify-between mb-12">
                 <div>
-                    <h2 class="text-4xl lg:text-5xl font-bold text-gray-900 mb-3">Latest Books</h2>
-                    <p class="text-lg text-gray-600">Explore our newest additions to the collection</p>
+                    <h2 class="text-4xl lg:text-5xl font-bold text-gray-900 mb-3">Buku Terbaru</h2>
+                    <p class="text-lg text-gray-600">Jelajahi koleksi terbaru yang ditambahkan ke perpustakaan</p>
                 </div>
                 <a href="{{ route('allBuku') }}"
                     class="hidden md:inline-flex items-center gap-2 px-6 py-3 rounded-xl bg-gradient-to-r from-indigo-600 to-purple-600 text-white font-semibold hover:from-indigo-700 hover:to-purple-700 transition-all shadow-lg hover:shadow-xl hover:-translate-y-1">
-                    View All Books
+                    Lihat Semua Buku
                     <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <use xlink:href="#arrow-right"></use>
                     </svg>
@@ -358,7 +358,7 @@
                                                 d="M7 3a1 1 0 000 2h6a1 1 0 100-2H7zM4 7a1 1 0 011-1h10a1 1 0 110 2H5a1 1 0 01-1-1zM2 11a2 2 0 012-2h12a2 2 0 012 2v4a2 2 0 01-2 2H4a2 2 0 01-2-2v-4z">
                                             </path>
                                         </svg>
-                                        {{ $b->stock }} Available
+                                        {{ $b->stock }} Tersedia
                                     </span>
                                     <span class="inline-flex items-center gap-1 text-yellow-500 font-semibold">
                                         <svg class="w-4 h-4 fill-current" viewBox="0 0 15 15">
@@ -377,7 +377,7 @@
             <div class="mt-12 text-center md:hidden">
                 <a href="{{ route('allBuku') }}"
                     class="inline-flex items-center gap-2 px-8 py-4 rounded-xl bg-gradient-to-r from-indigo-600 to-purple-600 text-white font-semibold hover:from-indigo-700 hover:to-purple-700 transition-all shadow-lg hover:shadow-xl">
-                    View All Books
+                    Lihat Semua Buku
                     <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <use xlink:href="#arrow-right"></use>
                     </svg>
@@ -396,7 +396,7 @@
                         <svg class="w-5 h-5 text-red-500" fill="currentColor" viewBox="0 0 20 20">
                             <path fill-rule="evenodd" d="M12.395 2.553a1 1 0 00-1.45-.385c-.345.23-.614.558-.822.88-.214.33-.403.713-.57 1.116-.334.804-.614 1.768-.84 2.734a31.365 31.365 0 00-.613 3.58 2.64 2.64 0 01-.945-1.067c-.328-.68-.398-1.534-.398-2.654A1 1 0 005.05 6.05 6.981 6.981 0 003 11a7 7 0 1011.95-4.95c-.592-.591-.98-.985-1.348-1.467-.363-.476-.724-1.063-1.207-2.03zM12.12 15.12A3 3 0 017 13s.879.5 2.5.5c0-1 .5-4 1.25-4.5.5 1 .786 1.293 1.371 1.879A2.99 2.99 0 0113 13a2.99 2.99 0 01-.879 2.121z" clip-rule="evenodd"></path>
                         </svg>
-                        <span class="text-sm font-bold text-red-600">Trending</span>
+                        <span class="text-sm font-bold text-red-600">Terpopuler</span>
                     </div>
                     <h2 class="text-4xl lg:text-5xl font-bold text-gray-900 mb-3">Buku Populer</h2>
                     <p class="text-lg text-gray-600">Buku yang paling sering dipinjam oleh anggota perpustakaan</p>

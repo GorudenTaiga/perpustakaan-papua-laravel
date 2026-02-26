@@ -17,7 +17,7 @@
                     <span class="text-sm font-semibold">Profil Saya</span>
                 </div>
                 <h1 class="text-5xl lg:text-7xl font-bold leading-tight">
-                    My <span class="text-yellow-300">Profile</span>
+                    Profil <span class="text-yellow-300">Saya</span>
                 </h1>
                 <p class="text-lg lg:text-xl text-white/90 max-w-2xl leading-relaxed">
                     Kelola profil dan pantau aktivitas perpustakaan Anda.

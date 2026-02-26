@@ -14,7 +14,7 @@
                         <p class="text-xs text-gray-500 mb-2">{{ $item->buku->author }}</p>
                         <a href="{{ route('buku', $item->buku->slug) }}"
                             class="inline-flex items-center gap-1 text-xs font-medium text-indigo-600 hover:text-indigo-700 transition-colors">
-                            View Details
+                            Lihat Detail
                             <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
                             </svg>

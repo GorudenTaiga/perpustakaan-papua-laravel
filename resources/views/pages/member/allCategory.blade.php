@@ -26,13 +26,13 @@
                             d="M7 3a1 1 0 000 2h6a1 1 0 100-2H7zM4 7a1 1 0 011-1h10a1 1 0 110 2H5a1 1 0 01-1-1zM2 11a2 2 0 012-2h12a2 2 0 012 2v4a2 2 0 01-2 2H4a2 2 0 01-2-2v-4z">
                         </path>
                     </svg>
-                    <span class="text-sm font-semibold">Explore Categories</span>
+                    <span class="text-sm font-semibold">Jelajahi Kategori</span>
                 </div>
                 <h1 class="text-5xl lg:text-7xl font-bold leading-tight">
-                    Book <span class="text-yellow-300">Categories</span>
+                    Kategori <span class="text-yellow-300">Buku</span>
                 </h1>
                 <p class="text-lg lg:text-xl text-white/90 max-w-2xl leading-relaxed">
-                    Browse books by category and discover your next favorite read across all genres.
+                    Jelajahi buku berdasarkan kategori dan temukan bacaan favorit Anda berikutnya dari berbagai genre.
                 </p>
             </div>
         </div>
@@ -45,7 +45,7 @@
             <div class="bg-white rounded-3xl shadow-lg border border-gray-100 p-6 mb-8">
                 <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
                     <div class="text-sm text-gray-600">
-                        Showing <span class="font-semibold text-gray-900">{{ count($categories) }}</span> categories
+                        Menampilkan <span class="font-semibold text-gray-900">{{ count($categories) }}</span> kategori
                     </div>
                 </div>
             </div>
@@ -76,7 +76,7 @@
                             <div
                                 class="absolute bottom-0 left-0 right-0 p-6 translate-y-4 opacity-0 group-hover:translate-y-0 group-hover:opacity-100 transition-all duration-500">
                                 <div class="flex items-center text-white text-sm font-semibold">
-                                    <span>Browse Books</span>
+                                    <span>Jelajahi Buku</span>
                                     <svg class="w-5 h-5 ml-2 group-hover:translate-x-1 transition-transform"
                                         fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
@@ -102,8 +102,8 @@
                                 </path>
                             </svg>
                         </div>
-                        <h3 class="text-xl font-bold text-gray-900 mb-2">No Categories Found</h3>
-                        <p class="text-gray-600 mb-6">There are no categories available at the moment.</p>
+                        <h3 class="text-xl font-bold text-gray-900 mb-2">Kategori Tidak Ditemukan</h3>
+                        <p class="text-gray-600 mb-6">Belum ada kategori yang tersedia saat ini.</p>
                     </div>
                 @endforelse
             </div>

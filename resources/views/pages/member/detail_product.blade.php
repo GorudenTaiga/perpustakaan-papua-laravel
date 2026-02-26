@@ -10,13 +10,13 @@
                             d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6">
                         </path>
                     </svg>
-                    Home
+                    Beranda
                 </a>
                 <svg class="w-4 h-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
                 </svg>
                 <a href="{{ route('allBuku') }}"
-                    class="text-gray-600 hover:text-indigo-600 transition-colors font-medium">Books</a>
+                    class="text-gray-600 hover:text-indigo-600 transition-colors font-medium">Buku</a>
                 <svg class="w-4 h-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
                 </svg>
@@ -70,7 +70,7 @@
                                             d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253">
                                         </path>
                                     </svg>
-                                    Borrow This Book
+                                    Pinjam Buku Ini
                                 </button>
 
                                 {{-- Tailwind Modal --}}
@@ -129,7 +129,7 @@
                                                                     d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253">
                                                                 </path>
                                                             </svg>
-                                                            Borrow Book
+                                                            Pinjam Buku
                                                         </h3>
                                                         <button type="button" @click="showModal = false"
                                                             class="text-white hover:text-gray-200 transition-colors">
@@ -144,18 +144,18 @@
                                                 <div class="p-6 space-y-4">
                                                     <div class="bg-gradient-to-br from-indigo-50 to-purple-50 rounded-2xl p-4">
                                                         <p class="text-sm text-gray-700 font-semibold">{{ $buku->judul }}</p>
-                                                        <p class="text-xs text-gray-500 mt-1">by {{ $buku->author }}</p>
+                                                        <p class="text-xs text-gray-500 mt-1">oleh {{ $buku->author }}</p>
                                                     </div>
 
                                                     <div class="space-y-2">
-                                                        <label for="jumlah" class="block text-sm font-bold text-gray-900">Number of Books</label>
+                                                        <label for="jumlah" class="block text-sm font-bold text-gray-900">Jumlah Buku</label>
                                                         <input type="number" id="jumlah" name="quantity" x-model.number="quantity"
                                                             class="w-full px-4 py-3 rounded-xl border-2 border-gray-200 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200 transition-all"
                                                             min="1" max="{{ $buku->stock ?? 1 }}" value="1" required>
                                                         @error('quantity')
                                                             <p class="text-xs text-red-500 mt-1">{{ $message }}</p>
                                                         @enderror
-                                                        <p class="text-xs text-gray-500 mt-1">Available stock: {{ $buku->stock ?? 0 }} book(s)</p>
+                                                        <p class="text-xs text-gray-500 mt-1">Stok tersedia: {{ $buku->stock ?? 0 }} buku</p>
                                                     </div>
                                                 </div>
 
@@ -163,12 +163,12 @@
                                                 <div class="bg-gray-50 px-6 py-4 flex gap-3 justify-end">
                                                     <button type="button" @click="showModal = false"
                                                         class="px-6 py-2.5 rounded-xl border-2 border-gray-300 text-gray-700 font-semibold hover:bg-gray-100 transition-colors">
-                                                        Cancel
+                                                        Batal
                                                     </button>
                                                     <button type="submit" :disabled="loading"
                                                         class="px-6 py-2.5 rounded-xl bg-gradient-to-r from-indigo-600 to-purple-600 text-white font-semibold hover:from-indigo-700 hover:to-purple-700 transition-all shadow-lg hover:shadow-xl disabled:opacity-50 flex items-center gap-2">
                                                         <svg x-show="loading" class="animate-spin w-4 h-4" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z"></path></svg>
-                                                        <span x-text="loading ? 'Processing...' : 'Confirm Borrow'"></span>
+                                                        <span x-text="loading ? 'Memproses...' : 'Konfirmasi Peminjaman'"></span>
                                                     </button>
                                                 </div>
                                             </form>
@@ -183,7 +183,7 @@
                                             d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z">
                                         </path>
                                     </svg>
-                                    Account Not Verified
+                                    Akun Belum Diverifikasi
                                 </a>
                             @else
                                 <a href="{{ route('login') }}"
@@ -193,7 +193,7 @@
                                             d="M11 16l-4-4m0 0l4-4m-4 4h14m-5 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h7a3 3 0 013 3v1">
                                         </path>
                                     </svg>
-                                    Login to Borrow
+                                    Masuk untuk Meminjam
                                 </a>
                             @endif
                         </div>
@@ -201,7 +201,7 @@
                         {{-- Book Meta Information --}}
                         <div
                             class="bg-gradient-to-br from-gray-50 to-gray-100 rounded-2xl p-6 space-y-4 border border-gray-200">
-                            <h3 class="text-lg font-bold text-gray-900 mb-4">Book Information</h3>
+                            <h3 class="text-lg font-bold text-gray-900 mb-4">Informasi Buku</h3>
 
                             <div class="grid gap-4">
                                 {{-- Author --}}
@@ -216,8 +216,8 @@
                                         </svg>
                                     </div>
                                     <div class="flex-1">
-                                        <p class="text-xs text-gray-500 font-medium">Author</p>
-                                        <p class="text-sm font-semibold text-gray-900">{{ $buku->author ?? 'Unknown' }}</p>
+                                        <p class="text-xs text-gray-500 font-medium">Penulis</p>
+                                        <p class="text-sm font-semibold text-gray-900">{{ $buku->author ?? 'Tidak diketahui' }}</p>
                                     </div>
                                 </div>
 
@@ -233,8 +233,8 @@
                                         </svg>
                                     </div>
                                     <div class="flex-1">
-                                        <p class="text-xs text-gray-500 font-medium">Publisher</p>
-                                        <p class="text-sm font-semibold text-gray-900">{{ $buku->publisher ?? 'Unknown' }}
+                                        <p class="text-xs text-gray-500 font-medium">Penerbit</p>
+                                        <p class="text-sm font-semibold text-gray-900">{{ $buku->publisher ?? 'Tidak diketahui' }}
                                         </p>
                                     </div>
                                 </div>
@@ -251,7 +251,7 @@
                                         </svg>
                                     </div>
                                     <div class="flex-1">
-                                        <p class="text-xs text-gray-500 font-medium">Publication Year</p>
+                                        <p class="text-xs text-gray-500 font-medium">Tahun Terbit</p>
                                         <p class="text-sm font-semibold text-gray-900">{{ $buku->tahun ?? 'N/A' }}</p>
                                     </div>
                                 </div>
@@ -268,7 +268,7 @@
                                         </svg>
                                     </div>
                                     <div class="flex-1">
-                                        <p class="text-xs text-gray-500 font-medium">Categories</p>
+                                        <p class="text-xs text-gray-500 font-medium">Kategori</p>
                                         <div class="flex flex-wrap gap-2 mt-1">
                                             @foreach ($buku->categories() as $c)
                                                 <a href="{{ route('allBuku', ['category[]' => $c->id]) }}"
@@ -291,10 +291,10 @@
                                         </svg>
                                     </div>
                                     <div class="flex-1">
-                                        <p class="text-xs text-gray-500 font-medium">Available Stock</p>
+                                        <p class="text-xs text-gray-500 font-medium">Stok Tersedia</p>
                                         <p
                                             class="text-sm font-semibold {{ ($buku->stock ?? 0) > 0 ? 'text-green-600' : 'text-red-600' }}">
-                                            {{ $buku->stock ?? 0 }} {{ ($buku->stock ?? 0) > 1 ? 'Books' : 'Book' }}
+                                            {{ $buku->stock ?? 0 }} Buku
                                         </p>
                                     </div>
                                 </div>
@@ -316,12 +316,12 @@
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                 d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
                         </svg>
-                        Book Description
+                        Deskripsi Buku
                     </h2>
                 </div>
                 <div class="p-8">
                     <div class="prose prose-lg max-w-none text-gray-700 leading-relaxed">
-                        {!! $buku->deskripsi ?: '<p class="text-gray-500 italic">No description available for this book.</p>' !!}
+                        {!! $buku->deskripsi ?: '<p class="text-gray-500 italic">Deskripsi tidak tersedia untuk buku ini.</p>' !!}
                     </div>
                 </div>
             </div>
@@ -338,7 +338,7 @@
                             <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 20 20">
                                 <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"></path>
                             </svg>
-                            Ulasan & Rating
+                            Ulasan & Penilaian
                         </h2>
                         <div class="flex items-center gap-2 text-white" x-show="avgRating > 0">
                             <span class="text-3xl font-bold" x-text="avgRating.toFixed(1)"></span>
@@ -373,7 +373,7 @@
                             <div x-show="showForm" x-transition class="mt-4">
                                 <form @submit.prevent="submitReview()">
                                     <div class="mb-4">
-                                        <label class="block text-sm font-bold text-gray-700 mb-2">Rating</label>
+                                        <label class="block text-sm font-bold text-gray-700 mb-2">Penilaian</label>
                                         <div class="flex gap-1">
                                             <template x-for="i in 5" :key="i">
                                                 <button type="button" @click="formRating = i" class="focus:outline-none">
