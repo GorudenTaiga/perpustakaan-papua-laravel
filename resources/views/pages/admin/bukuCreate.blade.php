@@ -46,10 +46,10 @@
                                 <input type="text" class="form-control" id="slug" name="slug" required>
                             </div>
                             <div class="form-group">
-                                <label for="category_id">Category <button type="button" class="btn btn-sm btn-success"
+                                <label for="category_id">Kategori <button type="button" class="btn btn-sm btn-success"
                                         data-toggle="modal" data-target="#addCategoryModal">+</button></label>
                                 <select class="form-control" id="category_id" name="category_id">
-                                    <option value="">Select Category</option>
+                                    <option value="">Pilih Kategori</option>
                                     @foreach ($categories as $category)
                                         <option value="{{ $category->id }}">{{ $category->nama }}</option>
                                     @endforeach

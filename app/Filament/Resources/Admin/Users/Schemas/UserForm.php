@@ -14,20 +14,23 @@ class UserForm
         return $schema
             ->components([
                 TextInput::make('name')
+                    ->label('Nama')
                     ->required(),
                 TextInput::make('email')
-                    ->label('Email address')
+                    ->label('Alamat Email')
                     ->email()
                     ->required(),
                 Select::make('role')
+                    ->label('Peran')
                     ->required()
                     ->default('member')
                     ->options([
-                        'admin' => 'admin',
-                        'member' => 'member',
-                        'kepala' => 'kepala'
+                        'admin' => 'Admin',
+                        'member' => 'Anggota',
+                        'kepala' => 'Kepala Perpustakaan',
                     ]),
                 TextInput::make('password')
+                    ->label('Kata Sandi')
                     ->password()
                     ->required(),
             ]);

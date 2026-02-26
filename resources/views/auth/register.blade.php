@@ -184,10 +184,10 @@
                                     required
                                     class="w-full pl-12 pr-4 py-3 rounded-xl border-2 border-gray-200 focus:border-indigo-500 focus:ring-4 focus:ring-indigo-100 transition-all text-gray-900 appearance-none bg-white">
                                 <option value="">Pilih jenis anggota</option>
-                                <option value="Mahasiswa" {{ old('jenis') == 'Mahasiswa' ? 'selected' : '' }}>Mahasiswa</option>
-                                <option value="Dosen" {{ old('jenis') == 'Dosen' ? 'selected' : '' }}>Dosen</option>
                                 <option value="Pelajar" {{ old('jenis') == 'Pelajar' ? 'selected' : '' }}>Pelajar</option>
+                                <option value="Mahasiswa" {{ old('jenis') == 'Mahasiswa' ? 'selected' : '' }}>Mahasiswa</option>
                                 <option value="Guru" {{ old('jenis') == 'Guru' ? 'selected' : '' }}>Guru</option>
+                                <option value="Dosen" {{ old('jenis') == 'Dosen' ? 'selected' : '' }}>Dosen</option>
                                 <option value="Umum" {{ old('jenis') == 'Umum' ? 'selected' : '' }}>Umum</option>
                             </select>
                             <div class="absolute inset-y-0 right-0 pr-4 flex items-center pointer-events-none">

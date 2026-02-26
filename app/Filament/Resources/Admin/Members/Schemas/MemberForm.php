@@ -8,6 +8,7 @@ use Auth;
 use Carbon\Carbon;
 use Date;
 use Filament\Forms\Components\DatePicker;
+use Filament\Forms\Components\DateTimePicker;
 use Filament\Forms\Components\FileUpload;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
@@ -25,13 +26,26 @@ class MemberForm
                     ->disabled()
                     ->dehydrated(false),
                 Select::make('jenis')
+                    ->label('Jenis Anggota')
                     ->options([
-                        'Siswa' => 'Siswa',
+                        'Pelajar' => 'Pelajar',
                         'Mahasiswa' => 'Mahasiswa',
                         'Guru' => 'Guru',
                         'Dosen' => 'Dosen',
                         'Umum' => 'Umum',
                     ]),
+                Select::make('tier')
+                    ->label('Tier Keanggotaan')
+                    ->options([
+                        'reguler' => 'Reguler',
+                        'premium' => 'Premium',
+                    ])
+                    ->default('reguler')
+                    ->required(),
+                DateTimePicker::make('tier_expired_at')
+                    ->label('Masa Berlaku Premium')
+                    ->visible(fn ($get) => $get('tier') === 'premium')
+                    ->nullable(),
                 DatePicker::make('valid_date')
                     ->default(fn () => Carbon::now()->addYears(2)->toDateString()) // buat create
                     ->formatStateUsing(fn ($state) => $state ?? Carbon::now()->addYears(2)->toDateString()) // fallback kalau null

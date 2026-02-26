@@ -37,8 +37,9 @@ class PaymentsForm
                 Select::make('payment_method')
                     ->label('Metode Pembayaran')
                     ->options([
-                        'cash' => 'Cash',
-                        'transfer' => 'Transfer',
+                        'cash' => 'Tunai',
+                        'transfer' => 'Transfer Bank',
+                        'qris' => 'QRIS',
                     ])
                     ->required(),
                 Textarea::make('keterangan')

@@ -54,9 +54,11 @@
                         <div class="form-gp">
                             {{-- <input type="text" name="name" id="exampleInputName1"> --}}
                             <select name="jenis" id="exampleInputJenis">
-                                <option value="Mahasiswa">Mahasiswa</option>
-                                <option value="Dosen">Dosen</option>
+                                <option value="">Pilih jenis anggota</option>
                                 <option value="Pelajar">Pelajar</option>
+                                <option value="Mahasiswa">Mahasiswa</option>
+                                <option value="Guru">Guru</option>
+                                <option value="Dosen">Dosen</option>
                                 <option value="Umum">Umum</option>
                             </select>
                             <i class="ti-user"></i>
