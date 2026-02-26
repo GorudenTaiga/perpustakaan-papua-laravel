@@ -1123,6 +1123,9 @@
                                                 @if ($book->gdrive_link)
                                                     <div class="premium-badge badge-digital">
                                                         <span>📱</span> Digital
+                                                        @if (!(Auth::check() && Auth::user()->member?->isPremium()))
+                                                            <span>🔒</span>
+                                                        @endif
                                                     </div>
                                                 @endif
                                             </div>
@@ -1183,9 +1186,9 @@
                                                 <a href="{{ route('buku', $book->slug) }}" class="btn-primary-ultra">
                                                     <span style="position: relative; z-index: 1;">Lihat Detail</span>
                                                 </a>
-                                                @if ($book->gdrive_link)
-                                                    <a href="{{ $book->gdrive_link }}" target="_blank"
-                                                        class="btn-icon-ultra" title="Buku Digital">
+                                                @if ($book->gdrive_link && Auth::check() && Auth::user()->member?->isPremium())
+                                                    <a href="{{ route('buku.read', $book->slug) }}"
+                                                        class="btn-icon-ultra" title="Baca Buku Digital">
                                                         <svg width="22" height="22" fill="currentColor"
                                                             viewBox="0 0 24 24">
                                                             <path
@@ -1193,6 +1196,10 @@
                                                             <path d="M14 2v6h6" />
                                                         </svg>
                                                     </a>
+                                                @elseif ($book->gdrive_link)
+                                                    <span class="btn-icon-ultra" style="opacity:0.5;cursor:not-allowed;" title="Khusus Member Premium">
+                                                        🔒
+                                                    </span>
                                                 @endif
                                             </div>
                                         </div>

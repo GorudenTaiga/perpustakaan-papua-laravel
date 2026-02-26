@@ -18,11 +18,26 @@ class Member extends Model
         'jenis',
         'membership_number',
         'image',
-        'document_path'
+        'document_path',
+        'tier',
+        'tier_expired_at',
+    ];
+
+    protected $casts = [
+        'tier_expired_at' => 'datetime',
     ];
 
     public function user() {
         return $this->belongsTo(User::class, 'users_id', 'id');
+    }
+
+    public function subscriptions() {
+        return $this->hasMany(Subscription::class, 'member_id', 'membership_number');
+    }
+
+    public function isPremium(): bool
+    {
+        return $this->tier === 'premium' && $this->tier_expired_at?->isFuture();
     }
 
     public function wishlist() {

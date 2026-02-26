@@ -194,14 +194,21 @@
                                         @endif
                                         {{-- Read Book Button (Only if status is 'dipinjam') --}}
                                         @if (in_array($p->status, ['dipinjam', 'terlambat']))
-                                            @if ($p->buku->gdrive_link)
-                                                <a href="{{ $p->buku->gdrive_link }}" target="_blank"
+                                            @if ($p->buku->gdrive_link && Auth::user()->member?->isPremium())
+                                                <a href="{{ route('buku.read', $p->buku->slug) }}"
                                                    class="inline-flex items-center justify-center gap-2 px-4 py-2 bg-gradient-to-r from-blue-600 to-indigo-600 text-white rounded-lg font-semibold text-sm hover:from-blue-700 hover:to-indigo-700 transition-all shadow-md hover:shadow-lg">
                                                     <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"></path>
                                                     </svg>
                                                     Baca Buku
                                                 </a>
+                                            @elseif ($p->buku->gdrive_link && !Auth::user()->member?->isPremium())
+                                                <span class="inline-flex items-center justify-center gap-2 px-4 py-2 bg-gradient-to-r from-yellow-500 to-amber-500 text-white rounded-lg font-semibold text-sm cursor-not-allowed opacity-80">
+                                                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"></path>
+                                                    </svg>
+                                                    Khusus Premium
+                                                </span>
                                             @else
                                                 <button @click="showWarning = true" type="button"
                                                         class="inline-flex items-center justify-center gap-2 px-4 py-2 bg-gray-400 text-white rounded-lg font-semibold text-sm hover:bg-gray-500 transition-all shadow-md hover:shadow-lg">

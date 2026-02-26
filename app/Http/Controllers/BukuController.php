@@ -100,4 +100,68 @@ class BukuController extends Controller
             'reviews' => $reviews,
         ]);
     }
+
+    /**
+     * Baca buku digital via Google Drive embed (khusus premium).
+     */
+    public function read($slug)
+    {
+        $buku = Buku::where('slug', $slug)->firstOrFail();
+
+        if (!$buku->gdrive_link) {
+            abort(404, 'Buku ini tidak tersedia dalam format digital.');
+        }
+
+        $member = auth()->user()->member ?? null;
+
+        if (!$member || !$member->isPremium()) {
+            return redirect()->route('buku', $slug)
+                ->with('error', 'Fitur baca digital hanya tersedia untuk member Premium.');
+        }
+
+        $embedUrl = $this->getGdriveEmbedUrl($buku->gdrive_link);
+
+        if (!$embedUrl) {
+            return redirect()->route('buku', $slug)
+                ->with('error', 'Link Google Drive tidak valid.');
+        }
+
+        return view('pages.member.reader', [
+            'buku' => $buku,
+            'embedUrl' => $embedUrl,
+        ]);
+    }
+
+    /**
+     * Konversi link Google Drive ke URL embed/preview.
+     */
+    private function getGdriveEmbedUrl(string $url): ?string
+    {
+        // Format: https://drive.google.com/file/d/{FILE_ID}/view
+        if (preg_match('/\/file\/d\/([a-zA-Z0-9_-]+)/', $url, $matches)) {
+            return 'https://drive.google.com/file/d/' . $matches[1] . '/preview';
+        }
+
+        // Format: https://drive.google.com/open?id={FILE_ID}
+        if (preg_match('/[?&]id=([a-zA-Z0-9_-]+)/', $url, $matches)) {
+            return 'https://drive.google.com/file/d/' . $matches[1] . '/preview';
+        }
+
+        // Format: https://docs.google.com/document/d/{FILE_ID}/...
+        if (preg_match('/\/document\/d\/([a-zA-Z0-9_-]+)/', $url, $matches)) {
+            return 'https://docs.google.com/document/d/' . $matches[1] . '/preview';
+        }
+
+        // Format: https://docs.google.com/spreadsheets/d/{FILE_ID}/...
+        if (preg_match('/\/spreadsheets\/d\/([a-zA-Z0-9_-]+)/', $url, $matches)) {
+            return 'https://docs.google.com/spreadsheets/d/' . $matches[1] . '/preview';
+        }
+
+        // Format: https://docs.google.com/presentation/d/{FILE_ID}/...
+        if (preg_match('/\/presentation\/d\/([a-zA-Z0-9_-]+)/', $url, $matches)) {
+            return 'https://docs.google.com/presentation/d/' . $matches[1] . '/embed?start=false&loop=false';
+        }
+
+        return null;
+    }
 }
