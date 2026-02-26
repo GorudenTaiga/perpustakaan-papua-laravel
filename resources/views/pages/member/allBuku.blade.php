@@ -79,26 +79,30 @@
                                     </label>
 
                                     @foreach ($categories as $i => $c)
-                                        <label x-show="expanded || {{ $i }} < 5"
-                                            x-transition
+                                        <label x-show="expanded || {{ $i }} < 5" x-transition
                                             class="flex items-center gap-3 px-3 py-2 rounded-lg hover:bg-gray-50 cursor-pointer transition-colors {{ in_array($c->id, (array) request('category')) ? 'bg-indigo-50' : '' }}">
                                             <input type="checkbox" name="category[]" value="{{ $c->id }}"
                                                 onchange="categoryToggle(this, false)"
                                                 {{ in_array($c->id, (array) request('category')) ? 'checked' : '' }}
                                                 class="w-4 h-4 rounded text-indigo-600 focus:ring-indigo-500">
-                                            <span class="text-sm font-medium text-gray-700 truncate">{{ $c->nama }}</span>
+                                            <span
+                                                class="text-sm font-medium text-gray-700 truncate">{{ $c->nama }}</span>
                                         </label>
                                     @endforeach
                                 </div>
 
-                                @if($categories->count() > 5)
-                                <button type="button" @click="expanded = !expanded"
-                                    class="mt-2 w-full flex items-center justify-center gap-1.5 py-2 text-xs font-semibold text-indigo-600 hover:text-indigo-700 hover:bg-indigo-50 rounded-lg transition-colors">
-                                    <span x-text="expanded ? 'Tampilkan Sedikit' : 'Tampilkan Semua ({{ $categories->count() }})'"></span>
-                                    <svg class="w-4 h-4 transition-transform duration-200" :class="expanded ? 'rotate-180' : ''" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
-                                    </svg>
-                                </button>
+                                @if ($categories->count() > 5)
+                                    <button type="button" @click="expanded = !expanded"
+                                        class="mt-2 w-full flex items-center justify-center gap-1.5 py-2 text-xs font-semibold text-indigo-600 hover:text-indigo-700 hover:bg-indigo-50 rounded-lg transition-colors">
+                                        <span
+                                            x-text="expanded ? 'Tampilkan Sedikit' : 'Tampilkan Semua ({{ $categories->count() }})'"></span>
+                                        <svg class="w-4 h-4 transition-transform duration-200"
+                                            :class="expanded ? 'rotate-180' : ''" fill="none" stroke="currentColor"
+                                            viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                d="M19 9l-7 7-7-7"></path>
+                                        </svg>
+                                    </button>
                                 @endif
                             </form>
                             <script>
@@ -130,7 +134,8 @@
                     <div class="bg-white rounded-3xl shadow-lg border border-gray-100 p-6 mb-8">
                         <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
                             <div class="text-sm text-gray-600">
-                                Menampilkan <span class="font-semibold text-gray-900">{{ $buku->firstItem() ?? 0 }}</span> -
+                                Menampilkan <span class="font-semibold text-gray-900">{{ $buku->firstItem() ?? 0 }}</span>
+                                -
                                 <span class="font-semibold text-gray-900">{{ $buku->lastItem() ?? 0 }}</span> dari
                                 <span class="font-semibold text-gray-900">{{ $buku->total() }}</span> hasil
                             </div>
@@ -143,8 +148,10 @@
                                         - Z)</option>
                                     <option value="judulZA" {{ request('sortBy') == 'judulZA' ? 'selected' : '' }}>Judul (Z
                                         - A)</option>
-                                    <option value="newest" {{ request('sortBy') == 'newest' ? 'selected' : '' }}>Terbaru</option>
-                                    <option value="oldest" {{ request('sortBy') == 'oldest' ? 'selected' : '' }}>Terlama</option>
+                                    <option value="newest" {{ request('sortBy') == 'newest' ? 'selected' : '' }}>Terbaru
+                                    </option>
+                                    <option value="oldest" {{ request('sortBy') == 'oldest' ? 'selected' : '' }}>Terlama
+                                    </option>
                                 </select>
                             </form>
                         </div>
@@ -167,12 +174,12 @@
                                         <div class="absolute top-4 left-4">
                                             <span
                                                 class="px-3 py-1.5 bg-gradient-to-r from-indigo-600 to-purple-600 text-white text-xs font-bold rounded-full shadow-lg">
-                                                {{ $b->tahun ?? 'N/A' }}
+                                                {{ $b->category->nama ?? 'N/A' }}
                                             </span>
                                         </div>
                                         <div class="absolute top-4 right-4">
                                             <button
-                                                class="add-to-wishlist p-2.5 rounded-full bg-white/90 backdrop-blur-sm hover:bg-white shadow-lg transition-all duration-300 hover:scale-110 {{ Auth::check() && Auth::user()->member && \App\Models\Wishlist::where('member_id', Auth::user()->member->membership_number)->where('buku_id', $b->id)->exists() ? 'active' : '' }}"
+                                                class="add-to-wishlist p-2.5 rounded-full bg-white/90 backdrop-blur-sm hover:bg-white shadow-lg transition-all duration-300 hover:scale-110 {{ Auth::check() &&Auth::user()->member &&\App\Models\Wishlist::where('member_id', Auth::user()->member->membership_number)->where('buku_id', $b->id)->exists()? 'active': '' }}"
                                                 data-id="{{ $b->id }}" onclick="event.preventDefault();">
                                                 <svg class="w-5 h-5 text-gray-600 hover:text-red-500 transition-colors"
                                                     fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -212,14 +219,21 @@
                                         <div class="pt-3 border-t border-gray-100">
                                             <div class="flex items-center justify-between">
                                                 <div class="flex items-center gap-2">
-                                                    @if($b->average_rating > 0)
-                                                    <div class="flex items-center gap-1">
-                                                        <svg class="w-4 h-4 text-yellow-400" fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"></path></svg>
-                                                        <span class="text-sm font-bold text-gray-700">{{ number_format($b->average_rating, 1) }}</span>
-                                                        <span class="text-xs text-gray-400">({{ $b->review_count }})</span>
-                                                    </div>
+                                                    @if ($b->average_rating > 0)
+                                                        <div class="flex items-center gap-1">
+                                                            <svg class="w-4 h-4 text-yellow-400" fill="currentColor"
+                                                                viewBox="0 0 20 20">
+                                                                <path
+                                                                    d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z">
+                                                                </path>
+                                                            </svg>
+                                                            <span
+                                                                class="text-sm font-bold text-gray-700">{{ number_format($b->average_rating, 1) }}</span>
+                                                            <span
+                                                                class="text-xs text-gray-400">({{ $b->review_count }})</span>
+                                                        </div>
                                                     @else
-                                                    <span class="text-xs text-gray-400">Belum ada rating</span>
+                                                        <span class="text-xs text-gray-400">Belum ada rating</span>
                                                     @endif
                                                 </div>
                                                 <span
@@ -243,7 +257,8 @@
                                     </svg>
                                 </div>
                                 <h3 class="text-xl font-bold text-gray-900 mb-2">Buku Tidak Ditemukan</h3>
-                                <p class="text-gray-600 mb-6">Coba sesuaikan pencarian atau filter untuk menemukan yang Anda cari.</p>
+                                <p class="text-gray-600 mb-6">Coba sesuaikan pencarian atau filter untuk menemukan yang
+                                    Anda cari.</p>
                                 <a href="{{ route('allBuku') }}"
                                     class="inline-flex items-center gap-2 px-6 py-3 bg-indigo-600 text-white rounded-xl font-semibold hover:bg-indigo-700 transition-colors">
                                     <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">

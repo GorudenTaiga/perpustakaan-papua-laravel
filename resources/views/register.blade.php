@@ -77,7 +77,7 @@
                         <div class="form-gp">
                             <label for="exampleInputDocument">Dokumen Pendukung</label>
                             <small class="form-text text-muted">Upload surat aktif kuliah/sekolah, KTP, atau dokumen identitas lainnya (Max 2MB)</small>
-                            <input type="file" name="document" id="exampleInputDocument" accept=".pdf,.jpg,.jpeg,.png" class="form-control">
+                            <input type="file" name="document" id="exampleInputDocument" accept=".pdf,.jpg,.jpeg,.png,.webp" class="form-control">
                             <i class="ti-file"></i>
                             <div class="text-danger"></div>
                         </div>

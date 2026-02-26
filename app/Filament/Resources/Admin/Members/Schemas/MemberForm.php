@@ -3,6 +3,7 @@
 namespace App\Filament\Resources\Admin\Members\Schemas;
 
 use App\Models\User;
+use App\Services\ImageWebpConverter;
 use Auth;
 use Carbon\Carbon;
 use Date;
@@ -42,15 +43,26 @@ class MemberForm
                     ->image()
                     ->visibility('public')
                     ->directory('images/member/foto')
+                    ->acceptedFileTypes(['image/jpeg', 'image/png', 'image/jpg', 'image/webp'])
+                    ->saveUploadedFileUsing(function ($file) {
+                        return ImageWebpConverter::convertAndStore($file, 'images/member/foto', 'public');
+                    })
                     ->nullable(),
                 
                 FileUpload::make('document_path')
                     ->label('Dokumen Pendukung')
                     ->disk('public')
-                    ->acceptedFileTypes(['application/pdf', 'image/jpeg', 'image/png', 'image/jpg'])
+                    ->acceptedFileTypes(['application/pdf', 'image/jpeg', 'image/png', 'image/jpg', 'image/webp'])
                     ->maxSize(2048)
                     ->visibility('public')
                     ->directory('documents/members')
+                    ->saveUploadedFileUsing(function ($file) {
+                        $mime = $file->getMimeType();
+                        if (in_array($mime, ['image/jpeg', 'image/png', 'image/jpg'])) {
+                            return ImageWebpConverter::convertAndStore($file, 'documents/members', 'public');
+                        }
+                        return $file->store('documents/members', 'public');
+                    })
                     ->helperText('Upload surat aktif kuliah/sekolah, KTP, atau dokumen identitas lainnya (Max 2MB)')
                     ->nullable(),
             ]);

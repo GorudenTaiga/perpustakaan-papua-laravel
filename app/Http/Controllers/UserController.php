@@ -7,6 +7,7 @@ use App\Models\Member;
 use App\Models\Notification;
 use App\Models\Pinjaman;
 use App\Models\User;
+use App\Services\ImageWebpConverter;
 use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Http\Request;
 use Illuminate\Support\Carbon;
@@ -99,18 +100,18 @@ class UserController extends Controller
     public function updatePhoto(Request $request)
     {
         $valid = $request->validate([
-            'image' => 'required|image|mimes:jpg,jpeg,png|max:2048',
+            'image' => 'required|image|mimes:jpg,jpeg,png,webp|max:2048',
         ], [
             'image.required' => 'Harap upload gambar terlebih dahulu',
-            'image.mimes' => 'Harap upload hanya berformat jpg, jpeg, dan png',
+            'image.mimes' => 'Harap upload hanya berformat jpg, jpeg, png, dan webp',
             'image.max' => 'Ukuran gambar maksimal 2MB / 2048KB'
         ]);
 
         if ($valid) {
             $member = auth()->user()->member;
 
-            // simpan file ke storage/app/public/images/member/foto/
-            $path = $request->file('image')->store('images/member/foto', 'public');
+            // konversi ke WebP lalu simpan ke storage/app/public/images/member/foto/
+            $path = ImageWebpConverter::convertAndStore($request->file('image'), 'images/member/foto', 'public');
 
             // hapus foto lama kalau ada
             if ($member->image && Storage::disk('public')->exists($member->image)) {
@@ -140,9 +141,14 @@ class UserController extends Controller
                 if ($user = User::create($validate)) {
                     $documentPath = null;
                     
-                    // Upload document if provided
+                    // Upload document if provided (konversi gambar ke WebP)
                     if ($request->hasFile('document')) {
-                        $documentPath = $request->file('document')->store('documents/members', 'public');
+                        $doc = $request->file('document');
+                        if (in_array($doc->getMimeType(), ['image/jpeg', 'image/png', 'image/jpg', 'image/gif', 'image/bmp'])) {
+                            $documentPath = ImageWebpConverter::convertAndStore($doc, 'documents/members', 'public');
+                        } else {
+                            $documentPath = $doc->store('documents/members', 'public');
+                        }
                     }
                     
                     if(Member::create([

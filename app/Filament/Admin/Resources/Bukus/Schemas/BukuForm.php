@@ -3,6 +3,7 @@
 namespace App\Filament\Admin\Resources\Bukus\Schemas;
 
 use App\Models\Category;
+use App\Services\ImageWebpConverter;
 use Filament\Forms\Components\FileUpload;
 use Filament\Forms\Components\RichEditor;
 use Filament\Forms\Components\Select;
@@ -14,7 +15,7 @@ use Filament\Schemas\Components\Grid;
 use Filament\Schemas\Components\Section;
 use Filament\Schemas\Components\Utilities\Set;
 use Filament\Schemas\Schema;
-use Str;
+use Illuminate\Support\Str;
 
 class BukuForm extends FormsComponent
 {
@@ -64,10 +65,13 @@ class BukuForm extends FormsComponent
                             ->required()
                     ]),
                 FileUpload::make('banner')
-                    ->acceptedFileTypes(['image/jpeg', 'image/png', 'image/jpg'])
+                    ->acceptedFileTypes(['image/jpeg', 'image/png', 'image/jpg', 'image/webp'])
                     ->visibility('public')
                     ->disk('public')
-                    ->directory('buku/images/banner'),
+                    ->directory('buku/images/banner')
+                    ->saveUploadedFileUsing(function ($file) {
+                        return ImageWebpConverter::convertAndStore($file, 'buku/images/banner', 'public');
+                    }),
                 TextInput::make('gdrive_link')
                     ->label('Link Google Drive (Buku Digital)')
                     ->url()
