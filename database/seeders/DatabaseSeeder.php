@@ -22,11 +22,17 @@ class DatabaseSeeder extends Seeder
             ]);
         }
 
-        // Skip other seeders in production to avoid Faker dependency
-        if (app()->environment('local')) {
-            $this->call([
-                ReportSeeder::class,
-            ]);
-        }
+        $this->call([
+            BukuCategorySeeder::class,
+            MemberSeeder::class,
+            SubscriptionSeeder::class,
+            PinjamanSeeder::class,
+            PaymentsSeeder::class,
+            WishlistSeeder::class,
+            BookReviewSeeder::class,
+            BookReservationSeeder::class,
+            NotificationSeeder::class,
+            ReportSeeder::class,
+        ]);
     }
 }

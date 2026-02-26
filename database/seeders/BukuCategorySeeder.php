@@ -125,5 +125,42 @@ class BukuCategorySeeder extends Seeder
                 ]);
             }
         }
+
+        // Buku dengan lebih dari 1 kategori
+        $multiCategoryBooks = [
+            ['judul' => 'Sejarah Sains Indonesia',         'author' => 'Surya Dharma',          'year' => 2018, 'categories' => ['Sejarah', 'Sains'],                'deskripsi' => 'Menelusuri perkembangan sains di Indonesia dari masa kerajaan hingga era modern.'],
+            ['judul' => 'Biografi Ilmuwan Nusantara',       'author' => 'Ratna Megawati',        'year' => 2020, 'categories' => ['Biografi', 'Sains', 'Sejarah'],    'deskripsi' => 'Kisah hidup para ilmuwan Indonesia yang mengubah dunia sains.'],
+            ['judul' => 'Teknologi Pendidikan Modern',      'author' => 'Hendra Wijaya',         'year' => 2022, 'categories' => ['Teknologi', 'Pendidikan'],          'deskripsi' => 'Panduan penerapan teknologi terkini dalam dunia pendidikan.'],
+            ['judul' => 'Fiksi Ilmiah Nusantara',           'author' => 'Dewi Anggraini',        'year' => 2021, 'categories' => ['Fiksi', 'Sains', 'Teknologi'],     'deskripsi' => 'Kumpulan cerita fiksi ilmiah berlatar budaya dan teknologi Indonesia.'],
+            ['judul' => 'Kesehatan dalam Perspektif Agama', 'author' => 'Dr. Ahmad Fauzi',       'year' => 2019, 'categories' => ['Kesehatan', 'Agama'],               'deskripsi' => 'Membahas pandangan agama terhadap kesehatan dan gaya hidup sehat.'],
+            ['judul' => 'Sosial Budaya dan Pendidikan',     'author' => 'Prof. Siti Rahayu',     'year' => 2017, 'categories' => ['Sosial', 'Pendidikan', 'Sejarah'],  'deskripsi' => 'Hubungan antara kondisi sosial budaya dengan sistem pendidikan di Indonesia.'],
+            ['judul' => 'Tokoh Teknologi Indonesia',        'author' => 'Bambang Irawan',        'year' => 2023, 'categories' => ['Biografi', 'Teknologi'],            'deskripsi' => 'Profil para perintis teknologi dari Indonesia yang menginspirasi dunia.'],
+            ['judul' => 'Novel Sejarah Majapahit',          'author' => 'Langit Kresna Hariadi', 'year' => 2015, 'categories' => ['Fiksi', 'Sejarah'],                 'deskripsi' => 'Novel epik berlatar kerajaan Majapahit yang memadukan fiksi dan fakta sejarah.'],
+        ];
+
+        foreach ($multiCategoryBooks as $bookData) {
+            $catIds = [];
+            foreach ($bookData['categories'] as $catName) {
+                $cat = Category::where('nama', $catName)->first();
+                if ($cat) {
+                    $catIds[] = $cat->id;
+                }
+            }
+
+            Buku::create([
+                'uuid' => Str::uuid(),
+                'judul' => $bookData['judul'],
+                'author' => $bookData['author'],
+                'publisher' => 'Penerbit Lintas Ilmu',
+                'year' => $bookData['year'],
+                'stock' => rand(5, 15),
+                'denda_per_hari' => 1000,
+                'deskripsi' => $bookData['deskripsi'],
+                'slug' => Str::slug($bookData['judul']),
+                'category_id' => $catIds,
+                'banner' => null,
+                'gdrive_link' => null,
+            ]);
+        }
     }
 }
