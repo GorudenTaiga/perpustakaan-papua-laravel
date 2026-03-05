@@ -50,7 +50,7 @@
                                 {{-- Book Cover --}}
                                 <a href="{{ route('buku', $item->buku->slug) }}" class="flex-shrink-0">
                                     <div class="relative w-24 h-36 overflow-hidden rounded-2xl shadow-md">
-                                        <img src="{{ Storage::disk('public')->url($item->buku->banner) }}"
+                                        <img src="{{ Storage::disk('s3')->url($item->buku->banner) }}"
                                              alt="{{ $item->buku->judul }}"
                                              class="h-full w-full object-cover group-hover:scale-110 transition-transform duration-500">
                                         <div class="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent"></div>

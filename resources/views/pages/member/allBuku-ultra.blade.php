@@ -1068,7 +1068,7 @@
                                     <div class="book-card-ultra">
                                         <!-- Book Cover -->
                                         <div class="book-cover-ultra">
-                                            @if ($book->banner_url && file_exists(public_path('storage/' . $book->banner)))
+                                            @if ($book->banner_url)
                                                 <img src="{{ $book->banner_url }}" alt="{{ $book->judul }}"
                                                     class="book-image">
                                             @else

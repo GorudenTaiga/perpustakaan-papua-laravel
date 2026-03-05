@@ -119,9 +119,20 @@
                         <!-- Bagian kiri (foto + barcode) -->
                         <td width="38%" align="left" style="padding-left: 5px; text-align: center;">
                             <div class="photo">
-                                @if (isset($member->image) && file_exists(Storage::disk('public')->path($member->image)))
-                                    <img src="{{ 'data:image/png;base64,' . base64_encode(file_get_contents(Storage::disk('public')->path($member->image))) }}"
-                                        alt="Foto Member">
+                                @if (isset($member->image))
+                                    @php
+                                        try {
+                                            $imageData = Storage::disk('s3')->get($member->image);
+                                        } catch (\Exception $e) {
+                                            $imageData = null;
+                                        }
+                                    @endphp
+                                    @if ($imageData)
+                                        <img src="{{ 'data:image/webp;base64,' . base64_encode($imageData) }}"
+                                            alt="Foto Member">
+                                    @else
+                                        <img src="{{ 'data:image/png;base64,' . base64_encode(file_get_contents(public_path('blank_person.png'))) }}" alt="No Photo">
+                                    @endif
                                 @else
                                     <img src="{{ 'data:image/png;base64,' . base64_encode(file_get_contents(public_path('blank_person.png'))) }}" alt="No Photo">
                                 @endif
