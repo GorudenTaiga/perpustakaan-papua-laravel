@@ -22,6 +22,10 @@ RUN apt-get clean && rm -rf /var/lib/apt/lists/*
 # Install PHP extensions
 RUN docker-php-ext-install pdo pdo_sqlite mbstring exif pcntl bcmath gd intl zip
 
+RUN apt-get update && apt-get install -y gosu \
+    && docker-php-ext-install pdo_pgsql pgsql \
+    && apt-get clean && rm -rf /var/lib/apt/lists/*
+
 # Get Composer
 COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
 
