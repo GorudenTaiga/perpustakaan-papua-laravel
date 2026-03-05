@@ -12,6 +12,7 @@ use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Http\Request;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\DB;
 use Storage;
 
@@ -71,13 +72,20 @@ class UserController extends Controller
     public function cetakKTA($id)
     {
         $id = base64_decode($id);
-        $member = Member::findOrFail($id);
+        $member = Member::with('user')->findOrFail($id);
 
-        $pdf = Pdf::loadView('pages.member.kartuAnggota', compact('member'))
-            ->setPaper([0, 0, 157.68, 300], 'landscape'); 
-            // 8.6cm x 5.4cm dalam point (1cm = 28.35pt)
+        // Cache PDF berdasarkan member+user updated_at agar auto-invalidate saat data berubah
+        $cacheKey = "kta_pdf_{$member->id}_{$member->updated_at->timestamp}_{$member->user->updated_at->timestamp}";
 
-        return $pdf->stream("kartu-anggota-{$member->id}.pdf");
+        $pdfContent = Cache::remember($cacheKey, now()->addDay(), function () use ($member) {
+            $pdf = Pdf::loadView('pages.member.kartuAnggota', compact('member'))
+                ->setPaper([0, 0, 157.68, 300], 'landscape');
+            return $pdf->output();
+        });
+
+        return response($pdfContent)
+            ->header('Content-Type', 'application/pdf')
+            ->header('Content-Disposition', "inline; filename=\"kartu-anggota-{$member->id}.pdf\"");
     }
 
 
