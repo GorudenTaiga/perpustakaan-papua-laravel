@@ -35,11 +35,8 @@ RUN composer install --no-dev --optimize-autoloader --no-interaction --prefer-di
 # Install NPM dependencies and build assets
 RUN npm ci && npm run build
 
-# Create SQLite database
-RUN mkdir -p /app/database && touch /app/database/database.sqlite
-
 # Set permissions
-RUN chmod -R 775 /app/storage /app/bootstrap/cache /app/database
+RUN chmod -R 775 /app/storage /app/bootstrap/cache
 
 # Expose port
 EXPOSE 8080

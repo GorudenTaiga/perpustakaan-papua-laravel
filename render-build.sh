@@ -12,10 +12,6 @@ npm ci
 echo "Building frontend assets..."
 npm run build
 
-echo "Creating SQLite database..."
-mkdir -p database
-touch database/database.sqlite
-
 echo "Running migrations..."
 php artisan migrate --force --no-interaction
 

@@ -33,8 +33,12 @@ class LoanChartWidget extends ChartWidget
 
         for ($i = 1; $i <= 12; $i++) {
             $months[] = date('M', mktime(0, 0, 0, $i, 1));
-            // SQLite returns '01', '02', etc. MySQL returns 1, 2, etc.
-            $monthKey = DatabaseHelper::isSqlite() ? str_pad($i, 2, '0', STR_PAD_LEFT) : $i;
+            // SQLite returns '01','02', MySQL returns 1,2, PostgreSQL EXTRACT() returns 1.0,2.0
+            if (DatabaseHelper::isSqlite()) {
+                $monthKey = str_pad($i, 2, '0', STR_PAD_LEFT);
+            } else {
+                $monthKey = (int) $i;
+            }
             $counts[] = $data[$monthKey] ?? 0;
         }
 

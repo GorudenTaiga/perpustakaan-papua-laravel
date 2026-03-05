@@ -8,6 +8,7 @@ use App\Http\Requests\StoreBukuRequest;
 use App\Http\Requests\UpdateBukuRequest;
 use App\Models\BookReview;
 use App\Models\Category;
+use App\Helpers\DatabaseHelper;
 use Arr;
 use Illuminate\Http\Request;
 use Str;
@@ -50,11 +51,12 @@ class BukuController extends Controller
             })
             // Search
             ->when($request->query('search'), function ($q, $search) {
-                $q->where(function($query) use ($search) {
-                    $query->where('judul', 'like', '%' . $search . '%')
-                          ->orWhere('author', 'like', '%' . $search . '%')
-                          ->orWhere('publisher', 'like', '%' . $search . '%')
-                          ->orWhere('deskripsi', 'like', '%' . $search . '%');
+                $like = DatabaseHelper::likeOperator();
+                $q->where(function($query) use ($search, $like) {
+                    $query->where('judul', $like, '%' . $search . '%')
+                          ->orWhere('author', $like, '%' . $search . '%')
+                          ->orWhere('publisher', $like, '%' . $search . '%')
+                          ->orWhere('deskripsi', $like, '%' . $search . '%');
                 });
             })
             ->paginate(24)

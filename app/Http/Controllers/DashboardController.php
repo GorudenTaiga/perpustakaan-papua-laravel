@@ -16,10 +16,21 @@ class DashboardController extends Controller
         $books = Buku::limit(15)->get();
 
         // Popular books - most borrowed
-        $popularBooks = Buku::select('buku.*')
+        $popularBooks = Buku::select(
+                'buku.id', 'buku.uuid', 'buku.judul', 'buku.author', 'buku.publisher',
+                'buku.year', 'buku.stock', 'buku.denda_per_hari', 'buku.deskripsi',
+                'buku.slug', 'buku.category_id', 'buku.banner', 'buku.gdrive_link',
+                'buku.created_at', 'buku.updated_at'
+            )
+            ->selectRaw('COUNT(pinjaman.id) as borrow_count')
             ->leftJoin('pinjaman', 'buku.id', '=', 'pinjaman.buku_id')
-            ->groupBy('buku.id')
-            ->orderByRaw('COUNT(pinjaman.id) DESC')
+            ->groupBy(
+                'buku.id', 'buku.uuid', 'buku.judul', 'buku.author', 'buku.publisher',
+                'buku.year', 'buku.stock', 'buku.denda_per_hari', 'buku.deskripsi',
+                'buku.slug', 'buku.category_id', 'buku.banner', 'buku.gdrive_link',
+                'buku.created_at', 'buku.updated_at'
+            )
+            ->orderByDesc('borrow_count')
             ->limit(10)
             ->get();
 
