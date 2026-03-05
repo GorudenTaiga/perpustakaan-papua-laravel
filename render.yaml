@@ -43,6 +43,8 @@ services:
         value: "true"
       - key: AWS_ENDPOINT
         sync: false
+      - key: AWS_URL
+        sync: false
       # --- Laravel Services ---
       - key: SESSION_DRIVER
         value: database

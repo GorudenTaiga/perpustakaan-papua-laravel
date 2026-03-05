@@ -13,6 +13,7 @@ use Filament\Forms\Components\FileUpload;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
 use Filament\Schemas\Schema;
+use Illuminate\Support\Facades\Storage;
 
 class MemberForm
 {
@@ -57,6 +58,15 @@ class MemberForm
                     ->image()
                     ->visibility('public')
                     ->directory('images/member/foto')
+                    ->fetchFileInformation(false)
+                    ->getUploadedFileUsing(function (string $file): ?array {
+                        return [
+                            'name' => basename($file),
+                            'size' => 0,
+                            'type' => 'image/webp',
+                            'url' => Storage::disk('s3')->url($file),
+                        ];
+                    })
                     ->acceptedFileTypes(['image/jpeg', 'image/png', 'image/jpg', 'image/webp'])
                     ->saveUploadedFileUsing(function ($file) {
                         return ImageWebpConverter::convertAndStore($file, 'images/member/foto', 's3');
@@ -70,6 +80,15 @@ class MemberForm
                     ->maxSize(2048)
                     ->visibility('public')
                     ->directory('documents/members')
+                    ->fetchFileInformation(false)
+                    ->getUploadedFileUsing(function (string $file): ?array {
+                        return [
+                            'name' => basename($file),
+                            'size' => 0,
+                            'type' => null,
+                            'url' => Storage::disk('s3')->url($file),
+                        ];
+                    })
                     ->saveUploadedFileUsing(function ($file) {
                         $mime = $file->getMimeType();
                         if (in_array($mime, ['image/jpeg', 'image/png', 'image/jpg'])) {

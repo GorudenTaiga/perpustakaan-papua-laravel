@@ -15,6 +15,7 @@ use Filament\Schemas\Components\Grid;
 use Filament\Schemas\Components\Section;
 use Filament\Schemas\Components\Utilities\Set;
 use Filament\Schemas\Schema;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 
 class BukuForm extends FormsComponent
@@ -69,6 +70,18 @@ class BukuForm extends FormsComponent
                     ->visibility('public')
                     ->disk('s3')
                     ->directory('buku/images/banner')
+                    ->fetchFileInformation(false)
+                    ->getUploadedFileUsing(static function (string $file): ?array {
+                        if (blank($file)) {
+                            return null;
+                        }
+                        return [
+                            'name' => basename($file),
+                            'size' => 0,
+                            'type' => 'image/webp',
+                            'url' => Storage::disk('s3')->url($file),
+                        ];
+                    })
                     ->saveUploadedFileUsing(function ($file) {
                         return ImageWebpConverter::convertAndStore($file, 'buku/images/banner', 's3');
                     }),
