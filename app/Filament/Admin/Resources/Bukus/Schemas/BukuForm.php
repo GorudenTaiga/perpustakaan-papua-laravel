@@ -70,7 +70,7 @@ class BukuForm extends FormsComponent
                     ->disk('public')
                     ->directory('buku/images/banner')
                     ->saveUploadedFileUsing(function ($file) {
-                        return ImageWebpConverter::convertAndStore($file, 'buku/images/banner', 'public');
+                        return ImageWebpConverter::convertAndStore($file, 'buku/images/banner', 's3');
                     }),
                 TextInput::make('gdrive_link')
                     ->label('Link Google Drive (Buku Digital)')

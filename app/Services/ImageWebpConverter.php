@@ -12,7 +12,7 @@ class ImageWebpConverter
      * Konversi file gambar yang di-upload ke format WebP lalu simpan ke disk.
      * Mengembalikan path relatif dari file yang tersimpan.
      */
-    public static function convertAndStore(UploadedFile $file, string $directory, string $disk = 'public', int $quality = 80): ?string
+    public static function convertAndStore(UploadedFile $file, string $directory, string $disk = 's3', int $quality = 80): ?string
     {
         $mime = $file->getMimeType();
 
