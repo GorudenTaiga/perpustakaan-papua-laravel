@@ -2,19 +2,10 @@ FROM php:8.3-cli
 
 # Install system dependencies
 RUN apt-get update && apt-get install -y \
-    git \
-    curl \
-    libpng-dev \
-    libonig-dev \
-    libxml2-dev \
-    libicu-dev \
-    libzip-dev \
-    zip \
-    unzip \
-    sqlite3 \
-    libsqlite3-dev \
-    nodejs \
-    npm
+    git curl libpng-dev libonig-dev libxml2-dev libicu-dev libzip-dev \
+    libpq-dev \
+    zip unzip sqlite3 libsqlite3-dev nodejs npm gosu \
+    && apt-get clean && rm -rf /var/lib/apt/lists/
 
 # Clear cache
 RUN apt-get clean && rm -rf /var/lib/apt/lists/*
