@@ -30,7 +30,6 @@ class Buku extends Model
         'slug',
         'category_id',
         'banner',
-        'gdrive_link'
     ];
 
     protected $casts = [

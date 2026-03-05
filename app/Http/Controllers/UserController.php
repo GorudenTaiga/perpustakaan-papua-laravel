@@ -202,21 +202,6 @@ class UserController extends Controller
         return redirect()->back()->with('success', 'Peminjaman berhasil diperpanjang 7 hari.');
     }
 
-    /**
-     * DISABLED: Fitur riwayat baca sudah tidak digunakan.
-     */
-    // public function readingHistory()
-    // {
-    //     $member = Auth::user()->member;
-    //     $history = Pinjaman::where('member_id', $member->membership_number)
-    //         ->where('status', 'dikembalikan')
-    //         ->with('buku')
-    //         ->orderBy('return_date', 'desc')
-    //         ->paginate(12);
-    //
-    //     return view('pages.member.reading_history', compact('history'));
-    // }
-
     public function exportLoanPdf()
     {
         $member = Auth::user()->member;

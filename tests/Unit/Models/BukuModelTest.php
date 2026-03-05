@@ -18,7 +18,7 @@ class BukuModelTest extends TestCase
         $expected = [
             'uuid', 'judul', 'author', 'publisher', 'year',
             'stock', 'denda_per_hari', 'deskripsi', 'slug',
-            'category_id', 'banner', 'gdrive_link'
+            'category_id', 'banner'
         ];
         $this->assertEquals($expected, $buku->getFillable());
     }

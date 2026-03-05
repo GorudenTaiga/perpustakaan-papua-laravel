@@ -97,7 +97,6 @@ class BukuCategorySeeder extends Seeder
                     'slug' => Str::slug($bookData['judul']),
                     'category_id' => [$category->id],
                     'banner' => null,
-                    'gdrive_link' => null
                 ]);
             }
         }
@@ -121,7 +120,6 @@ class BukuCategorySeeder extends Seeder
                     'slug' => Str::slug($categoryName . '-' . $i),
                     'category_id' => [$category->id],
                     'banner' => null,
-                    'gdrive_link' => null
                 ]);
             }
         }
@@ -159,7 +157,6 @@ class BukuCategorySeeder extends Seeder
                 'slug' => Str::slug($bookData['judul']),
                 'category_id' => $catIds,
                 'banner' => null,
-                'gdrive_link' => null,
             ]);
         }
     }

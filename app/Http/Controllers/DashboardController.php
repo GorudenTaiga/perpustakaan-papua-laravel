@@ -19,7 +19,7 @@ class DashboardController extends Controller
         $popularBooks = Buku::select(
                 'buku.id', 'buku.uuid', 'buku.judul', 'buku.author', 'buku.publisher',
                 'buku.year', 'buku.stock', 'buku.denda_per_hari', 'buku.deskripsi',
-                'buku.slug', 'buku.category_id', 'buku.banner', 'buku.gdrive_link',
+                'buku.slug', 'buku.category_id', 'buku.banner',
                 'buku.created_at', 'buku.updated_at'
             )
             ->selectRaw('COUNT(pinjaman.id) as borrow_count')
@@ -27,7 +27,7 @@ class DashboardController extends Controller
             ->groupBy(
                 'buku.id', 'buku.uuid', 'buku.judul', 'buku.author', 'buku.publisher',
                 'buku.year', 'buku.stock', 'buku.denda_per_hari', 'buku.deskripsi',
-                'buku.slug', 'buku.category_id', 'buku.banner', 'buku.gdrive_link',
+                'buku.slug', 'buku.category_id', 'buku.banner',
                 'buku.created_at', 'buku.updated_at'
             )
             ->orderByDesc('borrow_count')

@@ -85,13 +85,6 @@ class BukuForm extends FormsComponent
                     ->saveUploadedFileUsing(function ($file) {
                         return ImageWebpConverter::convertAndStore($file, 'buku/images/banner', 's3');
                     }),
-                TextInput::make('gdrive_link')
-                    ->label('Link Google Drive (Buku Digital)')
-                    ->url()
-                    ->helperText('Masukkan link Google Drive untuk buku digital (opsional)')
-                    ->placeholder('https://drive.google.com/...')
-                    ->nullable()
-                    ->columnSpanFull(),
             ]);
     }
 }
