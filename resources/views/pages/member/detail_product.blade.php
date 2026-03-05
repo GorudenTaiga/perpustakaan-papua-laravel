@@ -35,7 +35,7 @@
                         <div
                             class="bg-gradient-to-br from-gray-50 to-gray-100 rounded-3xl overflow-hidden shadow-2xl border border-gray-200 group">
                             <div class="aspect-[3/4] relative overflow-hidden">
-                                <img src="{{ $buku->image ? asset('storage/' . $buku->image) : asset('images/placeholder.png') }}"
+                                <img src="{{ $buku->bannerUrl ? $buku->bannerUrl : asset('images/placeholder.png') }}"
                                     alt="{{ $buku->judul }}"
                                     class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700">
                                 <div class="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent"></div>
@@ -74,38 +74,29 @@
                                 </button>
 
                                 {{-- Tailwind Modal --}}
-                                <div x-show="showModal" 
-                                     x-cloak
-                                     style="display: none;"
-                                     @keydown.escape.window="showModal = false"
-                                     class="fixed inset-0 z-50 overflow-y-auto" 
-                                     aria-labelledby="modal-title" 
-                                     role="dialog" 
-                                     aria-modal="true">
+                                <div x-show="showModal" x-cloak style="display: none;"
+                                    @keydown.escape.window="showModal = false" class="fixed inset-0 z-50 overflow-y-auto"
+                                    aria-labelledby="modal-title" role="dialog" aria-modal="true">
                                     {{-- Backdrop --}}
                                     <div class="fixed inset-0 bg-black bg-opacity-50 transition-opacity"
-                                         @click="showModal = false"
-                                         x-show="showModal"
-                                         x-transition:enter="ease-out duration-300"
-                                         x-transition:enter-start="opacity-0"
-                                         x-transition:enter-end="opacity-100"
-                                         x-transition:leave="ease-in duration-200"
-                                         x-transition:leave-start="opacity-100"
-                                         x-transition:leave-end="opacity-0"></div>
+                                        @click="showModal = false" x-show="showModal"
+                                        x-transition:enter="ease-out duration-300" x-transition:enter-start="opacity-0"
+                                        x-transition:enter-end="opacity-100" x-transition:leave="ease-in duration-200"
+                                        x-transition:leave-start="opacity-100" x-transition:leave-end="opacity-0"></div>
 
                                     {{-- Modal Panel --}}
                                     <div class="flex min-h-screen items-center justify-center p-4">
-                                        <div x-show="showModal"
-                                             x-transition:enter="ease-out duration-300"
-                                             x-transition:enter-start="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
-                                             x-transition:enter-end="opacity-100 translate-y-0 sm:scale-100"
-                                             x-transition:leave="ease-in duration-200"
-                                             x-transition:leave-start="opacity-100 translate-y-0 sm:scale-100"
-                                             x-transition:leave-end="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
-                                             class="relative bg-white rounded-3xl shadow-2xl max-w-md w-full overflow-hidden"
-                                             @click.stop>
-                                            
-                                            <form @submit.prevent="
+                                        <div x-show="showModal" x-transition:enter="ease-out duration-300"
+                                            x-transition:enter-start="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
+                                            x-transition:enter-end="opacity-100 translate-y-0 sm:scale-100"
+                                            x-transition:leave="ease-in duration-200"
+                                            x-transition:leave-start="opacity-100 translate-y-0 sm:scale-100"
+                                            x-transition:leave-end="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
+                                            class="relative bg-white rounded-3xl shadow-2xl max-w-md w-full overflow-hidden"
+                                            @click.stop>
+
+                                            <form
+                                                @submit.prevent="
                                                 loading = true;
                                                 ajaxForm('{{ route('pinjam.store') }}', 'POST', { buku_id: {{ $buku->id }}, quantity: quantity }, '{{ csrf_token() }}')
                                                     .then(res => {
@@ -124,8 +115,10 @@
                                                 <div class="bg-gradient-to-r from-indigo-600 to-purple-600 px-6 py-4">
                                                     <div class="flex items-center justify-between">
                                                         <h3 class="text-lg font-bold text-white flex items-center gap-2">
-                                                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                            <svg class="w-5 h-5" fill="none" stroke="currentColor"
+                                                                viewBox="0 0 24 24">
+                                                                <path stroke-linecap="round" stroke-linejoin="round"
+                                                                    stroke-width="2"
                                                                     d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253">
                                                                 </path>
                                                             </svg>
@@ -133,8 +126,10 @@
                                                         </h3>
                                                         <button type="button" @click="showModal = false"
                                                             class="text-white hover:text-gray-200 transition-colors">
-                                                            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                                                            <svg class="w-6 h-6" fill="none" stroke="currentColor"
+                                                                viewBox="0 0 24 24">
+                                                                <path stroke-linecap="round" stroke-linejoin="round"
+                                                                    stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
                                                             </svg>
                                                         </button>
                                                     </div>
@@ -142,20 +137,27 @@
 
                                                 {{-- Modal Body --}}
                                                 <div class="p-6 space-y-4">
-                                                    <div class="bg-gradient-to-br from-indigo-50 to-purple-50 rounded-2xl p-4">
-                                                        <p class="text-sm text-gray-700 font-semibold">{{ $buku->judul }}</p>
+                                                    <div
+                                                        class="bg-gradient-to-br from-indigo-50 to-purple-50 rounded-2xl p-4">
+                                                        <p class="text-sm text-gray-700 font-semibold">{{ $buku->judul }}
+                                                        </p>
                                                         <p class="text-xs text-gray-500 mt-1">oleh {{ $buku->author }}</p>
                                                     </div>
 
                                                     <div class="space-y-2">
-                                                        <label for="jumlah" class="block text-sm font-bold text-gray-900">Jumlah Buku</label>
-                                                        <input type="number" id="jumlah" name="quantity" x-model.number="quantity"
+                                                        <label for="jumlah"
+                                                            class="block text-sm font-bold text-gray-900">Jumlah
+                                                            Buku</label>
+                                                        <input type="number" id="jumlah" name="quantity"
+                                                            x-model.number="quantity"
                                                             class="w-full px-4 py-3 rounded-xl border-2 border-gray-200 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200 transition-all"
-                                                            min="1" max="{{ $buku->stock ?? 1 }}" value="1" required>
+                                                            min="1" max="{{ $buku->stock ?? 1 }}" value="1"
+                                                            required>
                                                         @error('quantity')
                                                             <p class="text-xs text-red-500 mt-1">{{ $message }}</p>
                                                         @enderror
-                                                        <p class="text-xs text-gray-500 mt-1">Stok tersedia: {{ $buku->stock ?? 0 }} buku</p>
+                                                        <p class="text-xs text-gray-500 mt-1">Stok tersedia:
+                                                            {{ $buku->stock ?? 0 }} buku</p>
                                                     </div>
                                                 </div>
 
@@ -167,8 +169,15 @@
                                                     </button>
                                                     <button type="submit" :disabled="loading"
                                                         class="px-6 py-2.5 rounded-xl bg-gradient-to-r from-indigo-600 to-purple-600 text-white font-semibold hover:from-indigo-700 hover:to-purple-700 transition-all shadow-lg hover:shadow-xl disabled:opacity-50 flex items-center gap-2">
-                                                        <svg x-show="loading" class="animate-spin w-4 h-4" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z"></path></svg>
-                                                        <span x-text="loading ? 'Memproses...' : 'Konfirmasi Peminjaman'"></span>
+                                                        <svg x-show="loading" class="animate-spin w-4 h-4" fill="none"
+                                                            viewBox="0 0 24 24">
+                                                            <circle class="opacity-25" cx="12" cy="12"
+                                                                r="10" stroke="currentColor" stroke-width="4"></circle>
+                                                            <path class="opacity-75" fill="currentColor"
+                                                                d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z"></path>
+                                                        </svg>
+                                                        <span
+                                                            x-text="loading ? 'Memproses...' : 'Konfirmasi Peminjaman'"></span>
                                                     </button>
                                                 </div>
                                             </form>
@@ -217,7 +226,8 @@
                                     </div>
                                     <div class="flex-1">
                                         <p class="text-xs text-gray-500 font-medium">Penulis</p>
-                                        <p class="text-sm font-semibold text-gray-900">{{ $buku->author ?? 'Tidak diketahui' }}</p>
+                                        <p class="text-sm font-semibold text-gray-900">
+                                            {{ $buku->author ?? 'Tidak diketahui' }}</p>
                                     </div>
                                 </div>
 
@@ -234,7 +244,8 @@
                                     </div>
                                     <div class="flex-1">
                                         <p class="text-xs text-gray-500 font-medium">Penerbit</p>
-                                        <p class="text-sm font-semibold text-gray-900">{{ $buku->publisher ?? 'Tidak diketahui' }}
+                                        <p class="text-sm font-semibold text-gray-900">
+                                            {{ $buku->publisher ?? 'Tidak diketahui' }}
                                         </p>
                                     </div>
                                 </div>
@@ -336,7 +347,9 @@
                     <div class="flex items-center justify-between">
                         <h2 class="text-2xl font-bold text-white flex items-center gap-3">
                             <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 20 20">
-                                <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"></path>
+                                <path
+                                    d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z">
+                                </path>
                             </svg>
                             Ulasan & Penilaian
                         </h2>
@@ -345,8 +358,12 @@
                             <div>
                                 <div class="flex gap-1">
                                     <template x-for="i in 5" :key="i">
-                                        <svg class="w-5 h-5" :class="i <= Math.round(avgRating) ? 'text-yellow-200' : 'text-white/30'" fill="currentColor" viewBox="0 0 20 20">
-                                            <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"></path>
+                                        <svg class="w-5 h-5"
+                                            :class="i <= Math.round(avgRating) ? 'text-yellow-200' : 'text-white/30'"
+                                            fill="currentColor" viewBox="0 0 20 20">
+                                            <path
+                                                d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z">
+                                            </path>
                                         </svg>
                                     </template>
                                 </div>
@@ -358,14 +375,20 @@
 
                 <div class="p-8">
                     {{-- Review Form --}}
-                    @if(Auth::check() && Auth::user()->role == 'member' && Auth::user()->member->verif)
+                    @if (Auth::check() && Auth::user()->role == 'member' && Auth::user()->member->verif)
                         @php
-                            $existingReview = $reviews->where('member_id', Auth::user()->member->membership_number)->first();
+                            $existingReview = $reviews
+                                ->where('member_id', Auth::user()->member->membership_number)
+                                ->first();
                         @endphp
-                        <div class="mb-8 bg-gradient-to-br from-gray-50 to-gray-100 rounded-2xl p-6 border border-gray-200">
-                            <button @click="showForm = !showForm" class="flex items-center gap-2 text-indigo-600 font-semibold hover:text-indigo-700 transition-colors">
+                        <div
+                            class="mb-8 bg-gradient-to-br from-gray-50 to-gray-100 rounded-2xl p-6 border border-gray-200">
+                            <button @click="showForm = !showForm"
+                                class="flex items-center gap-2 text-indigo-600 font-semibold hover:text-indigo-700 transition-colors">
                                 <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z"></path>
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                        d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z">
+                                    </path>
                                 </svg>
                                 <span x-text="hasMyReview ? 'Edit Ulasan Anda' : 'Tulis Ulasan'"></span>
                             </button>
@@ -376,9 +399,14 @@
                                         <label class="block text-sm font-bold text-gray-700 mb-2">Penilaian</label>
                                         <div class="flex gap-1">
                                             <template x-for="i in 5" :key="i">
-                                                <button type="button" @click="formRating = i" class="focus:outline-none">
-                                                    <svg class="w-8 h-8 transition-colors" :class="formRating >= i ? 'text-yellow-400' : 'text-gray-300'" fill="currentColor" viewBox="0 0 20 20">
-                                                        <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"></path>
+                                                <button type="button" @click="formRating = i"
+                                                    class="focus:outline-none">
+                                                    <svg class="w-8 h-8 transition-colors"
+                                                        :class="formRating >= i ? 'text-yellow-400' : 'text-gray-300'"
+                                                        fill="currentColor" viewBox="0 0 20 20">
+                                                        <path
+                                                            d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z">
+                                                        </path>
                                                     </svg>
                                                 </button>
                                             </template>
@@ -387,12 +415,22 @@
 
                                     <div class="mb-4">
                                         <label class="block text-sm font-bold text-gray-700 mb-2">Ulasan (Opsional)</label>
-                                        <textarea x-model="formText" rows="3" class="w-full px-4 py-3 rounded-xl border-2 border-gray-200 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200 transition-all" placeholder="Bagikan pendapat Anda tentang buku ini..."></textarea>
+                                        <textarea x-model="formText" rows="3"
+                                            class="w-full px-4 py-3 rounded-xl border-2 border-gray-200 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200 transition-all"
+                                            placeholder="Bagikan pendapat Anda tentang buku ini..."></textarea>
                                     </div>
 
-                                    <button type="submit" :disabled="loading" class="px-6 py-2.5 rounded-xl bg-gradient-to-r from-indigo-600 to-purple-600 text-white font-semibold hover:from-indigo-700 hover:to-purple-700 transition-all shadow-lg disabled:opacity-50 flex items-center gap-2">
-                                        <svg x-show="loading" class="animate-spin w-4 h-4" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z"></path></svg>
-                                        <span x-text="loading ? 'Menyimpan...' : (hasMyReview ? 'Update Ulasan' : 'Kirim Ulasan')"></span>
+                                    <button type="submit" :disabled="loading"
+                                        class="px-6 py-2.5 rounded-xl bg-gradient-to-r from-indigo-600 to-purple-600 text-white font-semibold hover:from-indigo-700 hover:to-purple-700 transition-all shadow-lg disabled:opacity-50 flex items-center gap-2">
+                                        <svg x-show="loading" class="animate-spin w-4 h-4" fill="none"
+                                            viewBox="0 0 24 24">
+                                            <circle class="opacity-25" cx="12" cy="12" r="10"
+                                                stroke="currentColor" stroke-width="4"></circle>
+                                            <path class="opacity-75" fill="currentColor"
+                                                d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z"></path>
+                                        </svg>
+                                        <span
+                                            x-text="loading ? 'Menyimpan...' : (hasMyReview ? 'Update Ulasan' : 'Kirim Ulasan')"></span>
                                     </button>
                                 </form>
                             </div>
@@ -405,21 +443,27 @@
                             <template x-for="(rev, idx) in reviews" :key="idx">
                                 <div class="flex gap-4 p-4 rounded-2xl hover:bg-gray-50 transition-colors">
                                     <div class="flex-shrink-0">
-                                        <div class="w-12 h-12 rounded-full bg-gradient-to-br from-indigo-500 to-purple-500 flex items-center justify-center text-white font-bold text-lg" x-text="rev.user_initial"></div>
+                                        <div class="w-12 h-12 rounded-full bg-gradient-to-br from-indigo-500 to-purple-500 flex items-center justify-center text-white font-bold text-lg"
+                                            x-text="rev.user_initial"></div>
                                     </div>
                                     <div class="flex-1">
                                         <div class="flex items-center gap-3 mb-1">
                                             <span class="font-bold text-gray-900" x-text="rev.user_name"></span>
                                             <div class="flex gap-0.5">
-                                                <template x-for="i in 5" :key="'star-'+idx+'-'+i">
-                                                    <svg class="w-4 h-4" :class="i <= rev.rating ? 'text-yellow-400' : 'text-gray-200'" fill="currentColor" viewBox="0 0 20 20">
-                                                        <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"></path>
+                                                <template x-for="i in 5" :key="'star-' + idx + '-' + i">
+                                                    <svg class="w-4 h-4"
+                                                        :class="i <= rev.rating ? 'text-yellow-400' : 'text-gray-200'"
+                                                        fill="currentColor" viewBox="0 0 20 20">
+                                                        <path
+                                                            d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z">
+                                                        </path>
                                                     </svg>
                                                 </template>
                                             </div>
                                             <span class="text-xs text-gray-400" x-text="rev.created_at"></span>
                                         </div>
-                                        <p x-show="rev.review" class="text-gray-600 text-sm leading-relaxed" x-text="rev.review"></p>
+                                        <p x-show="rev.review" class="text-gray-600 text-sm leading-relaxed"
+                                            x-text="rev.review"></p>
                                     </div>
                                 </div>
                             </template>
@@ -427,12 +471,15 @@
                     </template>
                     <template x-if="reviews.length === 0">
                         <div class="text-center py-8">
-                            <svg class="w-16 h-16 text-gray-300 mx-auto mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"></path>
+                            <svg class="w-16 h-16 text-gray-300 mx-auto mb-4" fill="none" stroke="currentColor"
+                                viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z">
+                                </path>
                             </svg>
                             <p class="text-gray-500">Belum ada ulasan untuk buku ini.</p>
-                            @if(Auth::check())
-                            <p class="text-gray-400 text-sm mt-1">Jadilah yang pertama memberikan ulasan!</p>
+                            @if (Auth::check())
+                                <p class="text-gray-400 text-sm mt-1">Jadilah yang pertama memberikan ulasan!</p>
                             @endif
                         </div>
                     </template>
@@ -442,57 +489,73 @@
     </section>
 
     {{-- 📚 Related Books Section --}}
-    @if(isset($relatedBooks) && $relatedBooks->count() > 0)
-    <section class="py-12 bg-gradient-to-br from-gray-50 to-gray-100">
-        <div class="container mx-auto px-4">
-            <h2 class="text-3xl font-bold text-gray-900 mb-8 flex items-center gap-3">
-                <svg class="w-8 h-8 text-indigo-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"></path>
-                </svg>
-                Buku Serupa
-            </h2>
-            <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-6 gap-6">
-                @foreach($relatedBooks as $rb)
-                <a href="{{ route('buku', $rb->slug) }}" class="group block relative overflow-hidden rounded-2xl bg-white shadow-lg hover:shadow-2xl transition-all duration-500 hover:-translate-y-3">
-                    <div class="aspect-[3/4] overflow-hidden bg-gradient-to-br from-gray-100 to-gray-200">
-                        <img src="{{ $rb->banner_url }}" alt="{{ $rb->judul }}" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500">
-                    </div>
-                    <div class="p-3 space-y-1">
-                        <h3 class="font-bold text-gray-900 group-hover:text-indigo-600 transition-colors line-clamp-2 text-xs leading-snug">{{ $rb->judul }}</h3>
-                        <p class="text-xs text-gray-500">{{ $rb->author }}</p>
-                        @if($rb->average_rating > 0)
-                        <div class="flex items-center gap-1">
-                            <svg class="w-3 h-3 text-yellow-400 fill-current" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"></path></svg>
-                            <span class="text-xs text-gray-500">{{ number_format($rb->average_rating, 1) }}</span>
-                        </div>
-                        @endif
-                    </div>
-                </a>
-                @endforeach
+    @if (isset($relatedBooks) && $relatedBooks->count() > 0)
+        <section class="py-12 bg-gradient-to-br from-gray-50 to-gray-100">
+            <div class="container mx-auto px-4">
+                <h2 class="text-3xl font-bold text-gray-900 mb-8 flex items-center gap-3">
+                    <svg class="w-8 h-8 text-indigo-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253">
+                        </path>
+                    </svg>
+                    Buku Serupa
+                </h2>
+                <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-6 gap-6">
+                    @foreach ($relatedBooks as $rb)
+                        <a href="{{ route('buku', $rb->slug) }}"
+                            class="group block relative overflow-hidden rounded-2xl bg-white shadow-lg hover:shadow-2xl transition-all duration-500 hover:-translate-y-3">
+                            <div class="aspect-[3/4] overflow-hidden bg-gradient-to-br from-gray-100 to-gray-200">
+                                <img src="{{ $rb->bannerUrl }}" alt="{{ $rb->judul }}"
+                                    class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500">
+                            </div>
+                            <div class="p-3 space-y-1">
+                                <h3
+                                    class="font-bold text-gray-900 group-hover:text-indigo-600 transition-colors line-clamp-2 text-xs leading-snug">
+                                    {{ $rb->judul }}</h3>
+                                <p class="text-xs text-gray-500">{{ $rb->author }}</p>
+                                @if ($rb->average_rating > 0)
+                                    <div class="flex items-center gap-1">
+                                        <svg class="w-3 h-3 text-yellow-400 fill-current" viewBox="0 0 20 20">
+                                            <path
+                                                d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z">
+                                            </path>
+                                        </svg>
+                                        <span
+                                            class="text-xs text-gray-500">{{ number_format($rb->average_rating, 1) }}</span>
+                                    </div>
+                                @endif
+                            </div>
+                        </a>
+                    @endforeach
+                </div>
             </div>
-        </div>
-    </section>
+        </section>
     @endif
 
     {{-- 📖 Reservation Section (for out-of-stock books) --}}
-    @if(($buku->stock ?? 0) == 0 && Auth::check() && Auth::user()->role == 'member' && Auth::user()->member->verif)
-    <section class="py-8 bg-white">
-        <div class="container mx-auto px-4">
-            <div class="bg-gradient-to-r from-amber-50 to-orange-50 rounded-3xl p-8 border border-amber-200">
-                <div class="flex flex-col md:flex-row items-center gap-6">
-                    <div class="flex-shrink-0">
-                        <div class="w-16 h-16 rounded-full bg-amber-100 flex items-center justify-center">
-                            <svg class="w-8 h-8 text-amber-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"></path>
-                            </svg>
+    @if (($buku->stock ?? 0) == 0 && Auth::check() && Auth::user()->role == 'member' && Auth::user()->member->verif)
+        <section class="py-8 bg-white">
+            <div class="container mx-auto px-4">
+                <div class="bg-gradient-to-r from-amber-50 to-orange-50 rounded-3xl p-8 border border-amber-200">
+                    <div class="flex flex-col md:flex-row items-center gap-6">
+                        <div class="flex-shrink-0">
+                            <div class="w-16 h-16 rounded-full bg-amber-100 flex items-center justify-center">
+                                <svg class="w-8 h-8 text-amber-600" fill="none" stroke="currentColor"
+                                    viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                        d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9">
+                                    </path>
+                                </svg>
+                            </div>
                         </div>
-                    </div>
-                    <div class="flex-1 text-center md:text-left">
-                        <h3 class="text-xl font-bold text-gray-900 mb-2">Buku Sedang Tidak Tersedia</h3>
-                        <p class="text-gray-600">Reservasi buku ini dan kami akan memberitahu Anda saat buku tersedia kembali.</p>
-                    </div>
-                    <div x-data="{ loading: false, reserved: false }">
-                        <button x-show="!reserved" :disabled="loading" @click="
+                        <div class="flex-1 text-center md:text-left">
+                            <h3 class="text-xl font-bold text-gray-900 mb-2">Buku Sedang Tidak Tersedia</h3>
+                            <p class="text-gray-600">Reservasi buku ini dan kami akan memberitahu Anda saat buku tersedia
+                                kembali.</p>
+                        </div>
+                        <div x-data="{ loading: false, reserved: false }">
+                            <button x-show="!reserved" :disabled="loading"
+                                @click="
                             loading = true;
                             ajaxForm('{{ route('reservation.store') }}', 'POST', { buku_id: {{ $buku->id }} }, '{{ csrf_token() }}')
                                 .then(res => {
@@ -503,25 +566,35 @@
                                     $dispatch('show-toast', { message: err.message || 'Gagal mereservasi', type: 'error' });
                                 })
                                 .finally(() => loading = false);
-                        " class="px-8 py-3 bg-gradient-to-r from-amber-500 to-orange-500 text-white rounded-xl font-bold hover:from-amber-600 hover:to-orange-600 transition-all shadow-lg hover:shadow-xl whitespace-nowrap disabled:opacity-50 flex items-center gap-2">
-                            <svg x-show="loading" class="animate-spin w-5 h-5" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z"></path></svg>
-                            <span x-text="loading ? 'Memproses...' : 'Reservasi Buku'"></span>
-                        </button>
-                        <div x-show="reserved" class="px-8 py-3 bg-green-100 text-green-700 rounded-xl font-bold whitespace-nowrap flex items-center gap-2">
-                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
-                            Reservasi Berhasil!
+                        "
+                                class="px-8 py-3 bg-gradient-to-r from-amber-500 to-orange-500 text-white rounded-xl font-bold hover:from-amber-600 hover:to-orange-600 transition-all shadow-lg hover:shadow-xl whitespace-nowrap disabled:opacity-50 flex items-center gap-2">
+                                <svg x-show="loading" class="animate-spin w-5 h-5" fill="none" viewBox="0 0 24 24">
+                                    <circle class="opacity-25" cx="12" cy="12" r="10"
+                                        stroke="currentColor" stroke-width="4"></circle>
+                                    <path class="opacity-75" fill="currentColor"
+                                        d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z"></path>
+                                </svg>
+                                <span x-text="loading ? 'Memproses...' : 'Reservasi Buku'"></span>
+                            </button>
+                            <div x-show="reserved"
+                                class="px-8 py-3 bg-green-100 text-green-700 rounded-xl font-bold whitespace-nowrap flex items-center gap-2">
+                                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                        d="M5 13l4 4L19 7"></path>
+                                </svg>
+                                Reservasi Berhasil!
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
-        </div>
-    </section>
+        </section>
     @endif
 @endsection
 
 @section('js')
     @php
-        $reviewsJson = $reviews->map(function($r) {
+        $reviewsJson = $reviews->map(function ($r) {
             return [
                 'id' => $r->id,
                 'rating' => $r->rating,
@@ -546,51 +619,57 @@
                 showForm: false,
                 loading: false,
                 formRating: {{ $existingReviewForJs->rating ?? 5 }},
-                formText: '{{ addslashes($existingReviewForJs->review ?? "") }}',
+                formText: '{{ addslashes($existingReviewForJs->review ?? '') }}',
                 hasMyReview: {{ $existingReviewForJs ? 'true' : 'false' }},
                 myMemberId: '{{ Auth::check() && Auth::user()->member ? Auth::user()->member->membership_number : '' }}',
 
                 submitReview() {
                     this.loading = true;
-                    ajaxForm('{{ route("review.store") }}', 'POST', {
-                        buku_id: {{ $buku->id }},
-                        rating: this.formRating,
-                        review: this.formText
-                    }, '{{ csrf_token() }}')
-                    .then(res => {
-                        this.$dispatch('show-toast', { message: res.message, type: 'success' });
-                        this.showForm = false;
+                    ajaxForm('{{ route('review.store') }}', 'POST', {
+                            buku_id: {{ $buku->id }},
+                            rating: this.formRating,
+                            review: this.formText
+                        }, '{{ csrf_token() }}')
+                        .then(res => {
+                            this.$dispatch('show-toast', {
+                                message: res.message,
+                                type: 'success'
+                            });
+                            this.showForm = false;
 
-                        // Update average rating and count
-                        this.avgRating = parseFloat(res.average_rating);
-                        this.reviewCount = res.review_count;
+                            // Update average rating and count
+                            this.avgRating = parseFloat(res.average_rating);
+                            this.reviewCount = res.review_count;
 
-                        // Update or add the review in the list
-                        const newReview = {
-                            id: res.review.id,
-                            rating: res.review.rating,
-                            review: res.review.review,
-                            user_name: res.review.user_name,
-                            user_initial: res.review.user_initial,
-                            created_at: res.review.created_at,
-                            member_id: this.myMemberId,
-                        };
+                            // Update or add the review in the list
+                            const newReview = {
+                                id: res.review.id,
+                                rating: res.review.rating,
+                                review: res.review.review,
+                                user_name: res.review.user_name,
+                                user_initial: res.review.user_initial,
+                                created_at: res.review.created_at,
+                                member_id: this.myMemberId,
+                            };
 
-                        if (res.review.is_update) {
-                            const idx = this.reviews.findIndex(r => r.member_id === this.myMemberId);
-                            if (idx !== -1) {
-                                this.reviews[idx] = newReview;
+                            if (res.review.is_update) {
+                                const idx = this.reviews.findIndex(r => r.member_id === this.myMemberId);
+                                if (idx !== -1) {
+                                    this.reviews[idx] = newReview;
+                                }
+                            } else {
+                                this.reviews.unshift(newReview);
                             }
-                        } else {
-                            this.reviews.unshift(newReview);
-                        }
 
-                        this.hasMyReview = true;
-                    })
-                    .catch(err => {
-                        this.$dispatch('show-toast', { message: err.message || 'Gagal menyimpan review', type: 'error' });
-                    })
-                    .finally(() => this.loading = false);
+                            this.hasMyReview = true;
+                        })
+                        .catch(err => {
+                            this.$dispatch('show-toast', {
+                                message: err.message || 'Gagal menyimpan review',
+                                type: 'error'
+                            });
+                        })
+                        .finally(() => this.loading = false);
                 }
             };
         }

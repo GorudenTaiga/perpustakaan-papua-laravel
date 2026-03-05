@@ -165,7 +165,7 @@
                                 <a href="{{ route('buku', $b->slug) }}" class="block">
                                     <div
                                         class="relative overflow-hidden bg-gradient-to-br from-gray-50 to-gray-100 aspect-[3/4]">
-                                        <img src="{{ $b->image ? asset('storage/' . $b->image) : asset('images/placeholder.png') }}"
+                                        <img src="{{ $b->bannerUrl ? $b->bannerUrl : asset('images/placeholder.png') }}"
                                             alt="{{ $b->judul }}"
                                             class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700">
                                         <div
