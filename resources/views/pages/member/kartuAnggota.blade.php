@@ -119,7 +119,7 @@
                         <!-- Bagian kiri (foto + barcode) -->
                         <td width="38%" align="left" style="padding-left: 5px; text-align: center;">
                             <div class="photo">
-                                @if (isset($member->image))
+                                @if ($member->image)
                                     @php
                                         try {
                                             $imageData = Storage::disk('s3')->get($member->image);

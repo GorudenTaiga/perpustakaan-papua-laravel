@@ -5,7 +5,7 @@
             <div class="group relative overflow-hidden rounded-2xl bg-white p-4 shadow-lg hover:shadow-xl transition-all duration-300 border border-gray-100">
                 <div class="flex gap-4">
                     <div class="relative w-16 h-24 flex-shrink-0 overflow-hidden rounded-lg">
-                        <img src="{{ Storage::disk('s3')->url($item->buku->banner) }}"
+                        <img src="{{ $item->buku->banner ? Storage::disk('s3')->url($item->buku->banner) : asset('images/no-cover.png') }}"
                             alt="{{ $item->buku->judul }}"
                             class="h-full w-full object-cover group-hover:scale-110 transition-transform duration-300">
                     </div>

@@ -42,7 +42,7 @@ class MembersTable
                 ImageColumn::make('image')
                     ->label('Foto')
                     ->emptyTooltip('Belum ada Foto')
-                    ->getStateUsing(fn ($record) => Storage::disk('s3')->url($record->image))
+                    ->getStateUsing(fn ($record) => $record->image ? Storage::disk('s3')->url($record->image) : null)
                     ->rounded(),
                 BadgeColumn::make('created_at')
                     ->label('Tanggal Bergabung')
