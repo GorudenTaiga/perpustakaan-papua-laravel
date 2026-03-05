@@ -111,11 +111,11 @@ class UserController extends Controller
             $member = auth()->user()->member;
 
             // konversi ke WebP lalu simpan ke storage/app/public/images/member/foto/
-            $path = ImageWebpConverter::convertAndStore($request->file('image'), 'images/member/foto', 'public');
+            $path = ImageWebpConverter::convertAndStore($request->file('image'), 'images/member/foto', 's3');
 
             // hapus foto lama kalau ada
-            if ($member->image && Storage::disk('public')->exists($member->image)) {
-                Storage::disk('public')->delete($member->image);
+            if ($member->image && Storage::disk('s3')->exists($member->image)) {
+                Storage::disk('s3')->delete($member->image);
             }
 
             // update kolom image
@@ -145,9 +145,9 @@ class UserController extends Controller
                     if ($request->hasFile('document')) {
                         $doc = $request->file('document');
                         if (in_array($doc->getMimeType(), ['image/jpeg', 'image/png', 'image/jpg', 'image/gif', 'image/bmp'])) {
-                            $documentPath = ImageWebpConverter::convertAndStore($doc, 'documents/members', 'public');
+                            $documentPath = ImageWebpConverter::convertAndStore($doc, 'documents/members', 's3');
                         } else {
-                            $documentPath = $doc->store('documents/members', 'public');
+                            $documentPath = $doc->store('documents/members', 's3');
                         }
                     }
                     

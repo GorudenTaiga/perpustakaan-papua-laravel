@@ -67,7 +67,7 @@ class BukuForm extends FormsComponent
                 FileUpload::make('banner')
                     ->acceptedFileTypes(['image/jpeg', 'image/png', 'image/jpg', 'image/webp'])
                     ->visibility('public')
-                    ->disk('public')
+                    ->disk('s3')
                     ->directory('buku/images/banner')
                     ->saveUploadedFileUsing(function ($file) {
                         return ImageWebpConverter::convertAndStore($file, 'buku/images/banner', 's3');

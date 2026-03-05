@@ -53,19 +53,19 @@ class MemberForm
                     ->dehydrated(true),
 
                 FileUpload::make('image')
-                    ->disk('public')
+                    ->disk('s3')
                     ->image()
                     ->visibility('public')
                     ->directory('images/member/foto')
                     ->acceptedFileTypes(['image/jpeg', 'image/png', 'image/jpg', 'image/webp'])
                     ->saveUploadedFileUsing(function ($file) {
-                        return ImageWebpConverter::convertAndStore($file, 'images/member/foto', 'public');
+                        return ImageWebpConverter::convertAndStore($file, 'images/member/foto', 's3');
                     })
                     ->nullable(),
                 
                 FileUpload::make('document_path')
                     ->label('Dokumen Pendukung')
-                    ->disk('public')
+                    ->disk('s3')
                     ->acceptedFileTypes(['application/pdf', 'image/jpeg', 'image/png', 'image/jpg', 'image/webp'])
                     ->maxSize(2048)
                     ->visibility('public')
@@ -73,9 +73,9 @@ class MemberForm
                     ->saveUploadedFileUsing(function ($file) {
                         $mime = $file->getMimeType();
                         if (in_array($mime, ['image/jpeg', 'image/png', 'image/jpg'])) {
-                            return ImageWebpConverter::convertAndStore($file, 'documents/members', 'public');
+                            return ImageWebpConverter::convertAndStore($file, 'documents/members', 's3');
                         }
-                        return $file->store('documents/members', 'public');
+                        return $file->store('documents/members', 's3');
                     })
                     ->helperText('Upload surat aktif kuliah/sekolah, KTP, atau dokumen identitas lainnya (Max 2MB)')
                     ->nullable(),
