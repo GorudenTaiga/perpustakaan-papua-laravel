@@ -152,6 +152,8 @@
                                     </option>
                                     <option value="oldest" {{ request('sortBy') == 'oldest' ? 'selected' : '' }}>Terlama
                                     </option>
+                                    <option value="ratingDesc" {{ request('sortBy') == 'ratingDesc' ? 'selected' : '' }}>Rating Tertinggi</option>
+                                    <option value="ratingAsc" {{ request('sortBy') == 'ratingAsc' ? 'selected' : '' }}>Rating Terendah</option>
                                 </select>
                             </form>
                         </div>

@@ -22,7 +22,6 @@ class BukuController extends Controller
     {
         $buku = Buku::query()
             ->withAvg('reviews', 'rating')
-            ->orderByDesc('reviews_avg_rating')
             // Sorting
             ->when($request->query('sortBy'), function ($q, $sort) {
                 switch ($sort) {
@@ -38,7 +37,18 @@ class BukuController extends Controller
                     case 'oldest':
                         $q->orderBy('created_at', 'asc');
                         break;
+                    case 'ratingDesc':
+                        $q->orderByDesc('reviews_avg_rating');
+                        break;
+                    case 'ratingAsc':
+                        $q->orderBy('reviews_avg_rating', 'asc');
+                        break;
+                    default:
+                        $q->orderByDesc('reviews_avg_rating');
+                        break;
                 }
+            }, function ($q) {
+                $q->orderByDesc('reviews_avg_rating');
             })
             // Category filtering
             ->when($request->query('category', []), function ($q, $categories) {
