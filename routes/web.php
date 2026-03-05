@@ -26,7 +26,8 @@ Route::get('/buku', [BukuController::class, 'index'])->name('allBuku');
 Route::get('/buku/{slug}', [BukuController::class, 'view'])->name('buku');
 
 Route::middleware(['auth:member'])->group(function () {
-    Route::get('/buku/{slug}/read', [BukuController::class, 'read'])->name('buku.read');
+    // DISABLED: Fitur baca digital sudah tidak digunakan
+    // Route::get('/buku/{slug}/read', [BukuController::class, 'read'])->name('buku.read');
     Route::get('/profile', [UserController::class, 'index'])->name('userProfile');
     Route::get('/pinjam', [UserController::class, 'peminjaman'])->name('pinjam');
     Route::post('/pinjam/store', [UserController::class, 'pinjam'])->name('pinjam.store');
@@ -54,8 +55,8 @@ Route::middleware(['auth:member'])->group(function () {
     Route::post('/notifications/read-all', [NotificationController::class, 'markAllAsRead'])->name('notifications.readAll');
     Route::get('/notifications/unread-count', [NotificationController::class, 'unreadCount'])->name('notifications.unreadCount');
 
-    // Reading History
-    Route::get('/reading-history', [UserController::class, 'readingHistory'])->name('readingHistory');
+    // DISABLED: Fitur riwayat baca sudah tidak digunakan
+    // Route::get('/reading-history', [UserController::class, 'readingHistory'])->name('readingHistory');
 });
 
 Route::get('/getImage/{path}', [AssetController::class, 'index']);

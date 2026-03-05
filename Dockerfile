@@ -46,20 +46,12 @@ RUN echo '#!/bin/bash\n\
     else\n\
     echo "APP_KEY already set from environment"\n\
     fi\n\
-    \n\
-    # Run migrations\n\
-    echo "Running migrations..."\n\
-    php artisan migrate --force\n\
-    \n\
-    # Seed database (create admin user)\n\
-    echo "Seeding database..."\n\
-    php artisan db:seed --force --class=DatabaseSeeder || echo "Seeding failed, continuing..."\n\
-    \n\
     # Cache config\n\
     echo "Caching configuration..."\n\
     php artisan config:cache\n\
     php artisan route:cache\n\
     php artisan view:cache\n\
+    php artisan optimize\n\
     \n\
     # Start server\n\
     echo "Starting web server on port ${PORT:-8080}..."\n\

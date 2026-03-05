@@ -192,7 +192,8 @@
                                         @elseif($p->extended)
                                             <span class="text-xs text-gray-400 italic text-center">Sudah diperpanjang</span>
                                         @endif
-                                        {{-- Read Book Button (Only if status is 'dipinjam') --}}
+                                        {{-- DISABLED: Fitur baca digital sudah tidak digunakan --}}
+                                        @if (false)
                                         @if (in_array($p->status, ['dipinjam', 'terlambat']))
                                             @if ($p->buku->gdrive_link && Auth::user()->member?->isPremium())
                                                 <a href="{{ route('buku.read', $p->buku->slug) }}"
@@ -305,6 +306,7 @@
                                                 </div>
                                             @endif
                                         @endif
+                                        @endif {{-- END DISABLED: Fitur baca digital --}}
 
                                         {{-- Fee --}}
                                         <div>

@@ -278,10 +278,12 @@
                                 class="px-4 py-2 rounded-lg text-sm font-medium text-gray-700 hover:text-indigo-600 hover:bg-indigo-50 transition-all {{ request()->routeIs('pinjam') ? 'bg-indigo-50 text-indigo-600' : '' }}">
                                 Peminjaman
                             </a>
+                            {{-- DISABLED: Fitur riwayat baca sudah tidak digunakan
                             <a href="{{ route('readingHistory') }}"
                                 class="px-4 py-2 rounded-lg text-sm font-medium text-gray-700 hover:text-indigo-600 hover:bg-indigo-50 transition-all {{ request()->routeIs('readingHistory') ? 'bg-indigo-50 text-indigo-600' : '' }}">
                                 Riwayat Baca
                             </a>
+                            --}}
                             <a target="_blank"
                                 href="{{ route('cetakKTA', base64_encode(Auth::user()->member->id)) }}"
                                 class="px-4 py-2 rounded-lg text-sm font-medium text-gray-700 hover:text-indigo-600 hover:bg-indigo-50 transition-all">
@@ -400,10 +402,12 @@
                             class="block px-4 py-3 rounded-lg text-sm font-medium text-gray-700 hover:bg-indigo-50 hover:text-indigo-600 transition-all {{ request()->routeIs('pinjam') ? 'bg-indigo-50 text-indigo-600' : '' }}">
                             Peminjaman
                         </a>
+                        {{-- DISABLED: Fitur riwayat baca sudah tidak digunakan
                         <a href="{{ route('readingHistory') }}"
                             class="block px-4 py-3 rounded-lg text-sm font-medium text-gray-700 hover:bg-indigo-50 hover:text-indigo-600 transition-all {{ request()->routeIs('readingHistory') ? 'bg-indigo-50 text-indigo-600' : '' }}">
                             Riwayat Baca
                         </a>
+                        --}}
                         <a href="{{ route('notifications') }}"
                             class="block px-4 py-3 rounded-lg text-sm font-medium text-gray-700 hover:bg-indigo-50 hover:text-indigo-600 transition-all {{ request()->routeIs('notifications') ? 'bg-indigo-50 text-indigo-600' : '' }}">
                             Notifikasi

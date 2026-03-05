@@ -684,6 +684,7 @@
                                     <a href="{{ route('buku', $book->slug) }}" class="btn-detail">
                                         Lihat Detail
                                     </a>
+                                    {{-- DISABLED: Fitur baca digital sudah tidak digunakan
                                     @if($book->gdrive_link && Auth::check() && Auth::user()->member?->isPremium())
                                     <a href="{{ route('buku.read', $book->slug) }}" class="btn-gdrive" title="Baca Buku Digital">
                                         <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
@@ -696,6 +697,7 @@
                                         🔒
                                     </span>
                                     @endif
+                                    --}}
                                 </div>
                             </div>
                         </div>

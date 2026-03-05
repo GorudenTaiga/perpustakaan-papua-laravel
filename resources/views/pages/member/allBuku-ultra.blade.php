@@ -1120,6 +1120,7 @@
                                                     </div>
                                                 @endif
 
+                                                {{-- DISABLED: Fitur baca digital sudah tidak digunakan
                                                 @if ($book->gdrive_link)
                                                     <div class="premium-badge badge-digital">
                                                         <span>📱</span> Digital
@@ -1128,6 +1129,7 @@
                                                         @endif
                                                     </div>
                                                 @endif
+                                                --}}
                                             </div>
 
                                             <!-- Wishlist -->
@@ -1186,6 +1188,7 @@
                                                 <a href="{{ route('buku', $book->slug) }}" class="btn-primary-ultra">
                                                     <span style="position: relative; z-index: 1;">Lihat Detail</span>
                                                 </a>
+                                                {{-- DISABLED: Fitur baca digital sudah tidak digunakan
                                                 @if ($book->gdrive_link && Auth::check() && Auth::user()->member?->isPremium())
                                                     <a href="{{ route('buku.read', $book->slug) }}"
                                                         class="btn-icon-ultra" title="Baca Buku Digital">
@@ -1201,6 +1204,7 @@
                                                         🔒
                                                     </span>
                                                 @endif
+                                                --}}
                                             </div>
                                         </div>
                                     </div>
