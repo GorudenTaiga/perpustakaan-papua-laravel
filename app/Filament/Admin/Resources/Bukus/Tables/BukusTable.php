@@ -107,7 +107,7 @@ class BukusTable
 
                     return $query->where(function ($q) use ($values) {
                         foreach ($values as $value) {
-                            $q->orWhereJsonContains('category_id', (string) $value);
+                            $q->orWhereJsonContains('category_id', (int) $value);
                         }
                     });
                 })

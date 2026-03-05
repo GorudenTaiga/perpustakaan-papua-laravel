@@ -25,6 +25,7 @@ class Member extends Model
 
     protected $casts = [
         'tier_expired_at' => 'datetime',
+        'verif' => 'boolean',
     ];
 
     public function user() {

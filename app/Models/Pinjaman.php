@@ -26,6 +26,11 @@ class Pinjaman extends Model
         'extension_date'
     ];
 
+    protected $casts = [
+        'verif' => 'boolean',
+        'extended' => 'boolean',
+    ];
+
     public function member() {
         return $this->belongsTo(Member::class, 'member_id', 'membership_number');
     }
