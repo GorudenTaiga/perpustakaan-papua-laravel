@@ -287,6 +287,10 @@
                                 class="px-4 py-2 rounded-lg text-sm font-medium text-gray-700 hover:text-indigo-600 hover:bg-indigo-50 transition-all {{ request()->routeIs('pinjam') ? 'bg-indigo-50 text-indigo-600' : '' }}">
                                 Peminjaman
                             </a>
+                            <a href="{{ route('reservations') }}"
+                                class="px-4 py-2 rounded-lg text-sm font-medium text-gray-700 hover:text-indigo-600 hover:bg-indigo-50 transition-all {{ request()->routeIs('reservations') ? 'bg-indigo-50 text-indigo-600' : '' }}">
+                                Reservasi
+                            </a>
                             <a target="_blank"
                                 href="{{ route('cetakKTA', base64_encode(Auth::user()->member->id)) }}"
                                 class="px-4 py-2 rounded-lg text-sm font-medium text-gray-700 hover:text-indigo-600 hover:bg-indigo-50 transition-all">
@@ -298,7 +302,7 @@
                     <!-- Actions -->
                     <div class="flex items-center gap-2">
                         <!-- Help Badge (Desktop Only) -->
-                        <a href="https://wa.me/6287743160171?text=Halo%2C%20saya%20butuh%20bantuan%20terkait%20layanan%20Perpustakaan%20Daerah."
+                        <a href="https://wa.me/6282246310174?text=Halo%2C%20saya%20butuh%20bantuan%20terkait%20layanan%20Perpustakaan%20Daerah."
                             target="_blank" rel="noopener noreferrer"
                             class="hidden xl:flex items-center gap-2 px-4 py-2 rounded-lg bg-gradient-to-r from-indigo-50 to-purple-50 border border-indigo-100 hover:from-green-50 hover:to-emerald-50 hover:border-green-200 transition-all">
                             <svg class="w-5 h-5 text-indigo-600" fill="none" stroke="currentColor"
@@ -309,7 +313,7 @@
                             </svg>
                             <div class="text-left">
                                 <p class="text-xs text-gray-500">Butuh bantuan?</p>
-                                <p class="text-sm font-semibold text-gray-900">+62 877 4316 0171</p>
+                                <p class="text-sm font-semibold text-gray-900">+62 822 4631 0174</p>
                             </div>
                         </a>
 
