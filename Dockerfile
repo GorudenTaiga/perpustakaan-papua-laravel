@@ -3,19 +3,11 @@ FROM php:8.3-cli
 # Install system dependencies
 RUN apt-get update && apt-get install -y \
     git curl libpng-dev libonig-dev libxml2-dev libicu-dev libzip-dev \
-    libpq-dev \
-    zip unzip sqlite3 libsqlite3-dev nodejs npm gosu \
-    && apt-get clean && rm -rf /var/lib/apt/lists/
-
-# Clear cache
-RUN apt-get clean && rm -rf /var/lib/apt/lists/*
-
-# Install PHP extensions
-RUN docker-php-ext-install pdo pdo_sqlite mbstring exif pcntl bcmath gd intl zip
-
-RUN apt-get update && apt-get install -y gosu \
-    && docker-php-ext-install pdo_pgsql pgsql \
+    libpq-dev zip unzip nodejs npm \
     && apt-get clean && rm -rf /var/lib/apt/lists/*
+
+# Install PHP extensions (PostgreSQL + essentials)
+RUN docker-php-ext-install pdo pdo_pgsql pgsql mbstring exif pcntl bcmath gd intl zip
 
 # Get Composer
 COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
