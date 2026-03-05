@@ -9,7 +9,8 @@
     <meta name="format-detection" content="telephone=no">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="author" content="Perpustakaan Daerah Provinsi Papua">
-    <meta name="keywords" content="perpustakaan, buku, pinjam buku, perpustakaan papua, katalog buku, perpustakaan digital">
+    <meta name="keywords"
+        content="perpustakaan, buku, pinjam buku, perpustakaan papua, katalog buku, perpustakaan digital">
     <meta name="description" content="@yield('meta_description', 'Perpustakaan Daerah Provinsi Papua - Akses ribuan koleksi buku, pinjam buku online, dan jelajahi katalog digital terlengkap untuk masyarakat Papua.')">
 
     <!-- Open Graph / Social Media -->
@@ -196,7 +197,8 @@
         </div>
 
         <!-- Wishlist Sidebar -->
-        <div x-data="wishlistSidebar()" @keydown.escape.window="wishlistOpen = false" @open-wishlist.window="open()" @wishlist-updated.window="refreshContent()">
+        <div x-data="wishlistSidebar()" @keydown.escape.window="wishlistOpen = false" @open-wishlist.window="open()"
+            @wishlist-updated.window="refreshContent()">
             <div x-show="wishlistOpen" x-transition:enter="transition ease-out duration-300"
                 x-transition:enter-start="opacity-0" x-transition:enter-end="opacity-100"
                 x-transition:leave="transition ease-in duration-200" x-transition:leave-start="opacity-100"
@@ -230,7 +232,13 @@
                     <div class="flex-1 overflow-y-auto p-6">
                         {{-- Loading state --}}
                         <div x-show="loading" class="flex flex-col items-center justify-center h-full">
-                            <svg class="animate-spin w-10 h-10 text-pink-500 mb-3" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z"></path></svg>
+                            <svg class="animate-spin w-10 h-10 text-pink-500 mb-3" fill="none"
+                                viewBox="0 0 24 24">
+                                <circle class="opacity-25" cx="12" cy="12" r="10"
+                                    stroke="currentColor" stroke-width="4"></circle>
+                                <path class="opacity-75" fill="currentColor"
+                                    d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z"></path>
+                            </svg>
                             <p class="text-sm text-gray-500">Memuat wishlist...</p>
                         </div>
                         {{-- Dynamic content --}}
@@ -240,7 +248,8 @@
             </div>
         </div>
         <!-- Modern Header with Glassmorphism -->
-        <header x-data="{ mobileMenuOpen: false }" class="sticky top-0 z-40 backdrop-blur-xl bg-white/80 border-b border-gray-200/50 shadow-sm">
+        <header x-data="{ mobileMenuOpen: false }"
+            class="sticky top-0 z-40 backdrop-blur-xl bg-white/80 border-b border-gray-200/50 shadow-sm">
             <div class="container mx-auto px-4">
                 <!-- Top Bar -->
                 <div class="flex items-center justify-between py-4">
@@ -289,8 +298,9 @@
                     <!-- Actions -->
                     <div class="flex items-center gap-2">
                         <!-- Help Badge (Desktop Only) -->
-                        <div
-                            class="hidden xl:flex items-center gap-2 px-4 py-2 rounded-lg bg-gradient-to-r from-indigo-50 to-purple-50 border border-indigo-100">
+                        <a href="https://wa.me/6287743160171?text=Halo%2C%20saya%20butuh%20bantuan%20terkait%20layanan%20Perpustakaan%20Daerah."
+                            target="_blank" rel="noopener noreferrer"
+                            class="hidden xl:flex items-center gap-2 px-4 py-2 rounded-lg bg-gradient-to-r from-indigo-50 to-purple-50 border border-indigo-100 hover:from-green-50 hover:to-emerald-50 hover:border-green-200 transition-all">
                             <svg class="w-5 h-5 text-indigo-600" fill="none" stroke="currentColor"
                                 viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
@@ -301,25 +311,33 @@
                                 <p class="text-xs text-gray-500">Butuh bantuan?</p>
                                 <p class="text-sm font-semibold text-gray-900">+62 877 4316 0171</p>
                             </div>
-                        </div>
+                        </a>
 
                         @if (Auth::user())
                             <!-- Notification Bell -->
-                            @if(Auth::user()->role == 'member')
-                            <a href="{{ route('notifications') }}"
-                                class="relative p-2.5 rounded-lg hover:bg-gradient-to-br hover:from-blue-50 hover:to-indigo-50 text-gray-700 hover:text-blue-600 transition-all group">
-                                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"></path>
-                                </svg>
-                                @php
-                                    $unreadNotifCount = \App\Models\Notification::where('member_id', Auth::user()->member->membership_number)->whereNull('read_at')->count();
-                                @endphp
-                                @if($unreadNotifCount > 0)
-                                <span class="absolute -top-1 -right-1 w-5 h-5 bg-gradient-to-br from-red-500 to-orange-500 text-white text-xs font-bold rounded-full flex items-center justify-center animate-pulse">
-                                    {{ $unreadNotifCount > 9 ? '9+' : $unreadNotifCount }}
-                                </span>
-                                @endif
-                            </a>
+                            @if (Auth::user()->role == 'member')
+                                <a href="{{ route('notifications') }}"
+                                    class="relative p-2.5 rounded-lg hover:bg-gradient-to-br hover:from-blue-50 hover:to-indigo-50 text-gray-700 hover:text-blue-600 transition-all group">
+                                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                            d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9">
+                                        </path>
+                                    </svg>
+                                    @php
+                                        $unreadNotifCount = \App\Models\Notification::where(
+                                            'member_id',
+                                            Auth::user()->member->membership_number,
+                                        )
+                                            ->whereNull('read_at')
+                                            ->count();
+                                    @endphp
+                                    @if ($unreadNotifCount > 0)
+                                        <span
+                                            class="absolute -top-1 -right-1 w-5 h-5 bg-gradient-to-br from-red-500 to-orange-500 text-white text-xs font-bold rounded-full flex items-center justify-center animate-pulse">
+                                            {{ $unreadNotifCount > 9 ? '9+' : $unreadNotifCount }}
+                                        </span>
+                                    @endif
+                                </a>
                             @endif
 
                             <!-- Wishlist Button -->
@@ -371,8 +389,7 @@
             </div>
 
             <!-- Mobile Menu -->
-            <div x-show="mobileMenuOpen"
-                x-transition:enter="transition ease-out duration-200"
+            <div x-show="mobileMenuOpen" x-transition:enter="transition ease-out duration-200"
                 x-transition:enter-start="opacity-0 -translate-y-4" x-transition:enter-end="opacity-100 translate-y-0"
                 x-transition:leave="transition ease-in duration-150"
                 x-transition:leave-start="opacity-100 translate-y-0" x-transition:leave-end="opacity-0 -translate-y-4"
@@ -399,8 +416,9 @@
                         <a href="{{ route('notifications') }}"
                             class="block px-4 py-3 rounded-lg text-sm font-medium text-gray-700 hover:bg-indigo-50 hover:text-indigo-600 transition-all {{ request()->routeIs('notifications') ? 'bg-indigo-50 text-indigo-600' : '' }}">
                             Notifikasi
-                            @if(isset($unreadNotifCount) && $unreadNotifCount > 0)
-                            <span class="ml-2 px-2 py-0.5 text-xs font-bold bg-red-100 text-red-600 rounded-full">{{ $unreadNotifCount }}</span>
+                            @if (isset($unreadNotifCount) && $unreadNotifCount > 0)
+                                <span
+                                    class="ml-2 px-2 py-0.5 text-xs font-bold bg-red-100 text-red-600 rounded-full">{{ $unreadNotifCount }}</span>
                             @endif
                         </a>
                         <a href="{{ route('reservations') }}"
@@ -413,8 +431,9 @@
                         </a>
                     @endif
                     <div class="pt-3 border-t border-gray-200">
-                        <div
-                            class="flex items-center gap-2 px-4 py-3 rounded-lg bg-gradient-to-r from-indigo-50 to-purple-50">
+                        <a href="https://wa.me/6282246310174?text=Halo%2C%20saya%20butuh%20bantuan%20terkait%20layanan%20Perpustakaan%20Daerah."
+                            target="_blank" rel="noopener noreferrer"
+                            class="flex items-center gap-2 px-4 py-3 rounded-lg bg-gradient-to-r from-indigo-50 to-purple-50 hover:from-green-50 hover:to-emerald-50 transition-all">
                             <svg class="w-5 h-5 text-indigo-600" fill="none" stroke="currentColor"
                                 viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
@@ -423,9 +442,9 @@
                             </svg>
                             <div>
                                 <p class="text-xs text-gray-500">Butuh bantuan?</p>
-                                <p class="text-sm font-semibold text-gray-900">+62 877 4316 0171</p>
+                                <p class="text-sm font-semibold text-gray-900">+62 822 4631 0174</p>
                             </div>
-                        </div>
+                        </a>
                     </div>
                 </div>
             </div>
@@ -468,27 +487,36 @@
     <script src="{{ asset('js/modal-system.js') }}"></script>
 
     {{-- Global Toast Notification & AJAX Helper --}}
-    <div x-data="toastSystem()" x-on:show-toast.window="show($event.detail)" class="fixed top-6 right-6 z-[100] space-y-3" style="pointer-events: none;">
+    <div x-data="toastSystem()" x-on:show-toast.window="show($event.detail)"
+        class="fixed top-6 right-6 z-[100] space-y-3" style="pointer-events: none;">
         <template x-for="(toast, index) in toasts" :key="index">
-            <div x-show="toast.visible"
-                 x-transition:enter="transition ease-out duration-300 transform"
-                 x-transition:enter-start="opacity-0 translate-x-8"
-                 x-transition:enter-end="opacity-100 translate-x-0"
-                 x-transition:leave="transition ease-in duration-200 transform"
-                 x-transition:leave-start="opacity-100 translate-x-0"
-                 x-transition:leave-end="opacity-0 translate-x-8"
-                 class="flex items-center gap-3 px-5 py-4 rounded-2xl shadow-2xl backdrop-blur-sm max-w-sm"
-                 :class="toast.type === 'success' ? 'bg-gradient-to-r from-emerald-500 to-green-500 text-white' : toast.type === 'error' ? 'bg-gradient-to-r from-red-500 to-rose-500 text-white' : 'bg-gradient-to-r from-blue-500 to-indigo-500 text-white'"
-                 style="pointer-events: auto;">
+            <div x-show="toast.visible" x-transition:enter="transition ease-out duration-300 transform"
+                x-transition:enter-start="opacity-0 translate-x-8" x-transition:enter-end="opacity-100 translate-x-0"
+                x-transition:leave="transition ease-in duration-200 transform"
+                x-transition:leave-start="opacity-100 translate-x-0" x-transition:leave-end="opacity-0 translate-x-8"
+                class="flex items-center gap-3 px-5 py-4 rounded-2xl shadow-2xl backdrop-blur-sm max-w-sm"
+                :class="toast.type === 'success' ? 'bg-gradient-to-r from-emerald-500 to-green-500 text-white' : toast
+                    .type === 'error' ? 'bg-gradient-to-r from-red-500 to-rose-500 text-white' :
+                    'bg-gradient-to-r from-blue-500 to-indigo-500 text-white'"
+                style="pointer-events: auto;">
                 <div class="flex-shrink-0">
                     <template x-if="toast.type === 'success'">
-                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                        </svg>
                     </template>
                     <template x-if="toast.type === 'error'">
-                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                        </svg>
                     </template>
                     <template x-if="toast.type === 'info'">
-                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                        </svg>
                     </template>
                 </div>
                 <p class="text-sm font-semibold" x-text="toast.message"></p>
@@ -501,10 +529,18 @@
             return {
                 toasts: [],
                 show(detail) {
-                    const toast = { message: detail.message, type: detail.type || 'success', visible: true };
+                    const toast = {
+                        message: detail.message,
+                        type: detail.type || 'success',
+                        visible: true
+                    };
                     this.toasts.push(toast);
-                    setTimeout(() => { toast.visible = false; }, 3500);
-                    setTimeout(() => { this.toasts = this.toasts.filter(t => t !== toast); }, 4000);
+                    setTimeout(() => {
+                        toast.visible = false;
+                    }, 3500);
+                    setTimeout(() => {
+                        this.toasts = this.toasts.filter(t => t !== toast);
+                    }, 4000);
                 }
             }
         }
@@ -521,7 +557,7 @@
                 async refreshContent() {
                     this.loading = true;
                     try {
-                        const res = await fetch('{{ route("wishlist.partial") }}');
+                        const res = await fetch('{{ route('wishlist.partial') }}');
                         this.content = await res.text();
                     } catch (e) {
                         this.content = '<p class="text-center text-gray-500 py-8">Gagal memuat wishlist</p>';
@@ -545,7 +581,10 @@
             if (method !== 'GET') opts.body = JSON.stringify(data);
             const res = await fetch(url, opts);
             const json = await res.json();
-            if (!res.ok) throw { status: res.status, ...json };
+            if (!res.ok) throw {
+                status: res.status,
+                ...json
+            };
             return json;
         };
     </script>
