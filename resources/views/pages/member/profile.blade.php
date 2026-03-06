@@ -43,7 +43,7 @@
                         class="lg:w-80 flex-shrink-0 p-8 flex flex-col items-center justify-center bg-gradient-to-br from-gray-50 to-gray-100">
                         <div class="relative group">
                             <div class="w-48 h-64 lg:w-56 lg:h-72 rounded-2xl overflow-hidden shadow-2xl ring-4 ring-white">
-                                <img src="{{ $member->image ? Storage::disk('s3')->url($member->image) : asset('users/images/profile-placeholder.png') }}"
+                                <img src="{{ $member->image ? Storage::disk('s3')->url($member->image) : asset('images/blank_profile.webp') }}"
                                     alt="{{ $member->user->name }}"
                                     class="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105">
                             </div>
@@ -178,7 +178,8 @@
                             x-transition:leave="ease-in duration-200" x-transition:leave-start="opacity-100 scale-100"
                             x-transition:leave-end="opacity-0 scale-95"
                             class="relative bg-white rounded-3xl shadow-2xl max-w-lg w-full overflow-hidden" @click.stop>
-                            <form id="cropForm" action="{{ route('member.updatePhoto') }}" method="POST" enctype="multipart/form-data">
+                            <form id="cropForm" action="{{ route('member.updatePhoto') }}" method="POST"
+                                enctype="multipart/form-data">
                                 @csrf
                                 @method('PUT')
                                 <div class="bg-gradient-to-r from-indigo-600 to-purple-600 px-6 py-4">
@@ -453,37 +454,42 @@
 
             const doUpload = (formData) => {
                 fetch(cropForm.action, {
-                    method: 'POST',
-                    headers: { 'Accept': 'application/json' },
-                    body: formData
-                })
-                .then(res => res.json())
-                .then(data => {
-                    submitBtn.disabled = false;
-                    submitBtn.textContent = originalText;
-                    if (data.success) {
-                        if (window.modalSystem) {
-                            window.modalSystem.showSuccess('Berhasil!', data.message || 'Foto profil berhasil diperbarui!');
-                        }
-                        setTimeout(() => location.reload(), 1000);
-                    } else {
-                        if (window.modalSystem) {
-                            window.modalSystem.showError('Gagal Upload', data.message || 'Gagal mengupload foto.');
+                        method: 'POST',
+                        headers: {
+                            'Accept': 'application/json'
+                        },
+                        body: formData
+                    })
+                    .then(res => res.json())
+                    .then(data => {
+                        submitBtn.disabled = false;
+                        submitBtn.textContent = originalText;
+                        if (data.success) {
+                            if (window.modalSystem) {
+                                window.modalSystem.showSuccess('Berhasil!', data.message ||
+                                    'Foto profil berhasil diperbarui!');
+                            }
+                            setTimeout(() => location.reload(), 1000);
                         } else {
-                            alert(data.message || 'Gagal mengupload foto.');
+                            if (window.modalSystem) {
+                                window.modalSystem.showError('Gagal Upload', data.message ||
+                                    'Gagal mengupload foto.');
+                            } else {
+                                alert(data.message || 'Gagal mengupload foto.');
+                            }
                         }
-                    }
-                })
-                .catch(err => {
-                    submitBtn.disabled = false;
-                    submitBtn.textContent = originalText;
-                    console.error('Upload error:', err);
-                    if (window.modalSystem) {
-                        window.modalSystem.showError('Terjadi Kesalahan', 'Gagal mengupload foto. Periksa koneksi dan coba lagi.');
-                    } else {
-                        alert('Gagal mengupload foto. Periksa koneksi dan coba lagi.');
-                    }
-                });
+                    })
+                    .catch(err => {
+                        submitBtn.disabled = false;
+                        submitBtn.textContent = originalText;
+                        console.error('Upload error:', err);
+                        if (window.modalSystem) {
+                            window.modalSystem.showError('Terjadi Kesalahan',
+                                'Gagal mengupload foto. Periksa koneksi dan coba lagi.');
+                        } else {
+                            alert('Gagal mengupload foto. Periksa koneksi dan coba lagi.');
+                        }
+                    });
             };
 
             if (!cropper) {
@@ -502,7 +508,9 @@
                     alert('Gagal memproses gambar. Silakan coba lagi.');
                     return;
                 }
-                const file = new File([blob], 'cropped.png', { type: 'image/png' });
+                const file = new File([blob], 'cropped.png', {
+                    type: 'image/png'
+                });
                 const formData = new FormData(cropForm);
                 formData.set('image', file);
                 doUpload(formData);
