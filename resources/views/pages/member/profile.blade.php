@@ -178,7 +178,7 @@
                             x-transition:leave="ease-in duration-200" x-transition:leave-start="opacity-100 scale-100"
                             x-transition:leave-end="opacity-0 scale-95"
                             class="relative bg-white rounded-3xl shadow-2xl max-w-lg w-full overflow-hidden" @click.stop>
-                            <form id="cropForm" action="{{ route('member.updatePhoto') }}" method="POST">
+                            <form id="cropForm" action="{{ route('member.updatePhoto') }}" method="POST" enctype="multipart/form-data">
                                 @csrf
                                 @method('PUT')
                                 <div class="bg-gradient-to-r from-indigo-600 to-purple-600 px-6 py-4">
@@ -446,8 +446,49 @@
         cropForm.addEventListener('submit', function(e) {
             e.preventDefault();
 
+            const submitBtn = cropForm.querySelector('button[type="submit"]');
+            const originalText = submitBtn.textContent;
+            submitBtn.disabled = true;
+            submitBtn.textContent = 'Mengupload...';
+
+            const doUpload = (formData) => {
+                fetch(cropForm.action, {
+                    method: 'POST',
+                    headers: { 'Accept': 'application/json' },
+                    body: formData
+                })
+                .then(res => res.json())
+                .then(data => {
+                    submitBtn.disabled = false;
+                    submitBtn.textContent = originalText;
+                    if (data.success) {
+                        if (window.modalSystem) {
+                            window.modalSystem.showSuccess('Berhasil!', data.message || 'Foto profil berhasil diperbarui!');
+                        }
+                        setTimeout(() => location.reload(), 1000);
+                    } else {
+                        if (window.modalSystem) {
+                            window.modalSystem.showError('Gagal Upload', data.message || 'Gagal mengupload foto.');
+                        } else {
+                            alert(data.message || 'Gagal mengupload foto.');
+                        }
+                    }
+                })
+                .catch(err => {
+                    submitBtn.disabled = false;
+                    submitBtn.textContent = originalText;
+                    console.error('Upload error:', err);
+                    if (window.modalSystem) {
+                        window.modalSystem.showError('Terjadi Kesalahan', 'Gagal mengupload foto. Periksa koneksi dan coba lagi.');
+                    } else {
+                        alert('Gagal mengupload foto. Periksa koneksi dan coba lagi.');
+                    }
+                });
+            };
+
             if (!cropper) {
-                cropForm.submit();
+                const formData = new FormData(cropForm);
+                doUpload(formData);
                 return;
             }
 
@@ -455,28 +496,16 @@
                 width: 478,
                 height: 770,
             }).toBlob((blob) => {
-                const file = new File([blob], 'cropped.png', {
-                    type: 'image/png'
-                });
+                if (!blob) {
+                    submitBtn.disabled = false;
+                    submitBtn.textContent = originalText;
+                    alert('Gagal memproses gambar. Silakan coba lagi.');
+                    return;
+                }
+                const file = new File([blob], 'cropped.png', { type: 'image/png' });
                 const formData = new FormData(cropForm);
                 formData.set('image', file);
-                formData.set('_method', 'PUT');
-
-                fetch(cropForm.action, {
-                        method: 'POST',
-                        body: formData
-                    })
-                    .then(res => {
-                        if (res.redirected) {
-                            window.location.href = res.url;
-                        } else {
-                            return res.json();
-                        }
-                    })
-                    .then(data => {
-                        if (data?.success) location.reload();
-                    })
-                    .catch(err => console.error(err));
+                doUpload(formData);
             });
         });
     </script>

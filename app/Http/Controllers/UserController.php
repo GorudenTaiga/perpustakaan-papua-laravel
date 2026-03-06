@@ -107,7 +107,7 @@ class UserController extends Controller
 
     public function updatePhoto(Request $request)
     {
-        $valid = $request->validate([
+        $request->validate([
             'image' => 'required|image|mimes:jpg,jpeg,png,webp|max:2048',
         ], [
             'image.required' => 'Harap upload gambar terlebih dahulu',
@@ -115,23 +115,28 @@ class UserController extends Controller
             'image.max' => 'Ukuran gambar maksimal 2MB / 2048KB'
         ]);
 
-        if ($valid) {
+        try {
             $member = auth()->user()->member;
 
-            // konversi ke WebP lalu simpan ke storage/app/public/images/member/foto/
             $path = ImageWebpConverter::convertAndStore($request->file('image'), 'images/member/foto', 's3');
 
-            // hapus foto lama kalau ada
             if ($member->image && Storage::disk('s3')->exists($member->image)) {
                 Storage::disk('s3')->delete($member->image);
             }
 
-            // update kolom image
-            if ($member->update(['image' => $path])) {
-                return back()->with('success', 'Foto profil berhasil diperbarui!');
+            $member->update(['image' => $path]);
+
+            if ($request->expectsJson()) {
+                return response()->json(['success' => true, 'message' => 'Foto profil berhasil diperbarui!']);
             }
+            return back()->with('success', 'Foto profil berhasil diperbarui!');
+        } catch (\Exception $e) {
+            \Log::error('Photo upload failed: ' . $e->getMessage());
+            if ($request->expectsJson()) {
+                return response()->json(['success' => false, 'message' => 'Gagal mengupload foto. Silakan coba lagi.'], 500);
+            }
+            return back()->with('error', 'Gagal mengupload foto. Silakan coba lagi.');
         }
-        return back();
     }
 
     public function register(Request $request) 

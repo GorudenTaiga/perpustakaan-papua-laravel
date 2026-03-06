@@ -361,10 +361,16 @@
                             <!-- User Profile -->
                             <a href="{{ Auth::user()->role == 'member' ? route('userProfile') : route('filament.admin.pages.dashboard') }}"
                                 class="flex items-center gap-2 px-3 py-2 rounded-lg hover:bg-gradient-to-br hover:from-indigo-50 hover:to-purple-50 transition-all group">
-                                <div
-                                    class="w-9 h-9 rounded-full bg-gradient-to-br from-indigo-600 to-purple-600 flex items-center justify-center text-white font-bold text-sm shadow-lg">
-                                    {{ strtoupper(substr(Auth::user()->name, 0, 1)) }}
-                                </div>
+                                @if (Auth::user()->role == 'member' && Auth::user()->member && Auth::user()->member->image)
+                                    <img src="{{ Storage::disk('s3')->url(Auth::user()->member->image) }}"
+                                        alt="{{ Auth::user()->name }}"
+                                        class="w-9 h-9 rounded-full object-cover shadow-lg ring-2 ring-indigo-200">
+                                @else
+                                    <div
+                                        class="w-9 h-9 rounded-full bg-gradient-to-br from-indigo-600 to-purple-600 flex items-center justify-center text-white font-bold text-sm shadow-lg">
+                                        {{ strtoupper(substr(Auth::user()->name, 0, 1)) }}
+                                    </div>
+                                @endif
                                 <span
                                     class="hidden md:block text-sm font-medium text-gray-700 group-hover:text-indigo-600 transition-colors">
                                     {{ Str::limit(Auth::user()->name, 15) }}
