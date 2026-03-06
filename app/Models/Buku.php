@@ -80,6 +80,11 @@ class Buku extends Model
         return Attribute::get(fn () => $this->reviews()->avg('rating') ?? 0);
     }
 
+    public function pinjaman()
+    {
+        return $this->hasMany(Pinjaman::class, 'buku_id', 'id');
+    }
+
     public function reviewCount(): Attribute
     {
         return Attribute::get(fn () => $this->reviews()->count());
