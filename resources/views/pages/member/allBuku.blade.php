@@ -181,7 +181,7 @@
                                 <a href="{{ route('buku', $b->slug) }}" class="block">
                                     <div
                                         class="relative overflow-hidden bg-gradient-to-br from-gray-50 to-gray-100 aspect-[3/4]">
-                                        <img src="{{ $b->bannerUrl ? $b->bannerUrl : asset('images/placeholder.png') }}"
+                                        <img src="{{ $b->bannerUrl ? $b->bannerUrl : asset('images/media_placeholder.webp') }}"
                                             alt="{{ $b->judul }}"
                                             class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700">
                                         <div
@@ -293,56 +293,89 @@
 
                     {{-- Pagination --}}
                     @if ($buku->hasPages())
+                        @php
+                            $currentPage = $buku->currentPage();
+                            $lastPage = $buku->lastPage();
+                            $ellipsisAt = null;
+
+                            if ($lastPage <= 6) {
+                                $pages = range(1, $lastPage);
+                            } else {
+                                // Sliding window of 3 centered on current (clamped to boundaries)
+                                $winStart = max(1, $currentPage - 1);
+                                $winEnd = min($lastPage, $winStart + 2);
+                                $winStart = max(1, $winEnd - 2);
+
+                                $leftGroup = range($winStart, $winEnd);
+                                $rightStart = max(1, $lastPage - 2);
+                                $rightGroup = range($rightStart, $lastPage);
+
+                                if ($winEnd + 1 >= $rightStart) {
+                                    // Adjacent or overlapping — merge, no ellipsis
+                                    $pages = array_values(array_unique(array_merge($leftGroup, $rightGroup)));
+                                } else {
+                                    // Gap — show ellipsis before right group
+                                    $pages = array_values(array_merge($leftGroup, $rightGroup));
+                                    $ellipsisAt = count($leftGroup);
+                                }
+                            }
+                        @endphp
                         <div class="flex justify-center mt-6 sm:mt-12">
-                            <div class="flex items-center gap-2">
+                            <div class="flex items-center gap-1 sm:gap-2 flex-wrap justify-center">
+                                {{-- First Page --}}
+                                @if ($buku->onFirstPage())
+                                    <span
+                                        class="w-9 h-9 flex items-center justify-center rounded-xl bg-gray-100 text-gray-400 cursor-not-allowed font-bold text-lg select-none"
+                                        title="Halaman Pertama">«</span>
+                                @else
+                                    <a href="{{ $buku->url(1) }}"
+                                        class="w-9 h-9 flex items-center justify-center rounded-xl bg-white border-2 border-gray-200 text-gray-700 hover:border-indigo-500 hover:text-indigo-600 transition-all font-bold text-lg shadow-sm hover:shadow-md"
+                                        title="Halaman Pertama">«</a>
+                                @endif
+
                                 {{-- Previous --}}
                                 @if ($buku->onFirstPage())
                                     <span
-                                        class="px-4 py-2.5 rounded-xl bg-gray-100 text-gray-400 cursor-not-allowed font-medium">
-                                        ← Sebelumnya
-                                    </span>
+                                        class="w-9 h-9 flex items-center justify-center rounded-xl bg-gray-100 text-gray-400 cursor-not-allowed font-bold text-lg select-none">‹</span>
                                 @else
                                     <a href="{{ $buku->previousPageUrl() }}"
-                                        class="px-4 py-2.5 rounded-xl bg-white border-2 border-gray-200 text-gray-700 hover:border-indigo-500 hover:text-indigo-600 transition-all font-medium shadow-sm hover:shadow-md">
-                                        ← Sebelumnya
-                                    </a>
+                                        class="w-9 h-9 flex items-center justify-center rounded-xl bg-white border-2 border-gray-200 text-gray-700 hover:border-indigo-500 hover:text-indigo-600 transition-all font-bold text-lg shadow-sm hover:shadow-md">‹</a>
                                 @endif
 
                                 {{-- Page Numbers --}}
-                                <div class="hidden sm:flex items-center gap-2 mx-2">
-                                    @foreach ($buku->links()->elements as $element)
-                                        @if (is_string($element))
-                                            <span class="px-3 py-2 text-gray-400">{{ $element }}</span>
-                                        @endif
-                                        @if (is_array($element))
-                                            @foreach ($element as $page => $url)
-                                                @if ($page == $buku->currentPage())
-                                                    <span
-                                                        class="w-10 h-10 flex items-center justify-center rounded-xl bg-gradient-to-br from-indigo-600 to-purple-600 text-white font-bold shadow-lg">
-                                                        {{ $page }}
-                                                    </span>
-                                                @else
-                                                    <a href="{{ $url }}"
-                                                        class="w-10 h-10 flex items-center justify-center rounded-xl bg-white border-2 border-gray-200 text-gray-700 hover:border-indigo-500 hover:text-indigo-600 transition-all font-medium shadow-sm hover:shadow-md">
-                                                        {{ $page }}
-                                                    </a>
-                                                @endif
-                                            @endforeach
-                                        @endif
-                                    @endforeach
-                                </div>
+                                @foreach ($pages as $i => $page)
+                                    @if ($ellipsisAt !== null && $i === $ellipsisAt)
+                                        <span
+                                            class="w-9 h-9 flex items-center justify-center text-gray-400 font-medium select-none">…</span>
+                                    @endif
+
+                                    @if ($page === $currentPage)
+                                        <span
+                                            class="w-9 h-9 flex items-center justify-center rounded-xl bg-gradient-to-br from-indigo-600 to-purple-600 text-white font-bold shadow-lg text-sm">{{ $page }}</span>
+                                    @else
+                                        <a href="{{ $buku->url($page) }}"
+                                            class="w-9 h-9 flex items-center justify-center rounded-xl bg-white border-2 border-gray-200 text-gray-700 hover:border-indigo-500 hover:text-indigo-600 transition-all font-medium shadow-sm hover:shadow-md text-sm">{{ $page }}</a>
+                                    @endif
+                                @endforeach
 
                                 {{-- Next --}}
                                 @if ($buku->hasMorePages())
                                     <a href="{{ $buku->nextPageUrl() }}"
-                                        class="px-4 py-2.5 rounded-xl bg-white border-2 border-gray-200 text-gray-700 hover:border-indigo-500 hover:text-indigo-600 transition-all font-medium shadow-sm hover:shadow-md">
-                                        Berikutnya →
-                                    </a>
+                                        class="w-9 h-9 flex items-center justify-center rounded-xl bg-white border-2 border-gray-200 text-gray-700 hover:border-indigo-500 hover:text-indigo-600 transition-all font-bold text-lg shadow-sm hover:shadow-md">›</a>
                                 @else
                                     <span
-                                        class="px-4 py-2.5 rounded-xl bg-gray-100 text-gray-400 cursor-not-allowed font-medium">
-                                        Berikutnya →
-                                    </span>
+                                        class="w-9 h-9 flex items-center justify-center rounded-xl bg-gray-100 text-gray-400 cursor-not-allowed font-bold text-lg select-none">›</span>
+                                @endif
+
+                                {{-- Last Page --}}
+                                @if ($buku->hasMorePages())
+                                    <a href="{{ $buku->url($lastPage) }}"
+                                        class="w-9 h-9 flex items-center justify-center rounded-xl bg-white border-2 border-gray-200 text-gray-700 hover:border-indigo-500 hover:text-indigo-600 transition-all font-bold text-lg shadow-sm hover:shadow-md"
+                                        title="Halaman Terakhir">»</a>
+                                @else
+                                    <span
+                                        class="w-9 h-9 flex items-center justify-center rounded-xl bg-gray-100 text-gray-400 cursor-not-allowed font-bold text-lg select-none"
+                                        title="Halaman Terakhir">»</span>
                                 @endif
                             </div>
                         </div>
