@@ -2,35 +2,33 @@
 @section('content')
     {{-- Modern Hero Section with Gradient --}}
     <section
-        class="relative overflow-hidden bg-gradient-to-br from-indigo-600 via-purple-600 to-pink-500 py-12 sm:py-20 lg:py-28 pb-32">
+        class="relative overflow-hidden bg-gradient-to-br from-indigo-600 via-purple-600 to-pink-500 py-10 sm:py-16 lg:py-24 pb-16 sm:pb-24 lg:pb-32">
         <!-- Gradient Fade to White at Bottom -->
         <div
-            class="absolute bottom-0 left-0 right-0 h-48 bg-gradient-to-b from-transparent to-white pointer-events-none z-10">
+            class="absolute bottom-0 left-0 right-0 h-16 sm:h-32 lg:h-48 bg-gradient-to-b from-transparent to-white pointer-events-none z-10">
         </div>
 
         <!-- Decorative Elements -->
         <div class="absolute inset-0 overflow-hidden">
-            <div class="absolute -top-40 -right-40 w-80 h-80 bg-white/10 rounded-full blur-3xl"></div>
-            <div class="absolute -bottom-40 -left-40 w-80 h-80 bg-white/10 rounded-full blur-3xl"></div>
-            <div
-                class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-96 h-96 bg-white/5 rounded-full blur-3xl">
-            </div>
+            <div class="absolute -top-20 -right-20 w-40 h-40 sm:w-80 sm:h-80 bg-white/10 rounded-full blur-3xl"></div>
+            <div class="absolute -bottom-20 -left-20 w-40 h-40 sm:w-80 sm:h-80 bg-white/10 rounded-full blur-3xl"></div>
         </div>
 
         <div class="container relative mx-auto px-4">
-            <div class="text-white space-y-6">
+            <div class="text-white space-y-3 sm:space-y-6">
                 <div
-                    class="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/20 backdrop-blur-sm border border-white/30">
-                    <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
+                    class="inline-flex items-center gap-2 px-3 py-1.5 sm:px-4 sm:py-2 rounded-full bg-white/20 backdrop-blur-sm border border-white/30">
+                    <svg class="w-4 h-4 sm:w-5 sm:h-5" fill="currentColor" viewBox="0 0 20 20">
                         <path
                             d="M9 4.804A7.968 7.968 0 005.5 4c-1.255 0-2.443.29-3.5.804v10A7.969 7.969 0 015.5 14c1.669 0 3.218.51 4.5 1.385A7.962 7.962 0 0114.5 14c1.255 0 2.443.29 3.5.804v-10A7.968 7.968 0 0014.5 4c-1.255 0-2.443.29-3.5.804V12a1 1 0 11-2 0V4.804z">
                         </path>
                     </svg>
-                    <span class="text-sm font-semibold">Jelajahi Pengetahuan</span>
+                    <span class="text-xs sm:text-sm font-semibold">Jelajahi Pengetahuan</span>
                 </div>
-                <h1 class="text-3xl sm:text-5xl lg:text-7xl font-bold leading-tight">
+                <h1 class="text-2xl sm:text-4xl lg:text-6xl font-bold leading-tight">
+                    Jelajahi <span class="text-yellow-300">Koleksi</span> Kami
                 </h1>
-                <p class="text-lg lg:text-xl text-white/90 max-w-2xl leading-relaxed">
+                <p class="text-sm sm:text-lg lg:text-xl text-white/90 max-w-2xl leading-relaxed">
                     Temukan ribuan buku dari berbagai genre. Temukan bacaan hebat berikutnya.
                 </p>
             </div>
@@ -38,7 +36,7 @@
     </section>
 
     {{-- Main Content --}}
-    <section class="py-12 bg-white -mt-20 relative z-20">
+    <section class="py-6 sm:py-10 bg-white -mt-10 sm:-mt-16 relative z-20">
         <div class="container mx-auto px-4" x-data="{ showFilters: false }">
             {{-- Mobile Filter Toggle --}}
             <div class="lg:hidden mb-4">
@@ -53,10 +51,10 @@
                 </button>
             </div>
 
-            <div class="grid lg:grid-cols-4 gap-8">
+            <div class="grid lg:grid-cols-4 gap-4 lg:gap-8">
                 {{-- Sidebar Filters --}}
                 <aside class="lg:col-span-1" :class="showFilters ? 'block' : 'hidden lg:block'">
-                    <div class="bg-white rounded-3xl shadow-lg border border-gray-100 p-6 sticky top-24 space-y-6">
+                    <div class="bg-white rounded-2xl shadow-lg border border-gray-100 p-4 sm:p-6 sticky top-24 space-y-4 sm:space-y-6">
                         {{-- Search Bar --}}
                         <div>
                             <h3 class="text-lg font-bold text-gray-900 mb-4">Cari Buku</h3>
@@ -143,8 +141,8 @@
                 {{-- Main Content Area --}}
                 <main class="lg:col-span-3">
                     {{-- Filter Bar --}}
-                    <div class="bg-white rounded-3xl shadow-lg border border-gray-100 p-6 mb-8">
-                        <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
+                    <div class="bg-white rounded-2xl shadow-lg border border-gray-100 p-3 sm:p-6 mb-4 sm:mb-8">
+                        <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-2 sm:gap-4">
                             <div class="text-sm text-gray-600">
                                 Menampilkan <span class="font-semibold text-gray-900">{{ $buku->firstItem() ?? 0 }}</span>
                                 -
@@ -185,17 +183,17 @@
                                         <div
                                             class="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500">
                                         </div>
-                                        <div class="absolute top-4 left-4">
+                                        <div class="absolute top-2 left-2 sm:top-4 sm:left-4">
                                             <span
-                                                class="px-3 py-1.5 bg-gradient-to-r from-indigo-600 to-purple-600 text-white text-xs font-bold rounded-full shadow-lg">
+                                                class="px-2 py-1 sm:px-3 sm:py-1.5 bg-gradient-to-r from-indigo-600 to-purple-600 text-white text-xs font-bold rounded-full shadow-lg">
                                                 {{ $b->category->nama ?? 'N/A' }}
                                             </span>
                                         </div>
-                                        <div class="absolute top-4 right-4">
+                                        <div class="absolute top-2 right-2 sm:top-4 sm:right-4">
                                             <button
-                                                class="add-to-wishlist p-2.5 rounded-full bg-white/90 backdrop-blur-sm hover:bg-white shadow-lg transition-all duration-300 hover:scale-110 {{ Auth::check() &&Auth::user()->member &&\App\Models\Wishlist::where('member_id', Auth::user()->member->membership_number)->where('buku_id', $b->id)->exists()? 'active': '' }}"
+                                                class="add-to-wishlist p-1.5 sm:p-2.5 rounded-full bg-white/90 backdrop-blur-sm hover:bg-white shadow-lg transition-all duration-300 hover:scale-110 {{ Auth::check() &&Auth::user()->member &&\App\Models\Wishlist::where('member_id', Auth::user()->member->membership_number)->where('buku_id', $b->id)->exists()? 'active': '' }}"
                                                 data-id="{{ $b->id }}" onclick="event.preventDefault();">
-                                                <svg class="w-5 h-5 text-gray-600 hover:text-red-500 transition-colors"
+                                                <svg class="w-4 h-4 sm:w-5 sm:h-5 text-gray-600 hover:text-red-500 transition-colors"
                                                     fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                                         d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z">
@@ -230,30 +228,31 @@
                                                     class="line-clamp-1">{{ $b->publisher ?? 'Unknown Publisher' }}</span>
                                             </p>
                                         </div>
-                                        <div class="pt-3 border-t border-gray-100">
+                                        <div class="pt-2 sm:pt-3 border-t border-gray-100">
                                             <div class="flex items-center justify-between">
-                                                <div class="flex items-center gap-2">
+                                                <div class="flex items-center gap-1">
                                                     @if ($b->average_rating > 0)
                                                         <div class="flex items-center gap-1">
-                                                            <svg class="w-4 h-4 text-yellow-400" fill="currentColor"
+                                                            <svg class="w-3 h-3 sm:w-4 sm:h-4 text-yellow-400" fill="currentColor"
                                                                 viewBox="0 0 20 20">
                                                                 <path
                                                                     d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z">
                                                                 </path>
                                                             </svg>
                                                             <span
-                                                                class="text-sm font-bold text-gray-700">{{ number_format($b->average_rating, 1) }}</span>
-                                                            <span
-                                                                class="text-xs text-gray-400">({{ $b->review_count }})</span>
+                                                                class="text-xs sm:text-sm font-bold text-gray-700">{{ number_format($b->average_rating, 1) }}</span>
                                                         </div>
                                                     @else
                                                         <span class="text-xs text-gray-400">Belum ada rating</span>
                                                     @endif
                                                 </div>
                                                 <span
-                                                    class="text-sm font-bold text-gray-900 group-hover:text-indigo-600 transition-colors">
+                                                    class="hidden sm:inline text-sm font-bold text-gray-900 group-hover:text-indigo-600 transition-colors">
                                                     Lihat Detail →
                                                 </span>
+                                                <svg class="sm:hidden w-4 h-4 text-gray-400 group-hover:text-indigo-600 transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
+                                                </svg>
                                             </div>
                                         </div>
                                     </div>
@@ -288,7 +287,7 @@
 
                     {{-- Pagination --}}
                     @if ($buku->hasPages())
-                        <div class="flex justify-center mt-12">
+                        <div class="flex justify-center mt-6 sm:mt-12">
                             <div class="flex items-center gap-2">
                                 {{-- Previous --}}
                                 @if ($buku->onFirstPage())
