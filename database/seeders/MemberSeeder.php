@@ -41,7 +41,7 @@ class MemberSeeder extends Seeder
             Member::firstOrCreate(
                 ['users_id' => $user->id],
                 [
-                    'membership_number' => 'MBR-' . str_pad($i + 1, 4, '0', STR_PAD_LEFT),
+                    'membership_number' => random_int(100000000, 999999999),
                     'valid_date' => now()->addYear()->toDateString(),
                     'jenis' => $jenis[$i % count($jenis)],
                     'image' => null,
