@@ -38,17 +38,14 @@ class BukuController extends Controller
                         $q->orderBy('created_at', 'asc');
                         break;
                     case 'ratingDesc':
-                        $q->orderByDesc('reviews_avg_rating');
+                        $q->orderBy('reviews_avg_rating', 'desc');
                         break;
                     case 'ratingAsc':
                         $q->orderBy('reviews_avg_rating', 'asc');
                         break;
-                    default:
-                        $q->orderByDesc('reviews_avg_rating');
-                        break;
                 }
             }, function ($q) {
-                $q->orderByDesc('reviews_avg_rating');
+                $q->orderBy('reviews_avg_rating', 'desc');
             })
             // Category filtering
             ->when($request->query('category', []), function ($q, $categories) {
