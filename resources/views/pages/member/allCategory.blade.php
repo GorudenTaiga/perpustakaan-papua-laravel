@@ -2,7 +2,7 @@
 @section('content')
     {{-- Modern Hero Section with Gradient --}}
     <section
-        class="relative overflow-hidden bg-gradient-to-br from-indigo-600 via-purple-600 to-pink-500 py-20 lg:py-28 pb-32">
+        class="relative overflow-hidden bg-gradient-to-br from-indigo-600 via-purple-600 to-pink-500 py-12 sm:py-20 lg:py-28 pb-32">
         <!-- Gradient Fade to White at Bottom -->
         <div
             class="absolute bottom-0 left-0 right-0 h-48 bg-gradient-to-b from-transparent to-white pointer-events-none z-10">
@@ -28,7 +28,7 @@
                     </svg>
                     <span class="text-sm font-semibold">Jelajahi Kategori</span>
                 </div>
-                <h1 class="text-5xl lg:text-7xl font-bold leading-tight">
+                <h1 class="text-3xl sm:text-5xl lg:text-7xl font-bold leading-tight">
                     Kategori <span class="text-yellow-300">Buku</span>
                 </h1>
                 <p class="text-lg lg:text-xl text-white/90 max-w-2xl leading-relaxed">
@@ -51,7 +51,7 @@
             </div>
 
             {{-- Category Grid --}}
-            <div class="grid sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+            <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 sm:gap-6">
                 @forelse ($categories as $c)
                     <a href="{{ route('allBuku', ['category[]' => $c->id]) }}"
                         class="group bg-white rounded-3xl shadow-sm hover:shadow-2xl transition-all duration-500 overflow-hidden border border-gray-100 hover:border-indigo-200 block">
@@ -62,7 +62,7 @@
                             @else
                                 <div
                                     class="w-full h-full flex items-center justify-center bg-gradient-to-br from-indigo-100 to-purple-100">
-                                    <svg class="w-20 h-20 text-indigo-400" fill="none" stroke="currentColor"
+                                    <svg class="w-12 h-12 sm:w-20 sm:h-20 text-indigo-400" fill="none" stroke="currentColor"
                                         viewBox="0 0 24 24">
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                             d="M7 7h.01M7 3h5c.512 0 1.024.195 1.414.586l7 7a2 2 0 010 2.828l-7 7a2 2 0 01-2.828 0l-7-7A1.994 1.994 0 013 12V7a4 4 0 014-4z">
@@ -85,8 +85,8 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="p-6">
-                            <h3 class="font-bold text-lg text-gray-900 group-hover:text-indigo-600 transition-colors text-center"
+                        <div class="p-3 sm:p-6">
+                            <h3 class="font-bold text-sm sm:text-lg text-gray-900 group-hover:text-indigo-600 transition-colors text-center"
                                 title="{{ $c->nama }}">
                                 {{ $c->nama }}
                             </h3>

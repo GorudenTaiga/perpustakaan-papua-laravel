@@ -312,8 +312,8 @@
                                 </path>
                             </svg>
                             <div class="text-left">
-                                <p class="text-xs text-gray-500">Butuh bantuan?</p>
-                                <p class="text-sm font-semibold text-gray-900">+62 822 4631 0174</p>
+                                <p class="text-xs text-gray-500">Bantuan</p>
+                                <p class="text-sm font-semibold text-gray-900">Tekan untuk Bantuan</p>
                             </div>
                         </a>
 
@@ -445,8 +445,8 @@
                                 </path>
                             </svg>
                             <div>
-                                <p class="text-xs text-gray-500">Butuh bantuan?</p>
-                                <p class="text-sm font-semibold text-gray-900">+62 822 4631 0174</p>
+                                <p class="text-xs text-gray-500">Bantuan</p>
+                                <p class="text-sm font-semibold text-gray-900">Tekan untuk bantuan</p>
                             </div>
                         </a>
                     </div>

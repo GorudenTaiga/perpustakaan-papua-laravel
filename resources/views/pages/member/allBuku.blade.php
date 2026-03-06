@@ -2,7 +2,7 @@
 @section('content')
     {{-- Modern Hero Section with Gradient --}}
     <section
-        class="relative overflow-hidden bg-gradient-to-br from-indigo-600 via-purple-600 to-pink-500 py-20 lg:py-28 pb-32">
+        class="relative overflow-hidden bg-gradient-to-br from-indigo-600 via-purple-600 to-pink-500 py-12 sm:py-20 lg:py-28 pb-32">
         <!-- Gradient Fade to White at Bottom -->
         <div
             class="absolute bottom-0 left-0 right-0 h-48 bg-gradient-to-b from-transparent to-white pointer-events-none z-10">
@@ -28,8 +28,7 @@
                     </svg>
                     <span class="text-sm font-semibold">Jelajahi Pengetahuan</span>
                 </div>
-                <h1 class="text-5xl lg:text-7xl font-bold leading-tight">
-                    Jelajahi <span class="text-yellow-300">Koleksi</span> Kami
+                <h1 class="text-3xl sm:text-5xl lg:text-7xl font-bold leading-tight">
                 </h1>
                 <p class="text-lg lg:text-xl text-white/90 max-w-2xl leading-relaxed">
                     Temukan ribuan buku dari berbagai genre. Temukan bacaan hebat berikutnya.
@@ -40,10 +39,23 @@
 
     {{-- Main Content --}}
     <section class="py-12 bg-white -mt-20 relative z-20">
-        <div class="container mx-auto px-4">
+        <div class="container mx-auto px-4" x-data="{ showFilters: false }">
+            {{-- Mobile Filter Toggle --}}
+            <div class="lg:hidden mb-4">
+                <button @click="showFilters = !showFilters"
+                    class="flex items-center gap-2 px-4 py-2.5 rounded-xl bg-white border border-gray-200 shadow-sm text-sm font-semibold text-gray-700 hover:border-indigo-400 hover:text-indigo-600 transition-all">
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M3 4a1 1 0 011-1h16a1 1 0 011 1v2a1 1 0 01-.293.707L13 13.414V19a1 1 0 01-.553.894l-4 2A1 1 0 017 21v-7.586L3.293 6.707A1 1 0 013 6V4z">
+                        </path>
+                    </svg>
+                    <span x-text="showFilters ? 'Sembunyikan Filter' : 'Tampilkan Filter'">Tampilkan Filter</span>
+                </button>
+            </div>
+
             <div class="grid lg:grid-cols-4 gap-8">
                 {{-- Sidebar Filters --}}
-                <aside class="lg:col-span-1">
+                <aside class="lg:col-span-1" :class="showFilters ? 'block' : 'hidden lg:block'">
                     <div class="bg-white rounded-3xl shadow-lg border border-gray-100 p-6 sticky top-24 space-y-6">
                         {{-- Search Bar --}}
                         <div>
@@ -160,7 +172,7 @@
                     </div>
 
                     {{-- Book Grid --}}
-                    <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+                    <div class="grid grid-cols-2 md:grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-6">
                         @forelse ($buku as $b)
                             <div
                                 class="group bg-white rounded-3xl shadow-sm hover:shadow-2xl transition-all duration-500 overflow-hidden border border-gray-100 hover:border-indigo-200">
@@ -192,13 +204,13 @@
                                             </button>
                                         </div>
                                     </div>
-                                    <div class="p-6 space-y-3">
+                                    <div class="p-3 sm:p-6 space-y-2 sm:space-y-3">
                                         <h3
-                                            class="font-bold text-lg text-gray-900 line-clamp-2 group-hover:text-indigo-600 transition-colors min-h-[3.5rem]">
+                                            class="font-bold text-sm sm:text-base text-gray-900 line-clamp-2 group-hover:text-indigo-600 transition-colors min-h-[2.5rem] sm:min-h-[3rem]">
                                             {{ $b->judul }}
                                         </h3>
                                         <div class="space-y-2">
-                                            <p class="text-sm text-gray-600 flex items-center gap-2">
+                                            <p class="text-xs sm:text-sm text-gray-600 flex items-center gap-1 sm:gap-2">
                                                 <svg class="w-4 h-4 text-gray-400" fill="none" stroke="currentColor"
                                                     viewBox="0 0 24 24">
                                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
@@ -207,7 +219,7 @@
                                                 </svg>
                                                 <span class="line-clamp-1">{{ $b->author ?? 'Unknown Author' }}</span>
                                             </p>
-                                            <p class="text-xs text-gray-500 flex items-center gap-2">
+                                            <p class="hidden sm:flex text-xs text-gray-500 items-center gap-2">
                                                 <svg class="w-4 h-4 text-gray-400" fill="none" stroke="currentColor"
                                                     viewBox="0 0 24 24">
                                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
@@ -292,7 +304,7 @@
                                 @endif
 
                                 {{-- Page Numbers --}}
-                                <div class="flex items-center gap-2 mx-2">
+                                <div class="hidden sm:flex items-center gap-2 mx-2">
                                     @foreach ($buku->links()->elements as $element)
                                         @if (is_string($element))
                                             <span class="px-3 py-2 text-gray-400">{{ $element }}</span>
