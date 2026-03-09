@@ -74,17 +74,22 @@ class NotificationController extends Controller
     {
         $member = Auth::user()->member;
         $membershipNumber = $member->membership_number;
-        $since = $request->query('since', now()->subSeconds(10)->toISOString());
+        $since = $request->query('since', now()->subSeconds(30)->toISOString());
 
-        return response()->stream(function () use ($membershipNumber, $since) {
-            // Tell client to wait 3s before reconnecting if connection drops
-            echo "retry: 3000\n\n";
+        // Interval (seconds) between each DB poll inside the SSE loop.
+        // Increase this to reduce server load; decrease for more real-time feel.
+        $pollInterval = 15;
+
+        return response()->stream(function () use ($membershipNumber, $since, $pollInterval) {
+            // Tell client to wait $pollInterval seconds before reconnecting if connection drops
+            echo "retry: " . ($pollInterval * 1000) . "\n\n";
             if (ob_get_level()) ob_flush();
             flush();
 
-            $lastCheck = $since;
-            $iterations = 0;
-            $maxIterations = 30; // ~90s per connection, then client auto-reconnects
+            $lastCheck   = $since;
+            $iterations  = 0;
+            // Keep each connection alive for ~5 minutes, then let client reconnect cleanly
+            $maxIterations = (int) ceil(300 / $pollInterval);
 
             while ($iterations < $maxIterations && !connection_aborted()) {
                 $notifications = Notification::where('member_id', $membershipNumber)
@@ -104,12 +109,12 @@ class NotificationController extends Controller
                     flush();
                 }
 
-                // Heartbeat to keep the connection alive through proxies/load balancers
+                // Heartbeat to keep connection alive through proxies/load balancers
                 echo ": keepalive\n\n";
                 if (ob_get_level()) ob_flush();
                 flush();
 
-                sleep(3);
+                sleep($pollInterval);
                 $iterations++;
             }
         }, 200, [

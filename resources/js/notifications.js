@@ -13,6 +13,10 @@ const STORAGE_KEY   = 'perpus_notif_last_check';
 const DISMISSED_KEY = 'perpus_notif_prompt_dismissed';
 const PROMPT_ID     = 'browser-notif-prompt';
 
+// How long (ms) to wait before reconnecting after an SSE error.
+// Should be >= server poll interval (15s) to avoid hammering the server.
+const RECONNECT_DELAY_MS = 15_000;
+
 /* ─── Config injected from Blade layout ─────────────────────────────── */
 const cfg           = window.__notifConfig || {};
 const streamUrl     = cfg.streamUrl     || '/notifications/stream';
@@ -90,7 +94,7 @@ function connectSSE() {
     eventSource.onerror = () => {
         eventSource.close();
         eventSource = null;
-        setTimeout(connectSSE, 5_000);
+        setTimeout(connectSSE, RECONNECT_DELAY_MS);
     };
 }
 
