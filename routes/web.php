@@ -54,6 +54,11 @@ Route::middleware(['auth:member'])->group(function () {
     Route::get('/notifications/unread-count', [NotificationController::class, 'unreadCount'])->name('notifications.unreadCount');
     Route::get('/notifications/latest', [NotificationController::class, 'getLatest'])->name('notifications.latest');
     Route::get('/notifications/stream', [NotificationController::class, 'stream'])->name('notifications.stream');
+    Route::post('/notifications/push/subscribe', [NotificationController::class, 'subscribePush'])->name('notifications.push.subscribe');
+    Route::post('/notifications/push/unsubscribe', [NotificationController::class, 'unsubscribePush'])->name('notifications.push.unsubscribe');
+
+// Public: VAPID public key (needed before auth, for SW registration)
+Route::get('/notifications/vapid-key', [NotificationController::class, 'vapidPublicKey'])->name('notifications.vapidKey');
 
 });
 

@@ -5,6 +5,7 @@ namespace App\Observers;
 use App\Models\Buku;
 use App\Models\Notification;
 use App\Models\Pinjaman;
+use App\Services\WebPushService;
 
 class PinjamanObserver
 {
@@ -29,22 +30,18 @@ class PinjamanObserver
         $wasActive = in_array($oldStatus, $activeLoanStatuses);
         $isActive = in_array($newStatus, $activeLoanStatuses);
 
-        // Becoming an active loan → reduce stock
         if (!$wasActive && $isActive) {
             $this->reduceStock($pinjaman);
         }
 
-        // Was an active loan, now returned/cancelled → restore stock
         if ($wasActive && !$isActive) {
             $this->restoreStock($pinjaman);
         }
 
-        // Send notification on verification
         if ($oldStatus === 'menunggu_verif' && $newStatus === 'dipinjam') {
             $this->notifyLoanVerified($pinjaman);
         }
 
-        // Send notification on return
         if ($newStatus === 'dikembalikan' && $oldStatus !== 'dikembalikan') {
             $this->notifyLoanReturned($pinjaman);
         }
@@ -78,23 +75,42 @@ class PinjamanObserver
 
     private function notifyLoanVerified(Pinjaman $pinjaman): void
     {
-        $buku = Buku::find($pinjaman->buku_id);
+        $buku  = Buku::find($pinjaman->buku_id);
+        $title = 'Peminjaman Diverifikasi';
+        $msg   = "Peminjaman buku \"{$buku?->judul}\" telah diverifikasi. Batas kembali: {$pinjaman->due_date}.";
+
         Notification::create([
             'member_id' => $pinjaman->member_id,
-            'type' => 'peminjaman',
-            'title' => 'Peminjaman Diverifikasi',
-            'message' => "Peminjaman buku \"{$buku?->judul}\" telah diverifikasi. Batas kembali: {$pinjaman->due_date}.",
+            'type'      => 'peminjaman',
+            'title'     => $title,
+            'message'   => $msg,
         ]);
+
+        $this->sendPush($pinjaman->member_id, $title, $msg);
     }
 
     private function notifyLoanReturned(Pinjaman $pinjaman): void
     {
-        $buku = Buku::find($pinjaman->buku_id);
+        $buku  = Buku::find($pinjaman->buku_id);
+        $title = 'Buku Dikembalikan';
+        $msg   = "Buku \"{$buku?->judul}\" telah dikembalikan pada {$pinjaman->return_date}.";
+
         Notification::create([
             'member_id' => $pinjaman->member_id,
-            'type' => 'peminjaman',
-            'title' => 'Buku Dikembalikan',
-            'message' => "Buku \"{$buku?->judul}\" telah dikembalikan pada {$pinjaman->return_date}.",
+            'type'      => 'peminjaman',
+            'title'     => $title,
+            'message'   => $msg,
         ]);
+
+        $this->sendPush($pinjaman->member_id, $title, $msg);
+    }
+
+    private function sendPush(string $memberId, string $title, string $message): void
+    {
+        try {
+            app(WebPushService::class)->sendToMember($memberId, $title, $message);
+        } catch (\Throwable) {
+            // Never let push failures break the main flow
+        }
     }
 }

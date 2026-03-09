@@ -45,10 +45,13 @@
         @if (Auth::user()->role === 'member' && Auth::user()->member)
         <script>
             window.__notifConfig = {
-                streamUrl : "{{ route('notifications.stream') }}",
-                countUrl  : "{{ route('notifications.unreadCount') }}",
-                notifUrl  : "{{ route('notifications') }}",
-                iconUrl   : "{{ asset('favicon_io/apple-touch-icon.png') }}",
+                streamUrl    : "{{ route('notifications.stream') }}",
+                countUrl     : "{{ route('notifications.unreadCount') }}",
+                notifUrl     : "{{ route('notifications') }}",
+                iconUrl      : "{{ asset('favicon_io/apple-touch-icon.png') }}",
+                vapidKeyUrl  : "{{ route('notifications.vapidKey') }}",
+                subscribeUrl : "{{ route('notifications.push.subscribe') }}",
+                unsubUrl     : "{{ route('notifications.push.unsubscribe') }}",
             };
         </script>
         @vite(['resources/js/notifications.js'])

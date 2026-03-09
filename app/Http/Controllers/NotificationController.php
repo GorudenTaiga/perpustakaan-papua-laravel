@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Notification;
+use App\Models\PushSubscription;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -116,5 +117,41 @@ class NotificationController extends Controller
             'X-Accel-Buffering' => 'no',   // Disable Nginx buffering
             'Connection'        => 'keep-alive',
         ]);
+    }
+
+    public function subscribePush(Request $request)
+    {
+        $request->validate([
+            'endpoint' => 'required|string',
+            'p256dh'   => 'required|string',
+            'auth'     => 'required|string',
+        ]);
+
+        $member = Auth::user()->member;
+
+        PushSubscription::updateOrCreate(
+            ['endpoint' => $request->endpoint],
+            [
+                'member_id' => $member->membership_number,
+                'p256dh'    => $request->p256dh,
+                'auth'      => $request->auth,
+            ]
+        );
+
+        return response()->json(['ok' => true]);
+    }
+
+    public function unsubscribePush(Request $request)
+    {
+        $request->validate(['endpoint' => 'required|string']);
+
+        PushSubscription::where('endpoint', $request->endpoint)->delete();
+
+        return response()->json(['ok' => true]);
+    }
+
+    public function vapidPublicKey()
+    {
+        return response()->json(['key' => config('app.vapid_public_key')]);
     }
 }
