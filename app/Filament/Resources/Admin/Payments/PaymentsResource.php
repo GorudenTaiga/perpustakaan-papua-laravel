@@ -19,14 +19,24 @@ class PaymentsResource extends Resource
     protected static ?string $model = Payments::class;
 
     protected static ?string $navigationLabel = 'Denda & Sanksi';
-    
+
     protected static ?string $modelLabel = 'Denda';
-    
+
     protected static ?string $pluralModelLabel = 'Denda & Sanksi';
 
-    protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedRectangleStack;
+    protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedBanknotes;
 
-    protected static ?string $recordTitleAttribute = 'Denda';
+    protected static ?string $recordTitleAttribute = 'id';
+
+    public static function getNavigationBadge(): ?string
+    {
+        return static::getModel()::count() ?: null;
+    }
+
+    public static function getNavigationBadgeColor(): ?string
+    {
+        return 'danger';
+    }
 
     public static function form(Schema $schema): Schema
     {
