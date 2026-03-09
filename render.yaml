@@ -56,3 +56,10 @@ services:
         value: stack
       - key: LOG_LEVEL
         value: error
+      # --- Web Push (VAPID) ---
+      - key: VAPID_PUBLIC_KEY
+        sync: false
+      - key: VAPID_PRIVATE_KEY
+        sync: false
+      - key: VAPID_SUBJECT
+        value: "mailto:admin@perpustakaan.id"
