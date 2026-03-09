@@ -25,8 +25,7 @@ class NotificationForm
                         Toggle::make('send_to_all')
                             ->label('Kirim ke Semua Anggota')
                             ->default(false)
-                            ->reactive()
-                            ->dehydrated(false)
+                            ->live()
                             ->helperText('Aktifkan untuk mengirim notifikasi ke semua anggota'),
 
                         Select::make('member_id')
