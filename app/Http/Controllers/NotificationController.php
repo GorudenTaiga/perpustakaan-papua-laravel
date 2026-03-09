@@ -78,9 +78,12 @@ class NotificationController extends Controller
 
         // Interval (seconds) between each DB poll inside the SSE loop.
         // Increase this to reduce server load; decrease for more real-time feel.
-        $pollInterval = 15;
+        $pollInterval = 30;
 
         return response()->stream(function () use ($membershipNumber, $since, $pollInterval) {
+            // Disable execution time limit — SSE streams are intentionally long-lived
+            set_time_limit(0);
+
             // Tell client to wait $pollInterval seconds before reconnecting if connection drops
             echo "retry: " . ($pollInterval * 1000) . "\n\n";
             if (ob_get_level()) ob_flush();

@@ -44,6 +44,7 @@ RUN echo '#!/bin/bash\n\
     echo "Generating APP_KEY..."\n\
     php artisan key:generate --force --no-interaction\n\
     else\n\
+    npm run build\n\
     echo "APP_KEY already set from environment"\n\
     fi\n\
     # Cache config\n\

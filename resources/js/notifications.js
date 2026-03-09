@@ -1,34 +1,33 @@
 /**
- * Real-time notifications: SSE (tab open) + Web Push (background/closed).
+ * Notification polling: client pulls /notifications/latest every N seconds.
  *
  * Flow:
  *  1. Page loads → register Service Worker
  *  2. Prompt user for notification permission
- *  3. On grant → subscribe to Web Push + open SSE stream
- *  4. SSE delivers while tab is open (~3s latency)
- *  5. Web Push delivers even when website is closed
+ *  3. On grant → subscribe to Web Push + start interval polling
+ *  4. Polling fires ONLY when new notifications exist on the server
+ *  5. Web Push delivers even when the tab is closed
  */
 
 const STORAGE_KEY   = 'perpus_notif_last_check';
 const DISMISSED_KEY = 'perpus_notif_prompt_dismissed';
 const PROMPT_ID     = 'browser-notif-prompt';
 
-// How long (ms) to wait before reconnecting after an SSE error.
-// Should be >= server poll interval (15s) to avoid hammering the server.
-const RECONNECT_DELAY_MS = 15_000;
+// How often (ms) to check for new notifications while the tab is open.
+const POLL_INTERVAL_MS = 15_000;
 
 /* ─── Config injected from Blade layout ─────────────────────────────── */
-const cfg           = window.__notifConfig || {};
-const streamUrl     = cfg.streamUrl     || '/notifications/stream';
-const countUrl      = cfg.countUrl      || '/notifications/unread-count';
-const notifUrl      = cfg.notifUrl      || '/notifications';
-const iconUrl       = cfg.iconUrl       || '/favicon.ico';
-const vapidKeyUrl   = cfg.vapidKeyUrl   || '/notifications/vapid-key';
-const subscribeUrl  = cfg.subscribeUrl  || '/notifications/push/subscribe';
-const unsubUrl      = cfg.unsubUrl      || '/notifications/push/unsubscribe';
-const csrfToken     = document.querySelector('meta[name="csrf-token"]')?.content || '';
+const cfg          = window.__notifConfig || {};
+const latestUrl    = cfg.latestUrl    || '/notifications/latest';
+const countUrl     = cfg.countUrl     || '/notifications/unread-count';
+const notifUrl     = cfg.notifUrl     || '/notifications';
+const iconUrl      = cfg.iconUrl      || '/favicon.ico';
+const vapidKeyUrl  = cfg.vapidKeyUrl  || '/notifications/vapid-key';
+const subscribeUrl = cfg.subscribeUrl || '/notifications/push/subscribe';
+const unsubUrl     = cfg.unsubUrl     || '/notifications/push/unsubscribe';
+const csrfToken    = document.querySelector('meta[name="csrf-token"]')?.content || '';
 
-let eventSource = null;
+let pollTimer = null;
 
 /* ─── Helpers ────────────────────────────────────────────────────────── */
 function supported() {
@@ -36,7 +35,7 @@ function supported() {
 }
 
 function setLastCheck(ts) { localStorage.setItem(STORAGE_KEY, ts); }
-function getLastCheck()   { return localStorage.getItem(STORAGE_KEY) || new Date(Date.now() - 10_000).toISOString(); }
+function getLastCheck()   { return localStorage.getItem(STORAGE_KEY) || new Date(Date.now() - 30_000).toISOString(); }
 
 function urlBase64ToUint8Array(base64String) {
     const padding = '='.repeat((4 - base64String.length % 4) % 4);
@@ -55,13 +54,13 @@ async function updateNavBadge() {
         if (!res.ok) return;
         const { count } = await res.json();
         document.querySelectorAll('[data-notif-badge]').forEach(el => {
-            el.textContent    = count > 9 ? '9+' : String(count);
-            el.style.display  = count > 0 ? '' : 'none';
+            el.textContent   = count > 9 ? '9+' : String(count);
+            el.style.display = count > 0 ? '' : 'none';
         });
     } catch (_) {}
 }
 
-/* ─── Show browser notification (for SSE path) ──────────────────────── */
+/* ─── Show browser notification ─────────────────────────────────────── */
 function showBrowserNotification(notif) {
     if (Notification.permission !== 'granted') return;
     const n = new Notification(notif.title, {
@@ -74,55 +73,62 @@ function showBrowserNotification(notif) {
     setTimeout(() => n.close(), 8_000);
 }
 
-/* ─── SSE: real-time while page is open ─────────────────────────────── */
-function connectSSE() {
+/* ─── Polling: fetch latest, trigger ONLY when new notifications exist ─ */
+async function pollNotifications() {
     if (Notification.permission !== 'granted') return;
-    if (eventSource) { eventSource.close(); eventSource = null; }
+    try {
+        const url = `${latestUrl}?since=${encodeURIComponent(getLastCheck())}`;
+        const res = await fetch(url, {
+            headers: { 'Accept': 'application/json', 'X-Requested-With': 'XMLHttpRequest' },
+            credentials: 'same-origin',
+        });
+        if (!res.ok) return;
 
-    const url = `${streamUrl}?since=${encodeURIComponent(getLastCheck())}`;
-    eventSource = new EventSource(url, { withCredentials: true });
+        const { notifications } = await res.json();
 
-    eventSource.addEventListener('notification', (e) => {
-        try {
-            const notif = JSON.parse(e.data);
-            showBrowserNotification(notif);
-            setLastCheck(new Date().toISOString());
-            updateNavBadge();
-        } catch (_) {}
-    });
+        // Nothing new → do nothing, no notification fired
+        if (!notifications || notifications.length === 0) return;
 
-    eventSource.onerror = () => {
-        eventSource.close();
-        eventSource = null;
-        setTimeout(connectSSE, RECONNECT_DELAY_MS);
-    };
+        // New notifications exist → trigger browser notifications + update badge
+        notifications.forEach(notif => showBrowserNotification(notif));
+        setLastCheck(new Date().toISOString());
+        updateNavBadge();
+    } catch (_) {}
+}
+
+function startPolling() {
+    if (Notification.permission !== 'granted') return;
+    if (pollTimer) return; // Already running
+
+    pollNotifications();                             // Immediate check on activation
+    pollTimer = setInterval(pollNotifications, POLL_INTERVAL_MS);
+}
+
+function stopPolling() {
+    if (pollTimer) { clearInterval(pollTimer); pollTimer = null; }
 }
 
 /* ─── Web Push: subscribe so notifications arrive when tab is closed ── */
 async function subscribePush(registration) {
     try {
-        // Get VAPID public key from server
         const keyRes  = await fetch(vapidKeyUrl, { credentials: 'same-origin' });
         const { key } = await keyRes.json();
         if (!key) return;
 
-        const applicationServerKey = urlBase64ToUint8Array(key);
-
         const subscription = await registration.pushManager.subscribe({
             userVisibleOnly      : true,
-            applicationServerKey : applicationServerKey,
+            applicationServerKey : urlBase64ToUint8Array(key),
         });
 
         const keys = subscription.toJSON().keys;
 
-        // Send subscription to server
         await fetch(subscribeUrl, {
             method      : 'POST',
             credentials : 'same-origin',
             headers     : {
-                'Content-Type'  : 'application/json',
-                'Accept'        : 'application/json',
-                'X-CSRF-TOKEN'  : csrfToken,
+                'Content-Type' : 'application/json',
+                'Accept'       : 'application/json',
+                'X-CSRF-TOKEN' : csrfToken,
             },
             body: JSON.stringify({
                 endpoint : subscription.endpoint,
@@ -203,7 +209,7 @@ async function init() {
     const registration = await registerServiceWorker();
 
     const activate = async () => {
-        connectSSE();
+        startPolling();
         if (registration) await subscribePush(registration);
     };
 
@@ -219,5 +225,4 @@ if (document.readyState === 'loading') {
 } else {
     init();
 }
-
 
