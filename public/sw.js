@@ -26,7 +26,14 @@ self.addEventListener('push', (event) => {
         requireInteraction: false,
     };
 
-    event.waitUntil(self.registration.showNotification(title, options));
+    event.waitUntil(
+        self.registration.showNotification(title, options).then(() => {
+            // Tell all open tabs to refresh their badge counter
+            return clients.matchAll({ type: 'window', includeUncontrolled: true }).then((clientList) => {
+                clientList.forEach(client => client.postMessage({ type: 'NEW_NOTIFICATION' }));
+            });
+        })
+    );
 });
 
 // ─── Notification click: open the notifications page ──────────────────

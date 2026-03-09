@@ -1,40 +1,32 @@
 /**
- * Notification polling: client pulls /notifications/latest every N seconds.
+ * Notification system — zero continuous polling.
  *
- * No persistent connection is kept open — zero idle server cost.
+ * Badge counter updates ONLY when:
+ *  1. Page first loads (one fetch)
+ *  2. Tab becomes visible again after being hidden
+ *  3. Service Worker pushes a message (Web Push received)
  *
- * Flow:
- *  1. Page loads → register Service Worker
- *  2. Prompt user for notification permission
- *  3. On grant → subscribe to Web Push + start interval polling
- *  4. Poll fires → if new notifications found:
- *     - Always updates the navbar badge
- *     - Browser popup only for types listed in POPUP_TYPES
- *  5. Web Push delivers even when the tab is closed
+ * Browser popup shown ONLY when:
+ *  - Web Push is received from server (triggered by actual events)
+ *
+ * No setInterval. No SSE. Zero idle server cost.
  */
 
-const STORAGE_KEY    = 'perpus_notif_last_check';
-const DISMISSED_KEY  = 'perpus_notif_prompt_dismissed';
-const PROMPT_ID      = 'browser-notif-prompt';
-const POLL_INTERVAL  = 30_000; // ms between polls
+const DISMISSED_KEY = 'perpus_notif_prompt_dismissed';
+const PROMPT_ID     = 'browser-notif-prompt';
 
-/**
- * Notification types that trigger a visible browser popup.
- * Everything else only silently increments the navbar badge.
- */
 const POPUP_TYPES = new Set([
-    'peminjaman',           // loan verified / returned
-    'deadline_peminjaman',  // overdue reminder (urgent)
-    'denda',                // fine / charge (urgent)
-    'reservation',          // book reservation update
-    'reservasi',            // same, alternate key used in older records
-    'loan_extended',        // loan extension approved/rejected
-    'verifikasi_akun',      // member account verified by admin
+    'peminjaman',
+    'deadline_peminjaman',
+    'denda',
+    'reservation',
+    'reservasi',
+    'loan_extended',
+    'verifikasi_akun',
 ]);
 
 /* ─── Config injected from Blade layout ─────────────────────────────── */
 const cfg          = window.__notifConfig || {};
-const latestUrl    = cfg.latestUrl    || '/notifications/latest';
 const countUrl     = cfg.countUrl     || '/notifications/unread-count';
 const notifUrl     = cfg.notifUrl     || '/notifications';
 const iconUrl      = cfg.iconUrl      || '/favicon.ico';
@@ -43,15 +35,10 @@ const subscribeUrl = cfg.subscribeUrl || '/notifications/push/subscribe';
 const unsubUrl     = cfg.unsubUrl     || '/notifications/push/unsubscribe';
 const csrfToken    = document.querySelector('meta[name="csrf-token"]')?.content || '';
 
-let pollTimer = null;
-
 /* ─── Helpers ────────────────────────────────────────────────────────── */
 function supported() {
     return 'Notification' in window && 'serviceWorker' in navigator && 'PushManager' in window;
 }
-
-function setLastCheck(ts) { localStorage.setItem(STORAGE_KEY, ts); }
-function getLastCheck()   { return localStorage.getItem(STORAGE_KEY) || new Date(Date.now() - 30_000).toISOString(); }
 
 function urlBase64ToUint8Array(base64String) {
     const padding = '='.repeat((4 - base64String.length % 4) % 4);
@@ -60,7 +47,7 @@ function urlBase64ToUint8Array(base64String) {
     return Uint8Array.from([...raw].map(c => c.charCodeAt(0)));
 }
 
-/* ─── Navbar badge ───────────────────────────────────────────────────── */
+/* ─── Navbar badge: one HTTP call per trigger, never looping ────────── */
 async function updateNavBadge() {
     try {
         const res = await fetch(countUrl, {
@@ -76,58 +63,26 @@ async function updateNavBadge() {
     } catch (_) {}
 }
 
-/* ─── Browser popup ──────────────────────────────────────────────────── */
-function showBrowserNotification(notif) {
-    if (Notification.permission !== 'granted') return;
-    const n = new Notification(notif.title, {
-        body  : notif.message,
-        icon  : iconUrl,
-        badge : iconUrl,
-        tag   : `perpus-notif-${notif.id}`,
+/* ─── Listen for messages from Service Worker ───────────────────────── */
+function listenServiceWorkerMessages() {
+    navigator.serviceWorker.addEventListener('message', (event) => {
+        if (event.data?.type === 'NEW_NOTIFICATION') {
+            // Only update badge — popup is already handled by the SW push event
+            updateNavBadge();
+        }
     });
-    n.onclick = () => { window.focus(); window.location.href = notifUrl; n.close(); };
-    setTimeout(() => n.close(), 8_000);
 }
 
-/* ─── Polling ────────────────────────────────────────────────────────── */
-async function pollNotifications() {
-    try {
-        const since = getLastCheck();
-        const res   = await fetch(`${latestUrl}?since=${encodeURIComponent(since)}`, {
-            headers: { 'Accept': 'application/json', 'X-Requested-With': 'XMLHttpRequest' },
-            credentials: 'same-origin',
-        });
-        if (!res.ok) return;
-
-        const { notifications, timestamp } = await res.json();
-        if (!Array.isArray(notifications) || notifications.length === 0) return;
-
-        // Update timestamp so next poll only fetches newer items
-        if (timestamp) setLastCheck(timestamp);
-
-        // Badge update once for the whole batch
-        await updateNavBadge();
-
-        // Browser popup only for POPUP_TYPES (deduplicated by tag)
-        notifications.forEach(notif => {
-            if (POPUP_TYPES.has(notif.type)) {
-                showBrowserNotification(notif);
-            }
-        });
-    } catch (_) {}
+/* ─── Refresh badge when tab becomes visible again ──────────────────── */
+function listenVisibilityChange() {
+    document.addEventListener('visibilitychange', () => {
+        if (document.visibilityState === 'visible') {
+            updateNavBadge();
+        }
+    });
 }
 
-function startPolling() {
-    if (pollTimer) clearInterval(pollTimer);
-    pollNotifications();                          // immediate check on activation
-    pollTimer = setInterval(pollNotifications, POLL_INTERVAL);
-}
-
-function stopPolling() {
-    if (pollTimer) { clearInterval(pollTimer); pollTimer = null; }
-}
-
-/* ─── Web Push ───────────────────────────────────────────────────────── */
+/* ─── Web Push subscription ─────────────────────────────────────────── */
 async function subscribePush(registration) {
     try {
         const keyRes  = await fetch(vapidKeyUrl, { credentials: 'same-origin' });
@@ -159,7 +114,7 @@ async function subscribePush(registration) {
     }
 }
 
-/* ─── Service Worker ─────────────────────────────────────────────────── */
+/* ─── Service Worker registration ───────────────────────────────────── */
 async function registerServiceWorker() {
     try {
         const registration = await navigator.serviceWorker.register('/sw.js', { scope: '/' });
@@ -191,7 +146,7 @@ function showPermissionPrompt(onAllow) {
                 <div class="flex-1 min-w-0">
                     <p class="text-sm font-semibold text-gray-900">Aktifkan Notifikasi</p>
                     <p class="mt-0.5 text-xs text-gray-500 leading-relaxed">
-                        Terima notifikasi real-time bahkan saat website sedang tidak dibuka.
+                        Terima notifikasi penting bahkan saat website sedang tidak dibuka.
                     </p>
                 </div>
                 <button id="${PROMPT_ID}-close" class="w-6 h-6 flex items-center justify-center rounded-md text-gray-400 hover:text-gray-600 hover:bg-gray-100 transition-colors text-lg">&times;</button>
@@ -213,7 +168,6 @@ function showPermissionPrompt(onAllow) {
         const permission = await Notification.requestPermission();
         if (permission === 'granted') {
             await onAllow();
-            showBrowserNotification({ id: 'welcome', title: '🔔 Notifikasi Aktif', message: 'Kamu akan menerima notifikasi penting secara otomatis.' });
         } else {
             localStorage.setItem(DISMISSED_KEY, '1');
         }
@@ -224,10 +178,16 @@ function showPermissionPrompt(onAllow) {
 async function init() {
     if (!supported()) return;
 
+    // Fetch badge once on page load — no loop
+    updateNavBadge();
+
+    // Update badge when tab becomes visible
+    listenVisibilityChange();
+
     const registration = await registerServiceWorker();
 
     const activate = async () => {
-        startPolling();
+        listenServiceWorkerMessages();
         if (registration) await subscribePush(registration);
     };
 

@@ -50,7 +50,6 @@
         @if (Auth::user()->role === 'member' && Auth::user()->member)
         <script>
             window.__notifConfig = {
-                latestUrl    : "{{ route('notifications.latest') }}",
                 countUrl     : "{{ route('notifications.unreadCount') }}",
                 notifUrl     : "{{ route('notifications') }}",
                 iconUrl      : "{{ asset('favicon_io/apple-touch-icon.png') }}",
