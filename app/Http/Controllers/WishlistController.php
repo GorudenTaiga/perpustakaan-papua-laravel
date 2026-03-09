@@ -41,7 +41,39 @@ class WishlistController extends Controller
 
     public function index()
     {
-        $wishlist = auth()->user()->member->wishlist()->with('buku')->latest()->get();
+        $member = auth()->user()->member;
+        
+        // Get wishlist with eager loaded buku and reviews aggregate
+        $wishlist = $member->wishlist()
+            ->with(['buku' => function($query) {
+                $query->withAvg('reviews', 'rating')
+                      ->withCount('reviews');
+            }])
+            ->latest()
+            ->get();
+        
+        // Pre-load all categories in one query to avoid N+1
+        $categoryIds = $wishlist->pluck('buku.category_id')
+            ->flatten()
+            ->filter()
+            ->unique()
+            ->values()
+            ->all();
+        
+        if (!empty($categoryIds)) {
+            $categories = \App\Models\Category::whereIn('id', $categoryIds)->get()->keyBy('id');
+            
+            // Attach categories to each book
+            foreach ($wishlist as $item) {
+                if ($item->buku) {
+                    $bookCategories = collect($item->buku->category_id ?? [])
+                        ->map(fn($id) => $categories->get($id))
+                        ->filter();
+                    $item->buku->setRelation('loadedCategories', $bookCategories);
+                }
+            }
+        }
+        
         return view('pages.member.wishlist', compact('wishlist'));
     }
 
@@ -51,7 +83,14 @@ class WishlistController extends Controller
             return response('<p>Silakan login untuk melihat wishlist.</p>');
         }
 
-        $wishlist = auth()->user()->member->wishlist()->with('buku')->get();
+        // Eager load buku with reviews aggregate to avoid N+1
+        $wishlist = auth()->user()->member->wishlist()
+            ->with(['buku' => function($query) {
+                $query->withAvg('reviews', 'rating')
+                      ->withCount('reviews');
+            }])
+            ->latest()
+            ->get();
 
         return view('partials.wishlist', compact('wishlist'));
     }
