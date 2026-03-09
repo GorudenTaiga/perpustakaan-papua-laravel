@@ -23,17 +23,25 @@ class UserController extends Controller
      */
     public function index()
     {
-        $member = Member::where('membership_number', Auth::user()->member->membership_number)->with('user')->first();
+        $member = Auth::user()->member;
         if ($member) {
+            $member->load('user');
             return view('pages.member.profile', [
                 'member' => $member,
-                'pinjaman' => Pinjaman::where('member_id', Auth::user()->member->membership_number)->with('buku')->get()
+                'pinjaman' => Pinjaman::where('member_id', $member->membership_number)
+                    ->with('buku')
+                    ->latest('loan_date')
+                    ->get()
             ]);
         }
     }
 
     public function peminjaman() {
-        $pinjaman = Pinjaman::where('member_id', Auth::user()->member->membership_number)->with(['buku', 'member'])->get();
+        $member = Auth::user()->member;
+        $pinjaman = Pinjaman::where('member_id', $member->membership_number)
+            ->with(['buku', 'member'])
+            ->latest('loan_date')
+            ->get();
         return view('pages.member.peminjaman', [
             'pinjaman' => $pinjaman
         ]);
@@ -188,6 +196,7 @@ class UserController extends Controller
             ->where('id', $id)
             ->whereIn('status', ['dipinjam'])
             ->where('extended', false)
+            ->with('buku')
             ->firstOrFail();
 
         if (Carbon::parse($pinjaman->due_date)->isPast()) {
@@ -221,7 +230,7 @@ class UserController extends Controller
     {
         $member = Auth::user()->member;
         $pinjaman = Pinjaman::where('member_id', $member->membership_number)
-            ->with(['buku'])
+            ->with('buku')
             ->orderBy('loan_date', 'desc')
             ->get();
 

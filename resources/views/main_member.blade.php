@@ -28,9 +28,6 @@
     <link rel="manifest" href="{{ asset('favicon_io/site.webmanifest') }}">
     <link rel="shortcut icon" href="{{ asset('favicon.ico') }}">
 
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.13/cropper.min.css" rel="stylesheet">
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.13/cropper.min.js"></script>
-
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@9/swiper-bundle.min.css">
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -38,6 +35,8 @@
     <link
         href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Playfair+Display:wght@400;500;600;700;800&display=swap"
         rel="stylesheet">
+
+    @stack('styles')
 
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 
@@ -616,6 +615,7 @@
             return json;
         };
     </script>
+    @stack('scripts')
 </body>
 @yield('js')
 

@@ -2,6 +2,8 @@
 
 namespace App\Providers;
 
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\View;
 use Illuminate\Support\ServiceProvider;
 
 class AppServiceProvider extends ServiceProvider
@@ -25,10 +27,16 @@ class AppServiceProvider extends ServiceProvider
         }
 
         // Share wishlist data with all views using main_member layout
-        \Illuminate\Support\Facades\View::composer('main_member', function ($view) {
+        // Use request-scoped caching to avoid re-querying on same request
+        View::composer('main_member', function ($view) {
             $wishlist = [];
-            if (\Illuminate\Support\Facades\Auth::check() && \Illuminate\Support\Facades\Auth::user()->member) {
-                $wishlist = \Illuminate\Support\Facades\Auth::user()->member->wishlist()->with('buku')->get();
+            if (Auth::check() && Auth::user()->member) {
+                $wishlist = once(function () {
+                    return Auth::user()->member->wishlist()
+                        ->select('id', 'member_id', 'buku_id')
+                        ->with('buku:id,judul,slug,banner')
+                        ->get();
+                });
             }
             $view->with('wishlist', $wishlist);
         });

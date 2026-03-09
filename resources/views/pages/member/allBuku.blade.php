@@ -195,7 +195,7 @@
                                         </div>
                                         <div class="absolute top-2 right-2 sm:top-4 sm:right-4">
                                             <button
-                                                class="add-to-wishlist p-1.5 sm:p-2.5 rounded-full bg-white/90 backdrop-blur-sm hover:bg-white shadow-lg transition-all duration-300 hover:scale-110 {{ Auth::check() &&Auth::user()->member &&\App\Models\Wishlist::where('member_id', Auth::user()->member->membership_number)->where('buku_id', $b->id)->exists()? 'active': '' }}"
+                                                class="add-to-wishlist p-1.5 sm:p-2.5 rounded-full bg-white/90 backdrop-blur-sm hover:bg-white shadow-lg transition-all duration-300 hover:scale-110 {{ Auth::check() && Auth::user()->member && isset($wishlist) && $wishlist->contains('buku_id', $b->id) ? 'active': '' }}"
                                                 data-id="{{ $b->id }}" onclick="event.preventDefault();">
                                                 <svg class="w-4 h-4 sm:w-5 sm:h-5 text-gray-600 hover:text-red-500 transition-colors"
                                                     fill="none" stroke="currentColor" viewBox="0 0 24 24">

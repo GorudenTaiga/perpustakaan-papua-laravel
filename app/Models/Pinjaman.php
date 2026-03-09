@@ -32,6 +32,10 @@ class Pinjaman extends Model
     protected $casts = [
         'verif' => 'boolean',
         'extended' => 'boolean',
+        'loan_date' => 'date',
+        'due_date' => 'date',
+        'return_date' => 'date',
+        'extension_date' => 'date',
     ];
 
     public function member() {

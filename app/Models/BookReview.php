@@ -13,6 +13,10 @@ class BookReview extends Model
         'review',
     ];
 
+    protected $casts = [
+        'rating' => 'integer',
+    ];
+
     public function member()
     {
         return $this->belongsTo(Member::class, 'member_id', 'membership_number');

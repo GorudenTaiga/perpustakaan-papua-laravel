@@ -6,12 +6,14 @@ use Illuminate\Support\Facades\DB;
 
 class DatabaseHelper
 {
+    private static ?string $cachedDriver = null;
+
     /**
-     * Get the current database driver
+     * Get the current database driver (cached per request)
      */
     public static function driver(): string
     {
-        return DB::getDriverName();
+        return static::$cachedDriver ??= DB::getDriverName();
     }
 
     /**

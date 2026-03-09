@@ -1,4 +1,10 @@
 @extends('main_member')
+@push('styles')
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.13/cropper.min.css" rel="stylesheet">
+@endpush
+@push('scripts')
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.13/cropper.min.js" defer></script>
+@endpush
 @section('content')
     {{-- Hero Section --}}
     <section
@@ -370,7 +376,8 @@
                             <div class="p-5 hover:bg-gray-50 transition-colors">
                                 <div class="flex items-center gap-4">
                                     <a href="{{ route('buku', $loan->buku->slug) }}" class="flex-shrink-0">
-                                        <img src="{{ $loan->buku->banner_url }}" alt="{{ $loan->buku->judul }}"
+                                        <img src="{{ $loan->buku->bannerUrl ?: asset('images\media_placeholder.webp') }}"
+                                            alt="{{ $loan->buku->judul }}"
                                             class="w-12 h-16 object-cover rounded-xl shadow">
                                     </a>
                                     <div class="flex-1 min-w-0">

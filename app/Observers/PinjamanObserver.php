@@ -30,20 +30,27 @@ class PinjamanObserver
         $wasActive = in_array($oldStatus, $activeLoanStatuses);
         $isActive = in_array($newStatus, $activeLoanStatuses);
 
+        // Load buku once if needed for stock or notification operations
+        $needsBuku = (!$wasActive && $isActive) || ($wasActive && !$isActive)
+            || ($oldStatus === 'menunggu_verif' && $newStatus === 'dipinjam')
+            || ($newStatus === 'dikembalikan' && $oldStatus !== 'dikembalikan');
+
+        $buku = $needsBuku ? $pinjaman->buku ?? Buku::find($pinjaman->buku_id) : null;
+
         if (!$wasActive && $isActive) {
-            $this->reduceStock($pinjaman);
+            $this->reduceStockDirect($buku, $pinjaman->quantity);
         }
 
         if ($wasActive && !$isActive) {
-            $this->restoreStock($pinjaman);
+            $this->restoreStockDirect($buku, $pinjaman->quantity);
         }
 
         if ($oldStatus === 'menunggu_verif' && $newStatus === 'dipinjam') {
-            $this->notifyLoanVerified($pinjaman);
+            $this->notifyLoanVerified($pinjaman, $buku);
         }
 
         if ($newStatus === 'dikembalikan' && $oldStatus !== 'dikembalikan') {
-            $this->notifyLoanReturned($pinjaman);
+            $this->notifyLoanReturned($pinjaman, $buku);
         }
     }
 
@@ -51,31 +58,40 @@ class PinjamanObserver
     {
         $activeStatuses = ['dipinjam', 'jatuh_tempo'];
         if (in_array($pinjaman->status, $activeStatuses)) {
-            $this->restoreStock($pinjaman);
+            $this->reduceStock($pinjaman);
         }
     }
 
     private function reduceStock(Pinjaman $pinjaman): void
     {
-        $buku = Buku::find($pinjaman->buku_id);
+        $buku = $pinjaman->buku ?? Buku::find($pinjaman->buku_id);
+        $this->reduceStockDirect($buku, $pinjaman->quantity);
+    }
+
+    private function reduceStockDirect(?Buku $buku, int $quantity): void
+    {
         if ($buku) {
-            $buku->stock = max(0, $buku->stock - $pinjaman->quantity);
+            $buku->stock = max(0, $buku->stock - $quantity);
             $buku->saveQuietly();
         }
     }
 
     private function restoreStock(Pinjaman $pinjaman): void
     {
-        $buku = Buku::find($pinjaman->buku_id);
+        $buku = $pinjaman->buku ?? Buku::find($pinjaman->buku_id);
+        $this->restoreStockDirect($buku, $pinjaman->quantity);
+    }
+
+    private function restoreStockDirect(?Buku $buku, int $quantity): void
+    {
         if ($buku) {
-            $buku->stock += $pinjaman->quantity;
+            $buku->stock += $quantity;
             $buku->saveQuietly();
         }
     }
 
-    private function notifyLoanVerified(Pinjaman $pinjaman): void
+    private function notifyLoanVerified(Pinjaman $pinjaman, ?Buku $buku): void
     {
-        $buku  = Buku::find($pinjaman->buku_id);
         $title = 'Peminjaman Diverifikasi';
         $msg   = "Peminjaman buku \"{$buku?->judul}\" telah diverifikasi. Batas kembali: {$pinjaman->due_date}.";
 
@@ -89,9 +105,8 @@ class PinjamanObserver
         $this->sendPush($pinjaman->member_id, $title, $msg);
     }
 
-    private function notifyLoanReturned(Pinjaman $pinjaman): void
+    private function notifyLoanReturned(Pinjaman $pinjaman, ?Buku $buku): void
     {
-        $buku  = Buku::find($pinjaman->buku_id);
         $title = 'Buku Dikembalikan';
         $msg   = "Buku \"{$buku?->judul}\" telah dikembalikan pada {$pinjaman->return_date}.";
 

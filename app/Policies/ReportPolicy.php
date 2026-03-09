@@ -13,7 +13,7 @@ class ReportPolicy
      */
     public function viewAny(User $user): bool
     {
-        return $user->role === 'admin' || 'kepala';
+        return $user->role === 'admin' || $user->role === 'kepala';
     }
 
     /**
@@ -21,7 +21,7 @@ class ReportPolicy
      */
     public function view(User $user, Report $report): bool
     {
-        return $user->role === 'admin' || 'kepala';
+        return $user->role === 'admin' || $user->role === 'kepala';
     }
 
     /**

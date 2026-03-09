@@ -6,36 +6,32 @@ use App\Models\Category;
 use App\Models\Buku;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\DB;
 
 class DashboardController extends Controller
 {
     public function index()
     {
-        $categories = Category::all();
-        $books = Buku::limit(15)->get();
+        $categories = Cache::remember('all_categories', 300, fn () => Category::all());
 
-        // Popular books - most borrowed
-        $popularBooks = Buku::select(
-                'buku.id', 'buku.uuid', 'buku.judul', 'buku.author', 'buku.publisher',
-                'buku.year', 'buku.stock', 'buku.denda_per_hari', 'buku.deskripsi',
-                'buku.slug', 'buku.category_id', 'buku.banner',
-                'buku.created_at', 'buku.updated_at'
-            )
-            ->selectRaw('COUNT(pinjaman.id) as borrow_count')
-            ->leftJoin('pinjaman', 'buku.id', '=', 'pinjaman.buku_id')
-            ->groupBy(
-                'buku.id', 'buku.uuid', 'buku.judul', 'buku.author', 'buku.publisher',
-                'buku.year', 'buku.stock', 'buku.denda_per_hari', 'buku.deskripsi',
-                'buku.slug', 'buku.category_id', 'buku.banner',
-                'buku.created_at', 'buku.updated_at'
-            )
+        $books = Buku::withCount('reviews')
+            ->withAvg('reviews', 'rating')
+            ->limit(15)
+            ->get();
+
+        // Popular books - most borrowed (using subquery instead of verbose GROUP BY)
+        $popularBooks = Buku::withCount(['pinjaman as borrow_count'])
+            ->withCount('reviews')
+            ->withAvg('reviews', 'rating')
             ->orderByDesc('borrow_count')
             ->limit(10)
             ->get();
 
         // New arrivals - last 30 days
         $newArrivals = Buku::where('created_at', '>=', now()->subDays(30))
+            ->withCount('reviews')
+            ->withAvg('reviews', 'rating')
             ->orderBy('created_at', 'desc')
             ->limit(10)
             ->get();

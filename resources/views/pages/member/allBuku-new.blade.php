@@ -622,7 +622,7 @@
 
                                 <!-- Wishlist Button -->
                                 <button 
-                                    class="wishlist-btn add-to-wishlist {{ Auth::check() && \App\Models\Wishlist::where('member_id', Auth::user()->member->membership_number)->where('buku_id', $book->id)->exists() ? 'active' : '' }}"
+                                    class="wishlist-btn add-to-wishlist {{ Auth::check() && Auth::user()->member && isset($wishlist) && $wishlist->contains('buku_id', $book->id) ? 'active' : '' }}"
                                     data-id="{{ $book->id }}"
                                     @guest onclick="alert('Silakan login untuk menambahkan ke wishlist'); return false;" @endguest
                                 >
@@ -636,7 +636,7 @@
                             <div class="book-info">
                                 <!-- Categories -->
                                 <div class="book-categories">
-                                    @foreach($book->categories()->take(2) as $cat)
+                                    @foreach(isset($categories) ? $categories->whereIn('id', array_slice($book->category_id ?? [], 0, 2)) : collect() as $cat)
                                     <span class="book-category-badge">{{ $cat->nama }}</span>
                                     @endforeach
                                 </div>

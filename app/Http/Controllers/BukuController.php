@@ -11,6 +11,7 @@ use App\Models\Category;
 use App\Helpers\DatabaseHelper;
 use Arr;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Cache;
 use Str;
 
 class BukuController extends Controller
@@ -21,7 +22,8 @@ class BukuController extends Controller
     public function index(BukuRequest $request)
     {
         $buku = Buku::query()
-            ->withSum('reviews', 'rating')
+            ->withCount('reviews')
+            ->withAvg('reviews', 'rating')
             // Sorting
             ->when($request->query('sortBy', 'ratingDesc'), function ($q, $sort) {
                 switch ($sort) {
@@ -38,10 +40,10 @@ class BukuController extends Controller
                         $q->orderBy('created_at', 'asc');
                         break;
                     case 'ratingDesc':
-                        $q->orderByRaw('reviews_sum_rating DESC NULLS LAST');
+                        $q->orderByRaw('reviews_avg_rating DESC NULLS LAST');
                         break;
                     case 'ratingAsc':
-                        $q->orderByRaw('reviews_sum_rating ASC NULLS FIRST');
+                        $q->orderByRaw('reviews_avg_rating ASC NULLS FIRST');
                         break;
                 }
             })
@@ -49,9 +51,11 @@ class BukuController extends Controller
             ->when($request->query('category', []), function ($q, $categories) {
                 $categories = array_filter($categories); // Remove empty values
                 if (!empty($categories) && !in_array('all', $categories)) {
-                    foreach ($categories as $cat) {
-                        $q->orWhereJsonContains('category_id', intval($cat));
-                    }
+                    $q->where(function ($query) use ($categories) {
+                        foreach ($categories as $cat) {
+                            $query->orWhereJsonContains('category_id', intval($cat));
+                        }
+                    });
                 }
             })
             // Search
@@ -67,15 +71,16 @@ class BukuController extends Controller
             ->paginate(24)
             ->withQueryString();
     
-        // Use ultra modern view
+        $categories = Cache::remember('all_categories', 300, fn () => Category::all());
+
         return view('pages.member.allBuku', [
             'buku' => $buku,
-            'categories' => Category::all()
+            'categories' => $categories
         ]);
     }
 
     public function allCategory() {
-        $category = Category::all();
+        $category = Cache::remember('all_categories', 300, fn () => Category::all());
 
         return view('pages.member.allCategory', [
             'categories' => $category
@@ -83,7 +88,10 @@ class BukuController extends Controller
     }
 
     public function view($slug) {
-        $buku = Buku::where('slug', $slug)->first();
+        $buku = Buku::where('slug', $slug)
+            ->withCount('reviews')
+            ->withAvg('reviews', 'rating')
+            ->first();
 
         // Get related books based on same categories
         $relatedBooks = collect();
@@ -94,11 +102,13 @@ class BukuController extends Controller
                         $query->orWhereJsonContains('category_id', $catId);
                     }
                 })
+                ->withCount('reviews')
+                ->withAvg('reviews', 'rating')
                 ->limit(6)
                 ->get();
         }
 
-        // Get reviews for this book
+        // Get reviews with eager loaded relationships
         $reviews = $buku ? $buku->reviews()->with('member.user')->latest()->get() : collect();
 
         return view('pages.member.detail_product', [

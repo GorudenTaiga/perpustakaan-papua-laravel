@@ -18,6 +18,10 @@ class Payments extends Model
         'keterangan',
     ];
 
+    protected $casts = [
+        'payment_date' => 'date',
+    ];
+
     public function pinjaman()
     {
         return $this->belongsTo(Pinjaman::class, 'pinjaman_id', 'id');

@@ -47,7 +47,8 @@ class NotificationController extends Controller
             ->whereNull('read_at')
             ->count();
 
-        return response()->json(['count' => $count]);
+        return response()->json(['count' => $count])
+            ->header('Cache-Control', 'no-store');
     }
 
     public function getLatest(Request $request)

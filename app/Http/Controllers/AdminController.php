@@ -15,14 +15,20 @@ class AdminController extends Controller
      */
     public function index()
     {
+        $pinjamanCounts = Pinjaman::selectRaw("
+            COUNT(CASE WHEN status = 'dipinjam' THEN 1 END) as pinjam_count,
+            COUNT(CASE WHEN status = 'dikembalikan' THEN 1 END) as kembalikan_count,
+            COUNT(CASE WHEN status = 'jatuh_tempo' THEN 1 END) as jatuh_tempo_count
+        ")->first();
+
         return view('pages.admin.index', [
             'username' => Auth::user()->name,
             'booksCount' => Buku::count(),
             'title' => 'Dashboard | Admin',
             'memberCount' => User::where('role', 'member')->count(),
-            'pinjamCount' => Pinjaman::where('status', 'dipinjam')->count(),
-            'kembalikanCount' => Pinjaman::where('status', 'dikembalikan')->count(),
-            'jatuhTempoCount' => Pinjaman::where('status', 'jatuh_tempo')->count()
+            'pinjamCount' => $pinjamanCounts->pinjam_count,
+            'kembalikanCount' => $pinjamanCounts->kembalikan_count,
+            'jatuhTempoCount' => $pinjamanCounts->jatuh_tempo_count,
         ]);
     }
 

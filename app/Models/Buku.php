@@ -41,26 +41,35 @@ class Buku extends Model
 
     protected $appends = [
         'banner_url',
-        'average_rating',
-        'review_count',
     ];
     
 
     public function bannerUrl(): Attribute
     {
-        // return Attribute::get(fn () => $this->banner ? Storage::url($this->banner) : '');
         return Attribute::get(fn () => $this->banner ? Storage::disk('s3')->url($this->banner)  : '');
     }
 
     public function category() {
         return $this->belongsTo(Category::class, 'category_id', 'id');
-        // return Category::whereIn('id', $this->category_id ?? [])->get();
-        // return $this->belongsToMany(Category::class, Buku::class);
     }
 
+    /**
+     * Get categories for this book. Uses pre-loaded data if available to avoid N+1.
+     */
     public function categories()
     {
+        if ($this->relationLoaded('loadedCategories')) {
+            return $this->loadedCategories;
+        }
         return Category::whereIn('id', $this->category_id ?? [])->get();
+    }
+
+    /**
+     * Pseudo-relationship to allow eager loading categories via controller.
+     */
+    public function loadedCategories()
+    {
+        return $this->belongsTo(Category::class, 'id', 'id');
     }
 
     public function getRouteKeyName()
@@ -78,9 +87,21 @@ class Buku extends Model
         return $this->hasMany(BookReservation::class, 'buku_id', 'id');
     }
 
+    /**
+     * Get average rating. Prefer pre-loaded reviews_avg_rating from withAvg().
+     */
     public function averageRating(): Attribute
     {
-        return Attribute::get(fn () => $this->reviews()->avg('rating') ?? 0);
+        return Attribute::get(function () {
+            if (array_key_exists('reviews_avg_rating', $this->attributes)) {
+                return round((float) ($this->attributes['reviews_avg_rating'] ?? 0), 1);
+            }
+            if (array_key_exists('reviews_sum_rating', $this->attributes) && array_key_exists('reviews_count', $this->attributes)) {
+                $count = (int) $this->attributes['reviews_count'];
+                return $count > 0 ? round((float) $this->attributes['reviews_sum_rating'] / $count, 1) : 0;
+            }
+            return $this->reviews()->avg('rating') ?? 0;
+        });
     }
 
     public function pinjaman()
@@ -88,9 +109,17 @@ class Buku extends Model
         return $this->hasMany(Pinjaman::class, 'buku_id', 'id');
     }
 
+    /**
+     * Get review count. Prefer pre-loaded reviews_count from withCount().
+     */
     public function reviewCount(): Attribute
     {
-        return Attribute::get(fn () => $this->reviews()->count());
+        return Attribute::get(function () {
+            if (array_key_exists('reviews_count', $this->attributes)) {
+                return (int) $this->attributes['reviews_count'];
+            }
+            return $this->reviews()->count();
+        });
     }
 
     public function borrowCount(): Attribute
