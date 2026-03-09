@@ -1,20 +1,35 @@
 /**
  * Notification polling: client pulls /notifications/latest every N seconds.
  *
+ * No persistent connection is kept open — zero idle server cost.
+ *
  * Flow:
  *  1. Page loads → register Service Worker
  *  2. Prompt user for notification permission
  *  3. On grant → subscribe to Web Push + start interval polling
- *  4. Polling fires ONLY when new notifications exist on the server
+ *  4. Poll fires → if new notifications found:
+ *     - Always updates the navbar badge
+ *     - Browser popup only for types listed in POPUP_TYPES
  *  5. Web Push delivers even when the tab is closed
  */
 
-const STORAGE_KEY   = 'perpus_notif_last_check';
-const DISMISSED_KEY = 'perpus_notif_prompt_dismissed';
-const PROMPT_ID     = 'browser-notif-prompt';
+const STORAGE_KEY    = 'perpus_notif_last_check';
+const DISMISSED_KEY  = 'perpus_notif_prompt_dismissed';
+const PROMPT_ID      = 'browser-notif-prompt';
+const POLL_INTERVAL  = 30_000; // ms between polls
 
-// How often (ms) to check for new notifications while the tab is open.
-const POLL_INTERVAL_MS = 15_000;
+/**
+ * Notification types that trigger a visible browser popup.
+ * Everything else only silently increments the navbar badge.
+ */
+const POPUP_TYPES = new Set([
+    'peminjaman',           // loan verified / returned
+    'deadline_peminjaman',  // overdue reminder (urgent)
+    'denda',                // fine / charge (urgent)
+    'reservation',          // book reservation update
+    'reservasi',            // same, alternate key used in older records
+    'loan_extended',        // loan extension approved/rejected
+]);
 
 /* ─── Config injected from Blade layout ─────────────────────────────── */
 const cfg          = window.__notifConfig || {};
@@ -44,7 +59,7 @@ function urlBase64ToUint8Array(base64String) {
     return Uint8Array.from([...raw].map(c => c.charCodeAt(0)));
 }
 
-/* ─── Navbar badge update ────────────────────────────────────────────── */
+/* ─── Navbar badge ───────────────────────────────────────────────────── */
 async function updateNavBadge() {
     try {
         const res = await fetch(countUrl, {
@@ -60,7 +75,7 @@ async function updateNavBadge() {
     } catch (_) {}
 }
 
-/* ─── Show browser notification ─────────────────────────────────────── */
+/* ─── Browser popup ──────────────────────────────────────────────────── */
 function showBrowserNotification(notif) {
     if (Notification.permission !== 'granted') return;
     const n = new Notification(notif.title, {
@@ -73,42 +88,45 @@ function showBrowserNotification(notif) {
     setTimeout(() => n.close(), 8_000);
 }
 
-/* ─── Polling: fetch latest, trigger ONLY when new notifications exist ─ */
+/* ─── Polling ────────────────────────────────────────────────────────── */
 async function pollNotifications() {
-    if (Notification.permission !== 'granted') return;
     try {
-        const url = `${latestUrl}?since=${encodeURIComponent(getLastCheck())}`;
-        const res = await fetch(url, {
+        const since = getLastCheck();
+        const res   = await fetch(`${latestUrl}?since=${encodeURIComponent(since)}`, {
             headers: { 'Accept': 'application/json', 'X-Requested-With': 'XMLHttpRequest' },
             credentials: 'same-origin',
         });
         if (!res.ok) return;
 
-        const { notifications } = await res.json();
+        const { notifications, timestamp } = await res.json();
+        if (!Array.isArray(notifications) || notifications.length === 0) return;
 
-        // Nothing new → do nothing, no notification fired
-        if (!notifications || notifications.length === 0) return;
+        // Update timestamp so next poll only fetches newer items
+        if (timestamp) setLastCheck(timestamp);
 
-        // New notifications exist → trigger browser notifications + update badge
-        notifications.forEach(notif => showBrowserNotification(notif));
-        setLastCheck(new Date().toISOString());
-        updateNavBadge();
+        // Badge update once for the whole batch
+        await updateNavBadge();
+
+        // Browser popup only for POPUP_TYPES (deduplicated by tag)
+        notifications.forEach(notif => {
+            if (POPUP_TYPES.has(notif.type)) {
+                showBrowserNotification(notif);
+            }
+        });
     } catch (_) {}
 }
 
 function startPolling() {
-    if (Notification.permission !== 'granted') return;
-    if (pollTimer) return; // Already running
-
-    pollNotifications();                             // Immediate check on activation
-    pollTimer = setInterval(pollNotifications, POLL_INTERVAL_MS);
+    if (pollTimer) clearInterval(pollTimer);
+    pollNotifications();                          // immediate check on activation
+    pollTimer = setInterval(pollNotifications, POLL_INTERVAL);
 }
 
 function stopPolling() {
     if (pollTimer) { clearInterval(pollTimer); pollTimer = null; }
 }
 
-/* ─── Web Push: subscribe so notifications arrive when tab is closed ── */
+/* ─── Web Push ───────────────────────────────────────────────────────── */
 async function subscribePush(registration) {
     try {
         const keyRes  = await fetch(vapidKeyUrl, { credentials: 'same-origin' });
@@ -119,7 +137,6 @@ async function subscribePush(registration) {
             userVisibleOnly      : true,
             applicationServerKey : urlBase64ToUint8Array(key),
         });
-
         const keys = subscription.toJSON().keys;
 
         await fetch(subscribeUrl, {
@@ -141,7 +158,7 @@ async function subscribePush(registration) {
     }
 }
 
-/* ─── Service Worker registration ───────────────────────────────────── */
+/* ─── Service Worker ─────────────────────────────────────────────────── */
 async function registerServiceWorker() {
     try {
         const registration = await navigator.serviceWorker.register('/sw.js', { scope: '/' });
@@ -161,7 +178,7 @@ function showPermissionPrompt(onAllow) {
     const prompt = document.createElement('div');
     prompt.id = PROMPT_ID;
     prompt.innerHTML = `
-        <div class="fixed bottom-5 right-5 z-[9999] max-w-sm w-full bg-white dark:bg-gray-800 rounded-2xl shadow-2xl border border-gray-100 dark:border-gray-700 overflow-hidden" style="animation:slideUp .3s ease">
+        <div class="fixed bottom-5 right-5 z-[9999] max-w-sm w-full bg-white rounded-2xl shadow-2xl border border-gray-100 overflow-hidden" style="animation:slideUp .3s ease">
             <style>@keyframes slideUp{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:translateY(0)}}</style>
             <div class="flex items-start gap-3 p-4">
                 <div class="flex-shrink-0 w-10 h-10 bg-indigo-100 rounded-xl flex items-center justify-center">
@@ -189,13 +206,13 @@ function showPermissionPrompt(onAllow) {
     document.getElementById(`${PROMPT_ID}-close`).onclick = () => {
         localStorage.setItem(DISMISSED_KEY, '1'); prompt.remove();
     };
-    document.getElementById(`${PROMPT_ID}-later`).onclick = () => prompt.remove();
-    document.getElementById(`${PROMPT_ID}-allow`).onclick = async () => {
+    document.getElementById(`${PROMPT_ID}-later`).onclick  = () => prompt.remove();
+    document.getElementById(`${PROMPT_ID}-allow`).onclick  = async () => {
         prompt.remove();
         const permission = await Notification.requestPermission();
         if (permission === 'granted') {
             await onAllow();
-            showBrowserNotification({ id: 'welcome', title: '🔔 Notifikasi Aktif', message: 'Kamu akan menerima notifikasi bahkan saat website ditutup.' });
+            showBrowserNotification({ id: 'welcome', title: '🔔 Notifikasi Aktif', message: 'Kamu akan menerima notifikasi penting secara otomatis.' });
         } else {
             localStorage.setItem(DISMISSED_KEY, '1');
         }
@@ -225,4 +242,3 @@ if (document.readyState === 'loading') {
 } else {
     init();
 }
-
