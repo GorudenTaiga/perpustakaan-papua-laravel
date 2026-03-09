@@ -5,7 +5,9 @@ namespace App\Filament\Resources\Admin\Reports\Pages;
 use App\Filament\Resources\Admin\Reports\ReportResource;
 use App\Models\Member;
 use App\Models\Pinjaman;
+use App\Models\Report;
 use Filament\Resources\Pages\CreateRecord;
+use Illuminate\Support\Facades\Auth;
 
 class CreateReport extends CreateRecord
 {
@@ -13,16 +15,20 @@ class CreateReport extends CreateRecord
 
     protected function mutateFormDataBeforeCreate(array $data): array
     {
-        $totalRegistrations = Member::where('role', '!=', 'admin')->where('role', '!=', 'kepala')->count();
-        $totalMembers = Member::count();
-        $totalLoans = Pinjaman::count();
-        $totalReturns = Pinjaman::where('status', 'dikembalikan')->count();
+        $start = $data['period_start'];
+        $end = $data['period_end'];
 
-        return [
-            'total_registrations' => $totalRegistrations,
-            'total_members' => $totalMembers,
-            'total_loans' => $totalLoans,
-            'total_returns' => $totalReturns,
-        ];
+        // Basic summary counts
+        $data['total_registrations'] = Member::whereBetween('created_at', [$start, $end])->count();
+        $data['total_members'] = Member::count();
+        $data['total_loans'] = Pinjaman::whereBetween('created_at', [$start, $end])->count();
+        $data['total_returns'] = Pinjaman::where('status', 'dikembalikan')
+            ->whereBetween('return_date', [$start, $end])->count();
+        $data['generated_by'] = Auth::id();
+
+        // Comprehensive report data
+        $data['data'] = Report::generateReportData($start, $end);
+
+        return $data;
     }
 }

@@ -5,6 +5,7 @@ namespace App\Filament\Resources\Admin\Reports;
 use App\Filament\Resources\Admin\Reports\Pages\CreateReport;
 use App\Filament\Resources\Admin\Reports\Pages\EditReport;
 use App\Filament\Resources\Admin\Reports\Pages\ListReports;
+use App\Filament\Resources\Admin\Reports\Pages\ViewReport;
 use App\Filament\Resources\Admin\Reports\Schemas\ReportForm;
 use App\Filament\Resources\Admin\Reports\Tables\ReportsTable;
 use App\Models\Report;
@@ -18,7 +19,20 @@ class ReportResource extends Resource
 {
     protected static ?string $model = Report::class;
 
-    protected static ?string $recordTitleAttribute = 'Report';
+    protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedChartBar;
+
+    protected static ?string $recordTitleAttribute = 'title';
+
+    protected static ?string $modelLabel = 'Laporan';
+
+    protected static ?string $pluralModelLabel = 'Laporan';
+
+    protected static ?string $navigationLabel = 'Laporan';
+
+    public static function getNavigationBadge(): ?string
+    {
+        return (string) static::getModel()::count() ?: null;
+    }
 
     public static function form(Schema $schema): Schema
     {
@@ -32,9 +46,7 @@ class ReportResource extends Resource
 
     public static function getRelations(): array
     {
-        return [
-            //
-        ];
+        return [];
     }
 
     public static function getPages(): array
@@ -42,6 +54,7 @@ class ReportResource extends Resource
         return [
             'index' => ListReports::route('/'),
             'create' => CreateReport::route('/create'),
+            'view' => ViewReport::route('/{record}'),
             'edit' => EditReport::route('/{record}/edit'),
         ];
     }
