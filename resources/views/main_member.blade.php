@@ -3,6 +3,7 @@
 
 <head>
     <title>@yield('title', 'Perpustakaan Daerah Provinsi Papua - Katalog Buku Digital')</title>
+    <meta name="csrf-token" content="{{ csrf_token() }}">
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -39,6 +40,20 @@
         rel="stylesheet">
 
     @vite(['resources/css/app.css', 'resources/js/app.js'])
+
+    @auth
+        @if (Auth::user()->role === 'member' && Auth::user()->member)
+        <script>
+            window.__notifConfig = {
+                latestUrl : "{{ route('notifications.latest') }}",
+                notifUrl  : "{{ route('notifications') }}",
+                iconUrl   : "{{ asset('favicon_io/apple-touch-icon.png') }}",
+                csrfToken : "{{ csrf_token() }}",
+            };
+        </script>
+        @vite(['resources/js/notifications.js'])
+        @endif
+    @endauth
 
     <style>
         .add-to-wishlist.active svg {
@@ -335,12 +350,12 @@
                                             ->whereNull('read_at')
                                             ->count();
                                     @endphp
-                                    @if ($unreadNotifCount > 0)
-                                        <span
-                                            class="absolute -top-1 -right-1 w-5 h-5 bg-gradient-to-br from-red-500 to-orange-500 text-white text-xs font-bold rounded-full flex items-center justify-center animate-pulse">
-                                            {{ $unreadNotifCount > 9 ? '9+' : $unreadNotifCount }}
-                                        </span>
-                                    @endif
+                                    <span
+                                        data-notif-badge
+                                        class="absolute -top-1 -right-1 w-5 h-5 bg-gradient-to-br from-red-500 to-orange-500 text-white text-xs font-bold rounded-full flex items-center justify-center animate-pulse"
+                                        @if($unreadNotifCount === 0) style="display:none" @endif>
+                                        {{ $unreadNotifCount > 9 ? '9+' : $unreadNotifCount }}
+                                    </span>
                                 </a>
                             @endif
 

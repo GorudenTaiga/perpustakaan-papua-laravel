@@ -48,4 +48,23 @@ class NotificationController extends Controller
 
         return response()->json(['count' => $count]);
     }
+
+    public function getLatest(Request $request)
+    {
+        $member = Auth::user()->member;
+        $since = $request->query('since');
+
+        $query = Notification::where('member_id', $member->membership_number)
+            ->whereNull('read_at')
+            ->orderBy('created_at', 'desc')
+            ->limit(10);
+
+        if ($since) {
+            $query->where('created_at', '>', $since);
+        }
+
+        $notifications = $query->get(['id', 'title', 'message', 'type', 'created_at']);
+
+        return response()->json(['notifications' => $notifications]);
+    }
 }
