@@ -13,18 +13,6 @@ class CreateNotification extends CreateRecord
 {
     protected static string $resource = NotificationResource::class;
 
-    protected function mutateFormDataBeforeCreate(array $data): array
-    {
-        unset($data['send_to_all']);
-
-        // member_id may be absent when send_to_all is on (disabled field)
-        if (empty($data['member_id'])) {
-            unset($data['member_id']);
-        }
-
-        return $data;
-    }
-
     protected function handleRecordCreation(array $data): \Illuminate\Database\Eloquent\Model
     {
         $sendToAll = (bool) ($data['send_to_all'] ?? false);
