@@ -18,13 +18,25 @@ class PinjamanResource extends Resource
 {
     protected static ?string $model = Pinjaman::class;
 
-    protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedRectangleStack;
+    protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedDocumentText;
 
-    protected static ?string $recordTitleAttribute = 'Pinjaman';
+    protected static ?string $recordTitleAttribute = 'id';
 
-    protected static ?string $modelLabel = 'Pinjaman';
+    protected static ?string $modelLabel = 'Peminjaman';
 
-    protected static ?string $pluralModelLabel = 'Pinjaman';
+    protected static ?string $pluralModelLabel = 'Peminjaman';
+
+    public static function getNavigationBadge(): ?string
+    {
+        $active = static::getModel()::whereIn('status', ['dipinjam', 'menunggu_verif', 'jatuh_tempo'])->count();
+        return $active ?: null;
+    }
+
+    public static function getNavigationBadgeColor(): ?string
+    {
+        $overdue = static::getModel()::where('status', 'jatuh_tempo')->count();
+        return $overdue > 0 ? 'danger' : 'warning';
+    }
 
     public static function form(Schema $schema): Schema
     {

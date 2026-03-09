@@ -2,9 +2,12 @@
 
 namespace App\Models;
 
+use App\Observers\PinjamanObserver;
+use Illuminate\Database\Eloquent\Attributes\ObservedBy;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
+#[ObservedBy(PinjamanObserver::class)]
 class Pinjaman extends Model
 {
     /** @use HasFactory<\Database\Factories\PinjamanFactory> */
@@ -37,5 +40,9 @@ class Pinjaman extends Model
 
     public function buku() {
         return $this->belongsTo(Buku::class, 'buku_id', 'id');
+    }
+
+    public function payments() {
+        return $this->hasMany(Payments::class, 'pinjaman_id', 'id');
     }
 }
