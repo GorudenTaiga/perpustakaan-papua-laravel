@@ -32,8 +32,9 @@ class PinjamanObserver
 
         // Load buku once if needed for stock or notification operations
         $needsBuku = (!$wasActive && $isActive) || ($wasActive && !$isActive)
-            || ($oldStatus === 'menunggu_verif' && $newStatus === 'dipinjam')
-            || ($newStatus === 'dikembalikan' && $oldStatus !== 'dikembalikan');
+            || ($newStatus === 'dipinjam' && $oldStatus !== 'dipinjam')
+            || ($newStatus === 'dikembalikan' && $oldStatus !== 'dikembalikan')
+            || ($newStatus === 'jatuh_tempo' && $oldStatus !== 'jatuh_tempo');
 
         $buku = $needsBuku ? $pinjaman->buku ?? Buku::find($pinjaman->buku_id) : null;
 
@@ -45,8 +46,12 @@ class PinjamanObserver
             $this->restoreStockDirect($buku, $pinjaman->quantity);
         }
 
-        if ($oldStatus === 'menunggu_verif' && $newStatus === 'dipinjam') {
+        if ($newStatus === 'dipinjam' && $oldStatus !== 'dipinjam') {
             $this->notifyLoanVerified($pinjaman, $buku);
+        }
+
+        if ($newStatus === 'jatuh_tempo' && $oldStatus !== 'jatuh_tempo') {
+            $this->notifyLoanOverdue($pinjaman, $buku);
         }
 
         if ($newStatus === 'dikembalikan' && $oldStatus !== 'dikembalikan') {
@@ -98,6 +103,21 @@ class PinjamanObserver
         Notification::create([
             'member_id' => $pinjaman->member_id,
             'type'      => 'peminjaman',
+            'title'     => $title,
+            'message'   => $msg,
+        ]);
+
+        $this->sendPush($pinjaman->member_id, $title, $msg);
+    }
+
+    private function notifyLoanOverdue(Pinjaman $pinjaman, ?Buku $buku): void
+    {
+        $title = 'Peminjaman Jatuh Tempo ⚠️';
+        $msg   = "Buku \"{$buku?->judul}\" sudah melewati batas pengembalian. Segera kembalikan untuk menghindari denda.";
+
+        Notification::create([
+            'member_id' => $pinjaman->member_id,
+            'type'      => 'deadline_peminjaman',
             'title'     => $title,
             'message'   => $msg,
         ]);

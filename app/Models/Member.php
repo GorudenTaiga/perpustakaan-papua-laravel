@@ -2,9 +2,12 @@
 
 namespace App\Models;
 
+use App\Observers\MemberObserver;
+use Illuminate\Database\Eloquent\Attributes\ObservedBy;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
+#[ObservedBy(MemberObserver::class)]
 class Member extends Model
 {
     /** @use HasFactory<\Database\Factories\MemberFactory> */
@@ -21,6 +24,7 @@ class Member extends Model
         'document_path',
         'tier',
         'tier_expired_at',
+        'verif',
     ];
 
     protected $casts = [

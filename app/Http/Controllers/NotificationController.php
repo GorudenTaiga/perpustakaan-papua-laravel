@@ -67,7 +67,10 @@ class NotificationController extends Controller
 
         $notifications = $query->get(['id', 'title', 'message', 'type', 'created_at']);
 
-        return response()->json(['notifications' => $notifications]);
+        return response()->json([
+            'notifications' => $notifications,
+            'timestamp'     => now()->toISOString(),
+        ]);
     }
 
     public function stream(Request $request)

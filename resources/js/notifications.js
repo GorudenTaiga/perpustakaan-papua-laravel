@@ -29,6 +29,7 @@ const POPUP_TYPES = new Set([
     'reservation',          // book reservation update
     'reservasi',            // same, alternate key used in older records
     'loan_extended',        // loan extension approved/rejected
+    'verifikasi_akun',      // member account verified by admin
 ]);
 
 /* ─── Config injected from Blade layout ─────────────────────────────── */
