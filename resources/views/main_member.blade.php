@@ -45,10 +45,10 @@
         @if (Auth::user()->role === 'member' && Auth::user()->member)
         <script>
             window.__notifConfig = {
-                latestUrl : "{{ route('notifications.latest') }}",
+                streamUrl : "{{ route('notifications.stream') }}",
+                countUrl  : "{{ route('notifications.unreadCount') }}",
                 notifUrl  : "{{ route('notifications') }}",
                 iconUrl   : "{{ asset('favicon_io/apple-touch-icon.png') }}",
-                csrfToken : "{{ csrf_token() }}",
             };
         </script>
         @vite(['resources/js/notifications.js'])

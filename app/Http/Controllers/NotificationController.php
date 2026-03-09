@@ -67,4 +67,54 @@ class NotificationController extends Controller
 
         return response()->json(['notifications' => $notifications]);
     }
+
+    public function stream(Request $request)
+    {
+        $member = Auth::user()->member;
+        $membershipNumber = $member->membership_number;
+        $since = $request->query('since', now()->subSeconds(10)->toISOString());
+
+        return response()->stream(function () use ($membershipNumber, $since) {
+            // Tell client to wait 3s before reconnecting if connection drops
+            echo "retry: 3000\n\n";
+            if (ob_get_level()) ob_flush();
+            flush();
+
+            $lastCheck = $since;
+            $iterations = 0;
+            $maxIterations = 30; // ~90s per connection, then client auto-reconnects
+
+            while ($iterations < $maxIterations && !connection_aborted()) {
+                $notifications = Notification::where('member_id', $membershipNumber)
+                    ->whereNull('read_at')
+                    ->where('created_at', '>', $lastCheck)
+                    ->orderBy('created_at', 'asc')
+                    ->get(['id', 'title', 'message', 'type', 'created_at']);
+
+                $lastCheck = now()->toISOString();
+
+                if ($notifications->isNotEmpty()) {
+                    foreach ($notifications as $notif) {
+                        echo "event: notification\n";
+                        echo "data: " . json_encode($notif) . "\n\n";
+                    }
+                    if (ob_get_level()) ob_flush();
+                    flush();
+                }
+
+                // Heartbeat to keep the connection alive through proxies/load balancers
+                echo ": keepalive\n\n";
+                if (ob_get_level()) ob_flush();
+                flush();
+
+                sleep(3);
+                $iterations++;
+            }
+        }, 200, [
+            'Content-Type'      => 'text/event-stream',
+            'Cache-Control'     => 'no-cache, no-store, must-revalidate',
+            'X-Accel-Buffering' => 'no',   // Disable Nginx buffering
+            'Connection'        => 'keep-alive',
+        ]);
+    }
 }
