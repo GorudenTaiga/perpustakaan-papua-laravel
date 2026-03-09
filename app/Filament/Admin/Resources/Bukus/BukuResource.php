@@ -20,19 +20,32 @@ class BukuResource extends Resource
 {
     protected static ?string $model = Buku::class;
 
-    protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedRectangleStack;
+    protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedBookOpen;
 
-    protected static ?string $recordTitleAttribute = 'Buku';
+    protected static ?string $recordTitleAttribute = 'judul';
 
     protected static ?string $modelLabel = 'Buku';
     protected static ?string $pluralModelLabel = 'Buku';
+
+    public static function getNavigationBadge(): ?string
+    {
+        return static::getModel()::count();
+    }
+
+    public static function getNavigationBadgeColor(): ?string
+    {
+        return 'primary';
+    }
+
+    public static function getGloballySearchableAttributes(): array
+    {
+        return ['judul', 'author', 'publisher', 'slug'];
+    }
 
     public static function form(Schema $schema): Schema
     {
         return BukuForm::configure($schema);
     }
-
-    // public static function form(Form)
 
     public static function table(Table $table): Table
     {

@@ -3,7 +3,9 @@
 namespace App\Models;
 
 use App\Http\Controllers\AssetController;
+use App\Observers\BukuObserver;
 use Filament\Panel;
+use Illuminate\Database\Eloquent\Attributes\ObservedBy;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -11,6 +13,7 @@ use Illuminate\Support\Facades\DB;
 use Log;
 use Storage;
 
+#[ObservedBy(BukuObserver::class)]
 class Buku extends Model
 {
     /** @use HasFactory<\Database\Factories\BukuFactory> */
