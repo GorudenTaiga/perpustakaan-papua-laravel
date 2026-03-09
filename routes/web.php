@@ -16,6 +16,9 @@ use Illuminate\Support\Facades\Route;
 
 Route::get('/', [DashboardController::class, 'index'])->name('dashboard');
 
+// Keep-alive endpoint for UptimeRobot to prevent Render.com free-tier cold starts
+Route::get('/keep-alive', fn () => response()->json(['status' => 'ok']))->name('keepAlive');
+
 Route::get('/contact')->name('contact');
 Route::get('/subscribe')->name('subscribe');
 Route::get('/help', function () {

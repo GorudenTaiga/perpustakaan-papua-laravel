@@ -183,6 +183,9 @@
                                         class="relative overflow-hidden bg-gradient-to-br from-gray-50 to-gray-100 aspect-[3/4]">
                                         <img src="{{ $b->bannerUrl ? $b->bannerUrl : asset('images/media_placeholder.webp') }}"
                                             alt="{{ $b->judul }}"
+                                            loading="lazy"
+                                            decoding="async"
+                                            width="300" height="400"
                                             class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700">
                                         <div
                                             class="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500">

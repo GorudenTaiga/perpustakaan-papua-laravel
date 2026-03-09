@@ -28,7 +28,13 @@
     <link rel="manifest" href="{{ asset('favicon_io/site.webmanifest') }}">
     <link rel="shortcut icon" href="{{ asset('favicon.ico') }}">
 
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@9/swiper-bundle.min.css">
+    {{-- Non-blocking Swiper CSS: loaded as print media first, then switched to all --}}
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@9/swiper-bundle.min.css" media="print" onload="this.media='all'">
+    <noscript><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@9/swiper-bundle.min.css"></noscript>
+
+    {{-- Preconnect to Supabase storage for faster image delivery --}}
+    <link rel="preconnect" href="https://qwyopyslffipqwzwcfmp.supabase.co" crossorigin>
+    <link rel="dns-prefetch" href="https://qwyopyslffipqwzwcfmp.supabase.co">
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -153,17 +159,18 @@
         </div>
 
         <script>
-            // Hide preloader when page is loaded
-            window.addEventListener('load', function() {
+            function _hidePreloader() {
                 const preloader = document.getElementById('preloader');
-                if (preloader) {
+                if (preloader && preloader.style.display !== 'none') {
                     preloader.style.opacity = '0';
                     preloader.style.transition = 'opacity 0.3s ease';
-                    setTimeout(() => {
-                        preloader.style.display = 'none';
-                    }, 300);
+                    setTimeout(() => { preloader.style.display = 'none'; }, 300);
                 }
-            });
+            }
+            // Hide on DOMContentLoaded (HTML parsed, no need to wait for all images)
+            document.addEventListener('DOMContentLoaded', _hidePreloader);
+            // Absolute fallback: force-hide after 2.5s to prevent blank-screen lock
+            setTimeout(_hidePreloader, 2500);
         </script>
 
         <!-- Search Sidebar -->
@@ -508,10 +515,10 @@
     </div>
     <!-- End Main Background Wrapper -->
 
-    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+    <script defer src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/swiper@9/swiper-bundle.min.js"></script>
     <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
-    <script src="{{ asset('js/modal-system.js') }}"></script>
+    <script defer src="{{ asset('js/modal-system.js') }}"></script>
 
     {{-- Global Toast Notification & AJAX Helper --}}
     <div x-data="toastSystem()" x-on:show-toast.window="show($event.detail)"

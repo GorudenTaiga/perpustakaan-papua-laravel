@@ -61,6 +61,9 @@
                             <div class="relative hidden lg:block">
                                 <div class="relative z-10 transform hover:scale-105 transition-transform duration-500">
                                     <img src="{{ asset('images/buku_dashboard.png') }}" alt="Buku"
+                                        fetchpriority="high"
+                                        decoding="async"
+                                        width="600" height="400"
                                         class="w-full h-auto drop-shadow-2xl">
                                 </div>
                             </div>
@@ -104,6 +107,9 @@
                             <div class="relative hidden lg:block">
                                 <div class="relative z-10 transform hover:scale-105 transition-transform duration-500">
                                     <img src="{{ asset('images/buku_dashboard.png') }}" alt="Buku Baru"
+                                        loading="lazy"
+                                        decoding="async"
+                                        width="600" height="400"
                                         class="w-full h-auto drop-shadow-2xl">
                                 </div>
                             </div>
@@ -145,6 +151,9 @@
                             <div class="relative hidden lg:block">
                                 <div class="relative z-10 transform hover:scale-105 transition-transform duration-500">
                                     <img src="{{ asset('images/buku_dashboard.png') }}" alt="Perpustakaan Digital"
+                                        loading="lazy"
+                                        decoding="async"
+                                        width="600" height="400"
                                         class="w-full h-auto drop-shadow-2xl">
                                 </div>
                             </div>
@@ -264,6 +273,9 @@
                                             class="aspect-[4/5] overflow-hidden bg-gradient-to-br from-gray-100 to-gray-200">
                                             @if ($c->image)
                                                 <img src="{{ asset($c->image) }}" alt="{{ $c->nama }}"
+                                                    loading="lazy"
+                                                    decoding="async"
+                                                    width="200" height="250"
                                                     class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500">
                                             @else
                                                 <div
@@ -342,6 +354,9 @@
                             <div class="aspect-[3/4] overflow-hidden bg-gradient-to-br from-gray-100 to-gray-200">
                                 <img src="{{ $b->bannerUrl ? $b->bannerUrl : asset('images/media_placeholder.webp') }}"
                                     alt="{{ $b->judul }}"
+                                    loading="lazy"
+                                    decoding="async"
+                                    width="240" height="320"
                                     class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500">
                             </div>
 
@@ -427,18 +442,17 @@
                             <a href="{{ route('buku', $b->slug) }}"
                                 class="block relative overflow-hidden rounded-2xl bg-white shadow-lg hover:shadow-2xl transition-all duration-500 hover:-translate-y-3">
                                 <div class="aspect-[3/4] overflow-hidden bg-gradient-to-br from-gray-100 to-gray-200">
-                                    <img src="{{ $b->bannerUrl ? $b->bannerUrl : asset('images/media_placeholder.webp') }}"
+                                     <img src="{{ $b->bannerUrl ? $b->bannerUrl : asset('images/media_placeholder.webp') }}"
                                         alt="{{ $b->judul }}"
+                                        loading="lazy"
+                                        decoding="async"
+                                        width="240" height="320"
                                         class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500">
                                 </div>
                                 <div class="p-4 space-y-2">
                                     <h3
                                         class="font-bold text-gray-900 group-hover:text-indigo-600 transition-colors line-clamp-2 text-sm leading-snug">
                                         {{ $b->judul }}
-                                    </h3>
-                                    <div class="flex items-center justify-between text-xs">
-                                        <span class="text-gray-500">{{ $b->author }}</span>
-                                        @if ($b->average_rating > 0)
                                             <span class="inline-flex items-center gap-1 text-yellow-500 font-semibold">
                                                 <svg class="w-3.5 h-3.5 fill-current" viewBox="0 0 20 20">
                                                     <path
@@ -498,6 +512,9 @@
                                 <div class="aspect-[3/4] overflow-hidden bg-gradient-to-br from-gray-100 to-gray-200">
                                     <img src="{{ $b->bannerUrl ? $b->bannerUrl : asset('images/media_placeholder.webp') }}"
                                         alt="{{ $b->judul }}"
+                                        loading="lazy"
+                                        decoding="async"
+                                        width="240" height="320"
                                         class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500">
                                 </div>
                                 <div class="p-4 space-y-2">

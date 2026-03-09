@@ -37,6 +37,9 @@
                             <div class="aspect-[3/4] relative overflow-hidden">
                                 <img src="{{ $buku->bannerUrl ? $buku->bannerUrl : asset('images/placeholder.png') }}"
                                     alt="{{ $buku->judul }}"
+                                    fetchpriority="high"
+                                    decoding="async"
+                                    width="400" height="533"
                                     class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700">
                                 <div class="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent"></div>
                                 <div class="absolute top-6 left-6">
@@ -506,6 +509,9 @@
                             class="group block relative overflow-hidden rounded-2xl bg-white shadow-lg hover:shadow-2xl transition-all duration-500 hover:-translate-y-3">
                             <div class="aspect-[3/4] overflow-hidden bg-gradient-to-br from-gray-100 to-gray-200">
                                 <img src="{{ $rb->bannerUrl }}" alt="{{ $rb->judul }}"
+                                    loading="lazy"
+                                    decoding="async"
+                                    width="200" height="267"
                                     class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500">
                             </div>
                             <div class="p-3 space-y-1">
