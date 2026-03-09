@@ -7,23 +7,38 @@ use App\Filament\Resources\Admin\Users\Pages\EditUser;
 use App\Filament\Resources\Admin\Users\Pages\ListUsers;
 use App\Filament\Resources\Admin\Users\Schemas\UserForm;
 use App\Filament\Resources\Admin\Users\Tables\UsersTable;
-use App\Models\Member;
 use App\Models\User;
 use BackedEnum;
-use DateTime;
 use Filament\Resources\Resource;
 use Filament\Schemas\Schema;
 use Filament\Support\Icons\Heroicon;
 use Filament\Tables\Table;
-use Str;
 
 class UserResource extends Resource
 {
     protected static ?string $model = User::class;
 
-    protected static string|BackedEnum|null $navigationIcon = Heroicon::User;
+    protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedUsers;
 
-    protected static ?string $recordTitleAttribute = 'User';
+    protected static ?string $recordTitleAttribute = 'name';
+
+    protected static ?string $modelLabel = 'Pengguna';
+    protected static ?string $pluralModelLabel = 'Pengguna';
+
+    public static function getNavigationBadge(): ?string
+    {
+        return static::getModel()::count();
+    }
+
+    public static function getNavigationBadgeColor(): ?string
+    {
+        return 'warning';
+    }
+
+    public static function getGloballySearchableAttributes(): array
+    {
+        return ['name', 'email'];
+    }
 
     public static function form(Schema $schema): Schema
     {

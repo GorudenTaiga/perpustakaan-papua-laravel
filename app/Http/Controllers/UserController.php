@@ -145,8 +145,9 @@ class UserController extends Controller
             $validate = $request->validate([
                 'email' => ['required', 'email', 'unique:users'],
                 'password' => ['required', 'min:6'],
-                'name' => ['required'],
-                'document' => ['nullable', 'file', 'mimes:pdf,jpg,jpeg,png', 'max:2048'],
+                'name' => ['required', 'string'],
+                'jenis' => ['in:Pelajar,Mahasiswa,Guru,Dosen,Umum', 'required'],
+                'document' => ['file', 'mimes:pdf,jpg,jpeg,png', 'max:2048', 'required'],
             ]);
             $validate['role'] = 'member';
             
@@ -172,6 +173,7 @@ class UserController extends Controller
                     ])) {
                         return redirect()->back()->with('success', 'Register berhasil');
                     }
+                    return redirect()->back()->withErrors('Gagal membuat member');
                 }
             }
         }
