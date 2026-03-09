@@ -3,8 +3,11 @@
 namespace App\Providers\Filament;
 
 use App\Filament\Admin\Resources\Bukus\BukuResource;
+use App\Filament\Resources\Admin\BookReservations\BookReservationResource;
+use App\Filament\Resources\Admin\BookReviews\BookReviewResource;
 use App\Filament\Resources\Admin\Users\UserResource;
 use App\Filament\Resources\Admin\Members\MemberResource;
+use App\Filament\Resources\Admin\Notifications\NotificationResource;
 use App\Filament\Resources\Admin\Payments\PaymentsResource;
 use App\Filament\Resources\Admin\Pinjamen\PinjamanResource;
 use App\Filament\Resources\Admin\Categories\CategoryResource;
@@ -41,10 +44,10 @@ class AdminPanelProvider extends PanelProvider
             ->colors([
                 'primary' => Color::Amber,
             ])
-            // ->brandLogo(asset('favicon_io/android-chrome-512x512.png'))
             ->brandName('Admin Panel - Dinas Arsip dan Perpustakaan Provinsi Papua')
             ->default()
             ->sidebarFullyCollapsibleOnDesktop()
+            ->viteTheme('resources/css/filament/admin/theme.css')
             ->discoverResources(in: app_path('Filament/Admin/Resources'), for: 'App\Filament\Admin\Resources')
             ->discoverPages(in: app_path('Filament/Admin/Pages'), for: 'App\Filament\Admin\Pages')
             ->pages([
@@ -57,6 +60,9 @@ class AdminPanelProvider extends PanelProvider
                 PaymentsResource::class,
                 PinjamanResource::class,
                 CategoryResource::class,
+                BookReservationResource::class,
+                BookReviewResource::class,
+                NotificationResource::class,
                 ReportResource::class,
             ])
             ->discoverWidgets(in: app_path('Filament/Admin/Widgets'), for: 'App\Filament\Admin\Widgets')
@@ -90,25 +96,25 @@ class AdminPanelProvider extends PanelProvider
                                 ->icon('heroicon-o-users')
                                 ->visible(Auth::user()->role === 'admin')
                                 ->url(UserResource::getUrl())
-                                ->isActiveWhen(fn() => request()->routeIs('filament.admin.resources.admin.users.index')),
+                                ->isActiveWhen(fn() => request()->routeIs('filament.admin.resources.admin.users.*')),
 
                             NavigationItem::make('Members')
                                 ->icon('heroicon-o-user-group')
                                 ->visible(Auth::user()->role === 'admin')
                                 ->url(MemberResource::getUrl())
-                                ->isActiveWhen(fn() => request()->routeIs('filament.admin.resources.admin.members.index')),
+                                ->isActiveWhen(fn() => request()->routeIs('filament.admin.resources.admin.members.*')),
 
                             NavigationItem::make('Books')
                                 ->icon('heroicon-o-book-open')
                                 ->url(BukuResource::getUrl())
                                 ->visible(Auth::user()->role === 'admin')
-                                ->isActiveWhen(fn() => request()->routeIs('filament.admin.resources.bukus.index')),
+                                ->isActiveWhen(fn() => request()->routeIs('filament.admin.resources.bukus.*')),
 
                             NavigationItem::make('Categories')
                                 ->icon('heroicon-o-tag')
                                 ->url(CategoryResource::getUrl())
                                 ->visible(Auth::user()->role === 'admin')
-                                ->isActiveWhen(fn() => request()->routeIs('filament.admin.resources.admin.categories.index')),
+                                ->isActiveWhen(fn() => request()->routeIs('filament.admin.resources.admin.categories.*')),
                         ]),
 
                     NavigationGroup::make('Peminjaman')
@@ -117,21 +123,42 @@ class AdminPanelProvider extends PanelProvider
                                 ->icon('heroicon-o-document-text')
                                 ->url(PinjamanResource::getUrl())
                                 ->visible(Auth::user()->role === 'admin')
-                                ->isActiveWhen(fn() => request()->routeIs('filament.admin.resources.admin.pinjamen.index')),
+                                ->isActiveWhen(fn() => request()->routeIs('filament.admin.resources.admin.pinjamen.*')),
+
+                            NavigationItem::make('Reservasi Buku')
+                                ->icon('heroicon-o-calendar-days')
+                                ->url(BookReservationResource::getUrl())
+                                ->visible(Auth::user()->role === 'admin')
+                                ->isActiveWhen(fn() => request()->routeIs('filament.admin.resources.admin.book-reservations.*')),
 
                             NavigationItem::make('Denda & Sanksi')
                                 ->icon('heroicon-o-exclamation-triangle')
                                 ->visible(Auth::user()->role === 'admin')
                                 ->url(PaymentsResource::getUrl())
-                                ->isActiveWhen(fn() => request()->routeIs('filament.admin.resources.admin.payments.index')),
+                                ->isActiveWhen(fn() => request()->routeIs('filament.admin.resources.admin.payments.*')),
+                        ]),
+
+                    NavigationGroup::make('Komunitas')
+                        ->items([
+                            NavigationItem::make('Ulasan Buku')
+                                ->icon('heroicon-o-star')
+                                ->url(BookReviewResource::getUrl())
+                                ->visible(Auth::user()->role === 'admin')
+                                ->isActiveWhen(fn() => request()->routeIs('filament.admin.resources.admin.book-reviews.*')),
+
+                            NavigationItem::make('Notifikasi')
+                                ->icon('heroicon-o-bell')
+                                ->url(NotificationResource::getUrl())
+                                ->visible(Auth::user()->role === 'admin')
+                                ->isActiveWhen(fn() => request()->routeIs('filament.admin.resources.admin.notifications.*')),
                         ]),
 
                     NavigationGroup::make('Reports')
                         ->items([
-                            NavigationItem::make('Reports')
+                            NavigationItem::make('Laporan')
                                 ->icon('heroicon-o-chart-bar')
                                 ->url(ReportResource::getUrl())
-                                ->isActiveWhen(fn() => request()->routeIs('filament.admin.resources.admin.reports.index')),
+                                ->isActiveWhen(fn() => request()->routeIs('filament.admin.resources.admin.reports.*')),
                         ]),
                 ]);
             })
