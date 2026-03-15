@@ -4,7 +4,7 @@ namespace App\Filament\Admin\Resources\Bukus\Pages;
 
 use App\Filament\Admin\Resources\Bukus\BukuResource;
 use Filament\Resources\Pages\CreateRecord;
-use Str;
+use Illuminate\Support\Str;
 
 class CreateBuku extends CreateRecord
 {
@@ -12,7 +12,7 @@ class CreateBuku extends CreateRecord
 
     protected function mutateFormDataBeforeCreate(array $data): array
     {
-        $data['uuid'] = Str::random(17);
+        $data['uuid'] = Str::uuid()->toString();
         return $data;
     }
 
