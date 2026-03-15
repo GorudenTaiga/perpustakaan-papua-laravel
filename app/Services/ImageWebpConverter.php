@@ -14,7 +14,7 @@ class ImageWebpConverter
      */
     public static function convertAndStore(UploadedFile $file, string $directory, string $disk = 's3', int $quality = 80): ?string
     {
-        $mime = $file->getMimeType();
+        $mime = $file->getMimeType() ?: '';
 
         // Hanya konversi format gambar yang didukung
         if (!in_array($mime, ['image/jpeg', 'image/png', 'image/jpg', 'image/gif', 'image/bmp', 'image/webp'])) {
@@ -24,6 +24,11 @@ class ImageWebpConverter
 
         // Jika sudah WebP, simpan langsung
         if ($mime === 'image/webp') {
+            return $file->store($directory, $disk);
+        }
+
+        // GD/webp tidak tersedia, simpan file asli agar upload tidak gagal.
+        if (!self::canConvertMime($mime)) {
             return $file->store($directory, $disk);
         }
 
@@ -42,9 +47,13 @@ class ImageWebpConverter
 
         // Simpan ke buffer
         ob_start();
-        imagewebp($image, null, $quality);
+        $written = imagewebp($image, null, $quality);
         $webpData = ob_get_clean();
         imagedestroy($image);
+
+        if (!$written || $webpData === false) {
+            return $file->store($directory, $disk);
+        }
 
         // Simpan ke disk
         Storage::disk($disk)->put($path, $webpData);
@@ -69,7 +78,11 @@ class ImageWebpConverter
             return $currentPath;
         }
 
-        $mime = mime_content_type($fullPath);
+        $mime = mime_content_type($fullPath) ?: '';
+        if (!self::canConvertMime($mime)) {
+            return $currentPath;
+        }
+
         $image = self::createImageFromFile($fullPath, $mime);
 
         if (!$image) {
@@ -83,9 +96,13 @@ class ImageWebpConverter
         }
 
         ob_start();
-        imagewebp($image, null, $quality);
+        $written = imagewebp($image, null, $quality);
         $webpData = ob_get_clean();
         imagedestroy($image);
+
+        if (!$written || $webpData === false) {
+            return $currentPath;
+        }
 
         Storage::disk($disk)->put($newPath, $webpData);
 
@@ -108,17 +125,42 @@ class ImageWebpConverter
         };
     }
 
+    private static function canConvertMime(string $mime): bool
+    {
+        if (!extension_loaded('gd') || !function_exists('imagewebp')) {
+            return false;
+        }
+
+        return match ($mime) {
+            'image/jpeg', 'image/jpg' => function_exists('imagecreatefromjpeg'),
+            'image/png' => function_exists('imagecreatefrompng'),
+            'image/gif' => function_exists('imagecreatefromgif'),
+            'image/bmp' => function_exists('imagecreatefrombmp'),
+            default => false,
+        };
+    }
+
     private static function createFromPngWithAlpha(string $filepath): ?\GdImage
     {
+        if (!function_exists('imagecreatefrompng')) {
+            return null;
+        }
+
         $image = @imagecreatefrompng($filepath);
         if (!$image) {
             return null;
         }
 
         // Pertahankan transparansi
-        imagepalettetotruecolor($image);
-        imagealphablending($image, true);
-        imagesavealpha($image, true);
+        if (function_exists('imagepalettetotruecolor')) {
+            imagepalettetotruecolor($image);
+        }
+        if (function_exists('imagealphablending')) {
+            imagealphablending($image, true);
+        }
+        if (function_exists('imagesavealpha')) {
+            imagesavealpha($image, true);
+        }
 
         return $image;
     }
