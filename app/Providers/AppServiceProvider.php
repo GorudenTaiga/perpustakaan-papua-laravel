@@ -24,6 +24,7 @@ class AppServiceProvider extends ServiceProvider
         // Force HTTPS in production
         if (config('app.env') === 'production') {
             \URL::forceScheme('https');
+            \URL::forceRootUrl(config('app.url'));
         }
 
         // Share wishlist data with all views using main_member layout
