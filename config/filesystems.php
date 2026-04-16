@@ -13,7 +13,7 @@ return [
     |
     */
 
-    'default' => env('FILESYSTEM_DISK', 's3'),
+    'default' => env('FILESYSTEM_DISK', 'public'),
 
     /*
     |--------------------------------------------------------------------------
@@ -24,7 +24,7 @@ return [
     | may even configure multiple disks for the same driver. Examples for
     | most supported storage drivers are configured here for reference.
     |
-    | Supported drivers: "local", "ftp", "sftp", "s3"
+    | Supported drivers: "local", "ftp", "sftp", "public"
     |
     */
 
@@ -48,7 +48,7 @@ return [
         ],
 
         's3' => [
-            'driver' => 's3',
+            'driver' => 'public',
             'key' => env('AWS_ACCESS_KEY_ID'),
             'secret' => env('AWS_SECRET_ACCESS_KEY'),
             'region' => env('AWS_DEFAULT_REGION'),

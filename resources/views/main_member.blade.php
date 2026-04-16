@@ -29,8 +29,11 @@
     <link rel="shortcut icon" href="{{ asset('favicon.ico') }}">
 
     {{-- Non-blocking Swiper CSS: loaded as print media first, then switched to all --}}
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@9/swiper-bundle.min.css" media="print" onload="this.media='all'">
-    <noscript><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@9/swiper-bundle.min.css"></noscript>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@9/swiper-bundle.min.css" media="print"
+        onload="this.media='all'">
+    <noscript>
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@9/swiper-bundle.min.css">
+    </noscript>
 
     {{-- Preconnect to Supabase storage for faster image delivery --}}
     <link rel="preconnect" href="https://qwyopyslffipqwzwcfmp.supabase.co" crossorigin>
@@ -48,18 +51,18 @@
 
     @auth
         @if (Auth::user()->role === 'member' && Auth::user()->member)
-        <script>
-            window.__notifConfig = {
-                latestUrl    : "{{ route('notifications.latest') }}",
-                countUrl     : "{{ route('notifications.unreadCount') }}",
-                notifUrl     : "{{ route('notifications') }}",
-                iconUrl      : "{{ asset('favicon_io/apple-touch-icon.png') }}",
-                vapidKeyUrl  : "{{ route('notifications.vapidKey') }}",
-                subscribeUrl : "{{ route('notifications.push.subscribe') }}",
-                unsubUrl     : "{{ route('notifications.push.unsubscribe') }}",
-            };
-        </script>
-        @vite(['resources/js/notifications.js'])
+            <script>
+                window.__notifConfig = {
+                    latestUrl: "{{ route('notifications.latest') }}",
+                    countUrl: "{{ route('notifications.unreadCount') }}",
+                    notifUrl: "{{ route('notifications') }}",
+                    iconUrl: "{{ asset('favicon_io/apple-touch-icon.png') }}",
+                    vapidKeyUrl: "{{ route('notifications.vapidKey') }}",
+                    subscribeUrl: "{{ route('notifications.push.subscribe') }}",
+                    unsubUrl: "{{ route('notifications.push.unsubscribe') }}",
+                };
+            </script>
+            @vite(['resources/js/notifications.js'])
         @endif
     @endauth
 
@@ -164,7 +167,9 @@
                 if (preloader && preloader.style.display !== 'none') {
                     preloader.style.opacity = '0';
                     preloader.style.transition = 'opacity 0.3s ease';
-                    setTimeout(() => { preloader.style.display = 'none'; }, 300);
+                    setTimeout(() => {
+                        preloader.style.display = 'none';
+                    }, 300);
                 }
             }
             // Hide on DOMContentLoaded (HTML parsed, no need to wait for all images)
@@ -359,10 +364,9 @@
                                             ->whereNull('read_at')
                                             ->count();
                                     @endphp
-                                    <span
-                                        data-notif-badge
+                                    <span data-notif-badge
                                         class="absolute -top-1 -right-1 w-5 h-5 bg-gradient-to-br from-red-500 to-orange-500 text-white text-xs font-bold rounded-full flex items-center justify-center animate-pulse"
-                                        @if($unreadNotifCount === 0) style="display:none" @endif>
+                                        @if ($unreadNotifCount === 0) style="display:none" @endif>
                                         {{ $unreadNotifCount > 9 ? '9+' : $unreadNotifCount }}
                                     </span>
                                 </a>
@@ -386,7 +390,7 @@
                             <a href="{{ Auth::user()->role == 'member' ? route('userProfile') : route('filament.admin.pages.dashboard') }}"
                                 class="flex items-center gap-2 px-3 py-2 rounded-lg hover:bg-gradient-to-br hover:from-indigo-50 hover:to-purple-50 transition-all group">
                                 @if (Auth::user()->role == 'member' && Auth::user()->member && Auth::user()->member->image)
-                                    <img src="{{ Storage::disk('s3')->url(Auth::user()->member->image) }}"
+                                    <img src="{{ Storage::disk('public')->url(Auth::user()->member->image) }}"
                                         alt="{{ Auth::user()->name }}"
                                         class="w-9 h-9 rounded-full object-cover shadow-lg ring-2 ring-indigo-200">
                                 @else

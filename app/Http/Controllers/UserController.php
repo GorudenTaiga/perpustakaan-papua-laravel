@@ -128,8 +128,8 @@ class UserController extends Controller
 
             $path = ImageWebpConverter::convertAndStore($request->file('image'), 'images/member/foto', 's3');
 
-            if ($member->image && Storage::disk('s3')->exists($member->image)) {
-                Storage::disk('s3')->delete($member->image);
+            if ($member->image && Storage::disk('public')->exists($member->image)) {
+                Storage::disk('public')->delete($member->image);
             }
 
             $member->update(['image' => $path]);

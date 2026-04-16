@@ -103,7 +103,8 @@
         {{-- HEADER --}}
         <div class="header">
             <img style="max-width: 64px; max-height: 64px;"
-                src="{{ 'data:image/png;base64,' . base64_encode(file_get_contents(public_path('icon.png'))) }}" alt="Logo">
+                src="{{ 'data:image/png;base64,' . base64_encode(file_get_contents(public_path('icon.png'))) }}"
+                alt="Logo">
             <div><b>KARTU ANGGOTA PERPUSTAKAAN</b></div>
             <div><b>PERPUSTAKAAN PROVINSI PAPUA</b></div>
             <div class="sub-header">
@@ -122,7 +123,7 @@
                                 @if ($member->image)
                                     @php
                                         try {
-                                            $imageData = Storage::disk('s3')->get($member->image);
+                                            $imageData = Storage::disk('public')->get($member->image);
                                         } catch (\Exception $e) {
                                             $imageData = null;
                                         }
@@ -131,10 +132,12 @@
                                         <img src="{{ 'data:image/webp;base64,' . base64_encode($imageData) }}"
                                             alt="Foto Member">
                                     @else
-                                        <img src="{{ 'data:image/png;base64,' . base64_encode(file_get_contents(public_path('blank_person.png'))) }}" alt="No Photo">
+                                        <img src="{{ 'data:image/png;base64,' . base64_encode(file_get_contents(public_path('blank_person.png'))) }}"
+                                            alt="No Photo">
                                     @endif
                                 @else
-                                    <img src="{{ 'data:image/png;base64,' . base64_encode(file_get_contents(public_path('blank_person.png'))) }}" alt="No Photo">
+                                    <img src="{{ 'data:image/png;base64,' . base64_encode(file_get_contents(public_path('blank_person.png'))) }}"
+                                        alt="No Photo">
                                 @endif
                             </div>
                             <div class="barcode">

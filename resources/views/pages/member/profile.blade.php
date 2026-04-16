@@ -49,7 +49,7 @@
                         class="lg:w-80 flex-shrink-0 p-8 flex flex-col items-center justify-center bg-gradient-to-br from-gray-50 to-gray-100">
                         <div class="relative group">
                             <div class="w-48 h-64 lg:w-56 lg:h-72 rounded-2xl overflow-hidden shadow-2xl ring-4 ring-white">
-                                <img src="{{ $member->image ? Storage::disk('s3')->url($member->image) : asset('images/blank_profile.webp') }}"
+                                <img src="{{ $member->image ? Storage::disk('public')->url($member->image) : asset('images/blank_profile.webp') }}"
                                     alt="{{ $member->user->name }}"
                                     class="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105">
                             </div>
