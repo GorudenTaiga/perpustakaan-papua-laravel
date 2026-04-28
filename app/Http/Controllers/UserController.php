@@ -9,6 +9,8 @@ use App\Models\Pinjaman;
 use App\Models\User;
 use App\Services\ImageWebpConverter;
 use Barryvdh\DomPDF\Facade\Pdf;
+use Dompdf\Exception;
+use Exception as GlobalException;
 use Illuminate\Http\Request;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Auth;
@@ -81,35 +83,44 @@ class UserController extends Controller
     public function cetakKTA($id)
     {
         try {
-            $id = base64_decode($id);
+            $id = base64_decode($id, true); // strict mode
+            if ($id === false) {
+                abort(400, 'ID invalid');
+            }
+
             $member = Member::with('user')->findOrFail($id);
-            $cacheKey = "kta_pdf_{$member->id}_{$member->updated_at->timestamp}_{$member->user->updated_at->timestamp}";
+
+            // Sanitasi data UTF-8
+            $member->user->name = mb_convert_encoding($member->user->name ?? 'N/A', 'UTF-8', 'auto');
+            $member->membership_number = mb_convert_encoding($member->membership_number ?? '0000', 'UTF-8', 'auto');
+            $member->jenis = mb_convert_encoding($member->jenis ?? '-', 'UTF-8', 'auto');
+            $member->valid_date = mb_convert_encoding($member->valid_date ?? '-', 'UTF-8', 'auto');
+
+            $cacheKey = "kta_pdf_{$member->id}_" . md5($member->updated_at . ($member->user->updated_at ?? ''));
 
             $pdfContent = Cache::remember($cacheKey, now()->addDay(), function () use ($member) {
-                // Pre-sanitasi data
-                // Di controller sebelum cache
-                if ($member->image) {
-                    Storage::disk('public')->copy($member->image, 'temp_member_' . $member->id . '.webp');
-                    $member->temp_image = 'temp_member_' . $member->id . '.webp';
-                }
-                $member->user->name = mb_convert_encoding($member->user->name ?? '', 'UTF-8', 'auto');
-                $member->membership_number = mb_convert_encoding($member->membership_number ?? '', 'UTF-8', 'auto');
-                
-                $pdf = Pdf::loadView('pages.member.kartuAnggota', compact('member'))
+                $pdf = \Barryvdh\DomPDF\Facade\Pdf::loadView('pages.member.kartuAnggota', compact('member'))
                     ->setPaper([0, 0, 157.68, 300], 'landscape')
-                    ->setOptions(['isHtml5ParserEnabled' => true, 'isRemoteEnabled' => true, 'defaultFont' => 'DejaVu Sans']);
+                    ->setOptions([
+                        'isHtml5ParserEnabled' => true,
+                        'isPhpEnabled' => true,
+                        'isRemoteEnabled' => false,
+                        'defaultFont' => 'DejaVu Sans',
+                        'enable_font_subsetting' => false,
+                        'enable_html5_parser' => true,
+                    ]);
                 return $pdf->output();
             });
 
             return response($pdfContent)
-                ->header('Content-Type', 'application/pdf')
-                ->header('Content-Disposition', "inline; filename=\"kartu-anggota-{$member->id}.pdf\"");
-        } catch (\Throwable $e) {
-            Log::error('PDF KTA Error: ' . $e->getMessage(), ['id' => $id]);
-            abort(500, 'Gagal generate PDF: Data tidak valid'); // Hindari detail error
+                ->header('Content-Type', 'application/pdf; charset=UTF-8')
+                ->header('Content-Disposition', "inline; filename=\"KTA-{$member->membership_number}.pdf\"")
+                ->header('Cache-Control', 'public, max-age=3600');
+        } catch (GlobalException $e) {
+            Log::error('Cetak KTA Failed: ' . $e->getMessage(), ['id' => $id ?? 'unknown']);
+            abort(500, 'Gagal generate PDF');
         }
     }
-
 
     public function login(Request $request) 
     {
