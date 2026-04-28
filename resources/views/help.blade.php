@@ -1,12 +1,15 @@
 <!DOCTYPE html>
 <html lang="id">
+
 <head>
-    <meta charset="UTF-8">
+    <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Help Center - Perpustakaan Daerah</title>
-    <meta name="description" content="Pusat bantuan Perpustakaan Daerah Provinsi Papua - Panduan pendaftaran, peminjaman buku, denda, dan FAQ.">
+    <meta name="description"
+        content="Pusat bantuan Perpustakaan Daerah Provinsi Papua - Panduan pendaftaran, peminjaman buku, denda, dan FAQ.">
     <meta property="og:title" content="Help Center - Perpustakaan Daerah Provinsi Papua">
-    <meta property="og:description" content="Panduan lengkap pendaftaran anggota, peminjaman buku, dan informasi layanan perpustakaan.">
+    <meta property="og:description"
+        content="Panduan lengkap pendaftaran anggota, peminjaman buku, dan informasi layanan perpustakaan.">
     <meta property="og:type" content="website">
     <meta property="og:locale" content="id_ID">
     <link rel="apple-touch-icon" sizes="180x180" href="{{ asset('favicon_io/apple-touch-icon.png') }}">
@@ -21,26 +24,31 @@
             min-height: 100vh;
             padding: 2rem 0;
         }
+
         .help-container {
             max-width: 900px;
             margin: 0 auto;
             background: white;
             border-radius: 15px;
             padding: 3rem;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
         }
+
         .help-header {
             text-align: center;
             margin-bottom: 3rem;
         }
+
         .help-header h1 {
             color: #667eea;
             font-weight: bold;
             margin-bottom: 0.5rem;
         }
+
         .help-section {
             margin-bottom: 2.5rem;
         }
+
         .help-section h2 {
             color: #764ba2;
             font-size: 1.5rem;
@@ -48,19 +56,23 @@
             padding-bottom: 0.5rem;
             border-bottom: 2px solid #667eea;
         }
+
         .help-section h3 {
             color: #333;
             font-size: 1.2rem;
             margin-top: 1.5rem;
             margin-bottom: 0.8rem;
         }
+
         .help-section ul {
             padding-left: 1.5rem;
         }
+
         .help-section li {
             margin-bottom: 0.5rem;
             line-height: 1.6;
         }
+
         .contact-box {
             background: #f8f9fa;
             border-left: 4px solid #667eea;
@@ -68,6 +80,7 @@
             border-radius: 5px;
             margin-top: 2rem;
         }
+
         .btn-back {
             display: inline-block;
             margin-top: 2rem;
@@ -78,12 +91,14 @@
             border-radius: 25px;
             transition: all 0.3s;
         }
+
         .btn-back:hover {
             background: #764ba2;
             color: white;
             transform: translateY(-2px);
-            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
         }
+
         .alert-info {
             background: #e3f2fd;
             border-left: 4px solid #2196f3;
@@ -92,6 +107,7 @@
         }
     </style>
 </head>
+
 <body>
     <div class="help-container">
         <div class="help-header">
@@ -193,7 +209,7 @@
 
         <div class="help-section">
             <h2>❓ FAQ (Frequently Asked Questions)</h2>
-            
+
             <h3>Q: Apakah ada biaya untuk menjadi anggota?</h3>
             <p>A: <strong>TIDAK.</strong> Pendaftaran dan peminjaman buku 100% GRATIS.</p>
 
@@ -227,4 +243,5 @@
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>
+
 </html>

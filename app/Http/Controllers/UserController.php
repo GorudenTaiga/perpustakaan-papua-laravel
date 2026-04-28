@@ -9,12 +9,15 @@ use App\Models\Pinjaman;
 use App\Models\User;
 use App\Services\ImageWebpConverter;
 use Barryvdh\DomPDF\Facade\Pdf;
+use Dompdf\Exception;
+use Exception as GlobalException;
 use Illuminate\Http\Request;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\DB;
-use Storage;
+use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Storage;
 
 class UserController extends Controller
 {
@@ -79,23 +82,27 @@ class UserController extends Controller
 
     public function cetakKTA($id)
     {
-        $id = base64_decode($id);
+        $id = base64_decode($id, true) ?? abort(404);
         $member = Member::with('user')->findOrFail($id);
 
-        // Cache PDF berdasarkan member+user updated_at agar auto-invalidate saat data berubah
-        $cacheKey = "kta_pdf_{$member->id}_{$member->updated_at->timestamp}_{$member->user->updated_at->timestamp}";
+        // (Opsional) sanitasi text untuk PDF saja
+        $member->user->name        = mb_convert_encoding($member->user->name ?? '', 'UTF-8', 'UTF-8');
+        $member->membership_number = mb_convert_encoding($member->membership_number ?? '', 'UTF-8', 'UTF-8');
 
-        $pdfContent = Cache::remember($cacheKey, now()->addDay(), function () use ($member) {
-            $pdf = Pdf::loadView('pages.member.kartuAnggota', compact('member'))
-                ->setPaper([0, 0, 157.68, 300], 'landscape');
-            return $pdf->output();
-        });
+        $pdf = Pdf::loadView('pages.member.kartuAnggota', compact('member'))
+            ->setPaper([0, 0, 157.68, 300], 'landscape')
+            ->setOptions([
+                'isHtml5ParserEnabled' => true,
+                'isPhpEnabled'         => true,
+                'isRemoteEnabled'      => false,
+                'defaultFont'          => 'DejaVu Sans',
+            ]);
 
-        return response($pdfContent)
-            ->header('Content-Type', 'application/pdf')
-            ->header('Content-Disposition', "inline; filename=\"kartu-anggota-{$member->id}.pdf\"");
+        // Best practice: langsung stream / download, bukan echo HTML
+        return $pdf->stream("kartu-anggota-{$member->membership_number}.pdf");
+        // atau:
+        // return $pdf->download("kartu-anggota-{$member->membership_number}.pdf");
     }
-
 
     public function login(Request $request) 
     {
@@ -128,8 +135,8 @@ class UserController extends Controller
 
             $path = ImageWebpConverter::convertAndStore($request->file('image'), 'images/member/foto', 's3');
 
-            if ($member->image && Storage::disk('s3')->exists($member->image)) {
-                Storage::disk('s3')->delete($member->image);
+            if ($member->image && Storage::disk('public')->exists($member->image)) {
+                Storage::disk('public')->delete($member->image);
             }
 
             $member->update(['image' => $path]);
@@ -139,7 +146,7 @@ class UserController extends Controller
             }
             return back()->with('success', 'Foto profil berhasil diperbarui!');
         } catch (\Exception $e) {
-            \Log::error('Photo upload failed: ' . $e->getMessage());
+            Log::error('Photo upload failed: ' . $e->getMessage());
             if ($request->expectsJson()) {
                 return response()->json(['success' => false, 'message' => 'Gagal mengupload foto. Silakan coba lagi.'], 500);
             }

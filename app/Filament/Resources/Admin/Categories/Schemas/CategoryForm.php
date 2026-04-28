@@ -44,7 +44,7 @@ class CategoryForm
                                         'name' => basename($file),
                                         'size' => 0,
                                         'type' => 'image/webp',
-                                        'url' => Storage::disk('s3')->url($file),
+                                        'url' => Storage::disk('public')->url($file),
                                     ];
                                 })
                                 ->acceptedFileTypes(['image/jpeg', 'image/png', 'image/jpg', 'image/webp'])
