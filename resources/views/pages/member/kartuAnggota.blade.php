@@ -5,7 +5,7 @@
 <html lang="id">
 
 <head>
-    <meta charset="UTF-8">
+    <meta charset="utf-8">
     <title>KTA - {{ $member->user->name }}</title>
     <style>
         @page {
