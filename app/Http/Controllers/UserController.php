@@ -99,9 +99,9 @@ class UserController extends Controller
             ]);
 
         // Best practice: langsung stream / download, bukan echo HTML
-        // return $pdf->stream("kartu-anggota-{$member->membership_number}.pdf");
+        return $pdf->stream("kartu-anggota-{$member->membership_number}.pdf");
         // atau:
-        return $pdf->download("kartu-anggota-{$member->membership_number}.pdf");
+        // return $pdf->download("kartu-anggota-{$member->membership_number}.pdf");
     }
 
     public function login(Request $request) 
