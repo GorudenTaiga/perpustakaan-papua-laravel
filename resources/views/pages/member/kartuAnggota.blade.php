@@ -121,7 +121,7 @@
                                 @if ($member->image)
                                     @php
                                         try {
-                                            $imageUrl = Storage::disk('public')->get($member->image);
+                                            $imageUrl = Storage::disk('s3')->get($member->image);
                                         } catch (\Exception $e) {
                                             $imageUrl = null;
                                         }

@@ -108,7 +108,7 @@ storage/app/public/documents/members/
 ```php
 FileUpload::make('document_path')
     ->label('Dokumen Pendukung')
-    ->disk('public')
+    ->disk('s3')
     ->acceptedFileTypes(['application/pdf', 'image/jpeg', 'image/png', 'image/jpg'])
     ->maxSize(2048)
     ->visibility('public')

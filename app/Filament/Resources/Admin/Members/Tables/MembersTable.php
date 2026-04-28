@@ -28,7 +28,7 @@ class MembersTable
             ->columns([
                 ImageColumn::make('image')
                     ->label('Foto')
-                    ->getStateUsing(fn ($record) => $record->image ? Storage::disk('public')->url($record->image) : null)
+                    ->getStateUsing(fn ($record) => $record->image ? Storage::disk('s3')->url($record->image) : null)
                     ->circular()
                     ->defaultImageUrl(fn ($record) => 'https://ui-avatars.com/api/?name=' . urlencode($record->user?->name ?? 'M') . '&background=f59e0b&color=fff')
                     ->size(40),
@@ -115,7 +115,7 @@ class MembersTable
                     ->icon('heroicon-o-document-magnifying-glass')
                     ->modalHeading(fn ($record) => 'Dokumen — ' . ($record->user?->name ?? 'Anggota'))
                     ->modalContent(fn ($record) => view('filament.admin.members.document-preview', [
-                        'url' => Storage::disk('public')->url($record->document_path),
+                        'url' => Storage::disk('s3')->url($record->document_path),
                         'name' => basename($record->document_path),
                     ]))
                     ->modalSubmitAction(false)

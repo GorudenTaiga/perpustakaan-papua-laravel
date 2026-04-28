@@ -23,7 +23,7 @@ class BukusTable
             ->columns([
                 ImageColumn::make('banner')
                     ->label('Cover')
-                    ->getStateUsing(fn ($record) => $record->banner ? Storage::disk('public')->url($record->banner) : null)
+                    ->getStateUsing(fn ($record) => $record->banner ? Storage::disk('s3')->url($record->banner) : null)
                     ->circular()
                     ->defaultImageUrl(fn () => 'https://ui-avatars.com/api/?name=B&background=f59e0b&color=fff')
                     ->size(45),

@@ -128,7 +128,7 @@ class BukuForm extends FormsComponent
                                     'name' => basename($file),
                                     'size' => 0,
                                     'type' => 'image/webp',
-                                    'url' => Storage::disk('public')->url($file),
+                                    'url' => Storage::disk('s3')->url($file),
                                 ];
                             })
                             ->saveUploadedFileUsing(function ($file) {
