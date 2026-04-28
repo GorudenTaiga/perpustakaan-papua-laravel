@@ -87,6 +87,11 @@ class UserController extends Controller
 
             $pdfContent = Cache::remember($cacheKey, now()->addDay(), function () use ($member) {
                 // Pre-sanitasi data
+                // Di controller sebelum cache
+                if ($member->image) {
+                    Storage::disk('public')->copy($member->image, 'temp_member_' . $member->id . '.webp');
+                    $member->temp_image = 'temp_member_' . $member->id . '.webp';
+                }
                 $member->user->name = mb_convert_encoding($member->user->name ?? '', 'UTF-8', 'auto');
                 $member->membership_number = mb_convert_encoding($member->membership_number ?? '', 'UTF-8', 'auto');
                 
