@@ -83,7 +83,7 @@ class UserController extends Controller
     public function cetakKTA($id)
     {
         try {
-            $id = base64_decode($id, true); // strict mode
+            $id = base64_decode($id, true);
             if ($id === false) {
                 abort(400, 'ID invalid');
             }
@@ -91,31 +91,29 @@ class UserController extends Controller
             $member = Member::with('user')->findOrFail($id);
 
             // Sanitasi data UTF-8
-            $member->user->name = mb_convert_encoding($member->user->name ?? 'N/A', 'UTF-8', 'auto');
+            $member->user->name        = mb_convert_encoding($member->user->name ?? 'N/A', 'UTF-8', 'auto');
             $member->membership_number = mb_convert_encoding($member->membership_number ?? '0000', 'UTF-8', 'auto');
-            $member->jenis = mb_convert_encoding($member->jenis ?? '-', 'UTF-8', 'auto');
-            $member->valid_date = mb_convert_encoding($member->valid_date ?? '-', 'UTF-8', 'auto');
+            $member->jenis             = mb_convert_encoding($member->jenis ?? '-', 'UTF-8', 'auto');
+            $member->valid_date        = mb_convert_encoding($member->valid_date ?? '-', 'UTF-8', 'auto');
 
             $cacheKey = "kta_pdf_{$member->id}_" . md5($member->updated_at . ($member->user->updated_at ?? ''));
 
-            $pdfContent = Cache::remember($cacheKey, now()->addDay(), function () use ($member) {
-                $pdf = \Barryvdh\DomPDF\Facade\Pdf::loadView('pages.member.kartuAnggota', compact('member'))
-                    ->setPaper([0, 0, 157.68, 300], 'landscape')
-                    ->setOptions([
-                        'isHtml5ParserEnabled' => true,
-                        'isPhpEnabled' => true,
-                        'isRemoteEnabled' => false,
-                        'defaultFont' => 'DejaVu Sans',
-                        'enable_font_subsetting' => false,
-                        'enable_html5_parser' => true,
-                    ]);
-                return $pdf->output();
-            });
+            // Untuk debug, sebenarnya bisa tanpa cache dulu
+            return Pdf::loadView('pages.member.kartuAnggota', compact('member'))
+                ->setPaper([0, 0, 157.68, 300], 'landscape')
+                ->setOptions([
+                    'isHtml5ParserEnabled' => true,
+                    'isPhpEnabled'         => true,
+                    'isRemoteEnabled'      => false,
+                    'defaultFont'          => 'DejaVu Sans',
+                    'enable_font_subsetting' => false,
+                    'enable_html5_parser'    => true,
+                ])
+                ->stream("KTA-{$member->membership_number}.pdf");
 
-            return response($pdfContent)
-                ->header('Content-Type', 'application/pdf; charset=UTF-8')
-                ->header('Content-Disposition', "inline; filename=\"KTA-{$member->membership_number}.pdf\"")
-                ->header('Cache-Control', 'public, max-age=3600');
+            // Kalau mau tetap pakai cache nanti:
+            // $pdfContent = Cache::remember(...); lalu response()->streamDownload()
+
         } catch (GlobalException $e) {
             Log::error('Cetak KTA Failed: ' . $e->getMessage(), ['id' => $id ?? 'unknown']);
             abort(500, 'Gagal generate PDF');

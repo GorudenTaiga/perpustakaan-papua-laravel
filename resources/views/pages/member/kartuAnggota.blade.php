@@ -1,5 +1,7 @@
 @php
-    $barcode = new Milon\Barcode\DNS1D(); // untuk barcode 1D (C39)
+    use Milon\Barcode\DNS1D;
+
+    $barcode = new DNS1D(); // untuk barcode 1D (C39)
 @endphp
 <!DOCTYPE html>
 <html lang="id">
@@ -19,7 +21,6 @@
             padding: 0;
         }
 
-        /* Ukuran kartu: 8.6cm x 5.4cm */
         .kartu {
             height: 5.4cm;
             border: 1px solid #000;
@@ -28,7 +29,6 @@
             box-sizing: border-box;
         }
 
-        /* HEADER */
         .header {
             background: #00923f;
             color: white;
@@ -51,7 +51,6 @@
             font-size: 9px;
         }
 
-        /* CONTENT */
         .content {
             padding: 5px 10px;
         }
@@ -115,19 +114,18 @@
             <div class="card-body">
                 <table width="100%" cellspacing="0" cellpadding="0">
                     <tr>
-                        <!-- Bagian kiri (foto + barcode) -->
                         <td width="38%" align="left" style="padding-left: 5px; text-align: center;">
                             <div class="photo">
                                 @if ($member->image)
                                     @php
                                         try {
-                                            $imageData = Storage::disk('public')->url($member->image);
+                                            $imageUrl = Storage::disk('public')->url($member->image);
                                         } catch (\Exception $e) {
-                                            $imageData = null;
+                                            $imageUrl = null;
                                         }
                                     @endphp
-                                    @if ($imageData)
-                                        <img src="{{ $imageData }}" alt="Foto Member">
+                                    @if ($imageUrl)
+                                        <img src="{{ $imageUrl }}" alt="Foto Member">
                                     @else
                                         <img src="{{ public_path('blank_person.png') }}" alt="No Photo">
                                     @endif
@@ -141,8 +139,6 @@
                             </div>
                         </td>
 
-                        <!-- Bagian kanan (details) -->
-                        <!-- Bagian kanan (details) -->
                         <td width="62%" style="padding-left: 4px; vertical-align: top;">
                             <div class="details">
                                 <table style="width: 100%; font-size: 7px; table-layout: fixed;">
