@@ -14,7 +14,8 @@ use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\DB;
-use Storage;
+use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Storage;
 
 class UserController extends Controller
 {
@@ -79,21 +80,29 @@ class UserController extends Controller
 
     public function cetakKTA($id)
     {
-        $id = base64_decode($id);
-        $member = Member::with('user')->findOrFail($id);
+        try {
+            $id = base64_decode($id);
+            $member = Member::with('user')->findOrFail($id);
+            $cacheKey = "kta_pdf_{$member->id}_{$member->updated_at->timestamp}_{$member->user->updated_at->timestamp}";
 
-        // Cache PDF berdasarkan member+user updated_at agar auto-invalidate saat data berubah
-        $cacheKey = "kta_pdf_{$member->id}_{$member->updated_at->timestamp}_{$member->user->updated_at->timestamp}";
+            $pdfContent = Cache::remember($cacheKey, now()->addDay(), function () use ($member) {
+                // Pre-sanitasi data
+                $member->user->name = mb_convert_encoding($member->user->name ?? '', 'UTF-8', 'auto');
+                $member->membership_number = mb_convert_encoding($member->membership_number ?? '', 'UTF-8', 'auto');
+                
+                $pdf = Pdf::loadView('pages.member.kartuAnggota', compact('member'))
+                    ->setPaper([0, 0, 157.68, 300], 'landscape')
+                    ->setOptions(['isHtml5ParserEnabled' => true, 'isRemoteEnabled' => true, 'defaultFont' => 'DejaVu Sans']);
+                return $pdf->output();
+            });
 
-        $pdfContent = Cache::remember($cacheKey, now()->addDay(), function () use ($member) {
-            $pdf = Pdf::loadView('pages.member.kartuAnggota', compact('member'))
-                ->setPaper([0, 0, 157.68, 300], 'landscape');
-            return $pdf->output();
-        });
-
-        return response($pdfContent)
-            ->header('Content-Type', 'application/pdf')
-            ->header('Content-Disposition', "inline; filename=\"kartu-anggota-{$member->id}.pdf\"");
+            return response($pdfContent)
+                ->header('Content-Type', 'application/pdf')
+                ->header('Content-Disposition', "inline; filename=\"kartu-anggota-{$member->id}.pdf\"");
+        } catch (\Throwable $e) {
+            Log::error('PDF KTA Error: ' . $e->getMessage(), ['id' => $id]);
+            abort(500, 'Gagal generate PDF: Data tidak valid'); // Hindari detail error
+        }
     }
 
 
@@ -139,7 +148,7 @@ class UserController extends Controller
             }
             return back()->with('success', 'Foto profil berhasil diperbarui!');
         } catch (\Exception $e) {
-            \Log::error('Photo upload failed: ' . $e->getMessage());
+            Log::error('Photo upload failed: ' . $e->getMessage());
             if ($request->expectsJson()) {
                 return response()->json(['success' => false, 'message' => 'Gagal mengupload foto. Silakan coba lagi.'], 500);
             }
