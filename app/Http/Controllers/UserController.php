@@ -164,7 +164,7 @@ class UserController extends Controller
         } catch (\Exception $e) {
             Log::error('Photo upload failed: ' . $e->getMessage());
             if ($request->expectsJson()) {
-                return response()->json(['success' => false, 'message' => 'Gagal mengupload foto. Silakan coba lagi.'], 500);
+                return response()->json(['success' => false, 'message' => 'Gagal mengupload foto. Silakan coba lagi. | '.$e->getMessage()], 500);
             }
             return back()->with('error', 'Gagal mengupload foto. Silakan coba lagi.');
         }
