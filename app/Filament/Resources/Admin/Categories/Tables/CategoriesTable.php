@@ -20,7 +20,7 @@ class CategoriesTable
             ->columns([
                 ImageColumn::make('image')
                     ->label('Ikon')
-                    ->getStateUsing(fn ($record) => $record->image ? Storage::disk('public')->url($record->image) : null)
+                    ->getStateUsing(fn ($record) => $record->image ? Storage::disk('s3')->url($record->image) : null)
                     ->circular()
                     ->defaultImageUrl(fn () => 'https://ui-avatars.com/api/?name=K&background=6366f1&color=fff')
                     ->size(40),

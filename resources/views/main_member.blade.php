@@ -390,7 +390,7 @@
                             <a href="{{ Auth::user()->role == 'member' ? route('userProfile') : route('filament.admin.pages.dashboard') }}"
                                 class="flex items-center gap-2 px-3 py-2 rounded-lg hover:bg-gradient-to-br hover:from-indigo-50 hover:to-purple-50 transition-all group">
                                 @if (Auth::user()->role == 'member' && Auth::user()->member && Auth::user()->member->image)
-                                    <img src="{{ Storage::disk('public')->url(Auth::user()->member->image) }}"
+                                    <img src="{{ Storage::disk('s3')->url(Auth::user()->member->image) }}"
                                         alt="{{ Auth::user()->name }}"
                                         class="w-9 h-9 rounded-full object-cover shadow-lg ring-2 ring-indigo-200">
                                 @else
