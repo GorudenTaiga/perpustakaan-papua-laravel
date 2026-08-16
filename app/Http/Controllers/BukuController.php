@@ -40,10 +40,10 @@ class BukuController extends Controller
                         $q->orderBy('created_at', 'asc');
                         break;
                     case 'ratingDesc':
-                        $q->orderByRaw("reviews_avg_rating IS NULL, reviews_avg_rating");
+                        $q->orderByRaw("reviews_avg_rating DESC NULLS LAST");
                         break;
                     case 'ratingAsc':
-                        $q->orderByRaw("reviews_avg_rating IS NOT NULL, reviews_avg_rating");
+                        $q->orderByRaw("reviews_avg_rating ASC NULLS FIRST");
                         break;
                 }
             })
