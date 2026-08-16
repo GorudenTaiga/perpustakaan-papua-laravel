@@ -49,7 +49,7 @@ class DatabaseHelper
             return "strftime('%m', {$column})";
         }
         if (static::isPostgres()) {
-            return "EXTRACT(MONTH FROM {$column})";
+            return "EXTRACT(MONTH FROM {$column})::int";
         }
         return "MONTH({$column})";
     }

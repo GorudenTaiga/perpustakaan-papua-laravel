@@ -69,7 +69,7 @@ class Report extends Model
             ->select('categories.nama', \DB::raw('COUNT(buku.id) as total'))
             ->leftJoin('buku', function ($join) {
                 // PostgreSQL: check if category id exists in the JSON array
-                $join->whereRaw("buku.category_id::jsonb @> to_jsonb(categories.id)");
+                $join->whereRaw("buku.category_id::jsonb @> jsonb_build_array(categories.id)");
             })
             ->groupBy('categories.id', 'categories.nama')
             ->orderByDesc('total')

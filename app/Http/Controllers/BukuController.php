@@ -53,7 +53,7 @@ class BukuController extends Controller
                 if (!empty($categories) && !in_array('all', $categories)) {
                     $q->where(function ($query) use ($categories) {
                         foreach ($categories as $cat) {
-                            $query->orWhereJsonContains('category_id', intval($cat));
+                            $query->orWhereJsonContains('category_id', [(int) $cat]);
                         }
                     });
                 }
